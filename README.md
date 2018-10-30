@@ -1,2 +1,1 @@
-# CPSC433_Implementation
-this is the code stuff
+# CPSC433 Implementation
