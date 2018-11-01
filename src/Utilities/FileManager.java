@@ -84,12 +84,18 @@ public class FileManager {
             Pattern pattern;
             Matcher matcher;
             while((line = inputReader.readLine()) != null){
+                //If the current line is a header
                 if(HEADERS.containsKey(line)) {
+                    //Get the regex for that header
                     regex = HEADERS.get(line);
+                    //Save the header to know data type
                     header = line;
                 } else {
+                    //If the line is not a header
+                    //get the regex pattern and start matching
                     pattern = Pattern.compile(regex);
                     matcher = pattern.matcher(line);
+                    //If the line matches the pattern, then print it with the data type
                     if(matcher.find()){
                         System.out.println(header + " " + line);
                     }
