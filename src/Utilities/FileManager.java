@@ -24,7 +24,7 @@ public class FileManager {
 
     }
 
-    private Map<String, String> InitializeHeaders(){
+    private void InitializeHeaders(){
         HEADERS.put("Name:", "Name");
         HEADERS.put("Course slots:", "Course Slots");
         HEADERS.put("Lab slots:", "Lab Slots");
