@@ -2,6 +2,8 @@ package Utilities;
 
 import java.io.*;
 import java.lang.System;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -9,7 +11,7 @@ public class FileManager {
     private BufferedReader reader = null;
     private BufferedWriter writer = null;
 
-    private final Dictionary<String, String> HEADERS = new Map<String, String>();
+    private final Map<String, String> HEADERS = new HashMap<String, String>();
 
     private final String SLOT_REGEX = "^[A-Z]{2}[\\s]*,[\\s]*[1-9]{1,2}:\\d{2}[\\s]*,[\\s]*\\d[\\s]*,[\\s]*\\d[\\s]*";
     private final String COURSE_REGEX = "^[A-Z]{4}[\\s]*\\d{3}[\\s]*LEC[\\s]*\\d{2}$";
@@ -20,6 +22,19 @@ public class FileManager {
                                                     LAB_REGEX + "," + LAB_REGEX ;
     public FileManager(){
 
+    }
+
+    private Map<String, String> InitializeHeaders(){
+        HEADERS.put("Name:", "Name");
+        HEADERS.put("Course slots:", "Course Slots");
+        HEADERS.put("Lab slots:", "Lab Slots");
+        HEADERS.put("Courses:", "Courses");
+        HEADERS.put("Labs:", "Labs");
+        HEADERS.put("Not compatible:", "Not Compatible");
+        HEADERS.put("Unwanted:", "Unwanted");
+        HEADERS.put("Preference:", "Preference");
+        HEADERS.put("Pair:", "Pair");
+        HEADERS.put("Partial assignments:", "Partial Assignments");
     }
 
     // slots_pattern = "^[A-Z]{2}[\\s]*,[\\s]*[1-9]{1,2}:\\d{2}[\\s]*,[\\s]*\\d[\\s]*,[\\s]*\\d[\\s]*";
