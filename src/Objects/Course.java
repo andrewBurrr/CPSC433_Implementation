@@ -1,8 +1,8 @@
 package Objects;
 
 public class Course {
-    section
-    leabs list children
+    //section
+    //leabs list children
     // create classes
     // otree - node
     // fact - ((a1,b1),...,(an,bn)) complete solution not null

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/CPSC433_Implementation.iml" filepath="$PROJECT_DIR$/.idea/CPSC433_Implementation.iml" />
+      <module fileurl="file://$PROJECT_DIR$/CPSC_433_AI_SCHEDULER.iml" filepath="$PROJECT_DIR$/CPSC_433_AI_SCHEDULER.iml" />
     </modules>
   </component>
 </project>
