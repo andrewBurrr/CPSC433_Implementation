@@ -9,13 +9,15 @@ public class FileManager {
     private BufferedReader reader = null;
     private BufferedWriter writer = null;
 
-    private final String SLOTS_REGEX = "^[A-Z]{2}[\\s]*,[\\s]*[1-9]{1,2}:\\d{2}[\\s]*,[\\s]*\\d[\\s]*,[\\s]*\\d[\\s]*";
-    private final String COURSES_REGEX = "^[A-Z]{4}[\\s]*\\d{3}[\\s]*LEC[\\s]*\\d{2}$";
-    private final String LABS_REGEX = "^[A-Z]{4}[\\s]*\\d{3}[\\s]*[LEC[\\s]*\\d{2}[\\s]*]*(TUT|LAB)[\\s]*\\d{2}$";
+    private final Dictionary<String, String> HEADERS = new Map<String, String>();
 
-    private final String NOT_COMPATIBLE_REGEX =  COURSES_REGEX + "," + COURSES_REGEX + "|" +
-                                                    COURSES_REGEX + "," + LABS_REGEX + "|" +
-                                                    LABS_REGEX + "," + LABS_REGEX ;
+    private final String SLOT_REGEX = "^[A-Z]{2}[\\s]*,[\\s]*[1-9]{1,2}:\\d{2}[\\s]*,[\\s]*\\d[\\s]*,[\\s]*\\d[\\s]*";
+    private final String COURSE_REGEX = "^[A-Z]{4}[\\s]*\\d{3}[\\s]*LEC[\\s]*\\d{2}$";
+    private final String LAB_REGEX = "^[A-Z]{4}[\\s]*\\d{3}[\\s]*[LEC[\\s]*\\d{2}[\\s]*]*(TUT|LAB)[\\s]*\\d{2}$";
+
+    private final String NOT_COMPATIBLE_REGEX =  COURSE_REGEX + "," + COURSE_REGEX + "|" +
+                                                    COURSE_REGEX + "," + LAB_REGEX + "|" +
+                                                    LAB_REGEX + "," + LAB_REGEX ;
     public FileManager(){
 
     }
@@ -37,8 +39,8 @@ public class FileManager {
             //Create buffered reader
             reader = new BufferedReader(new FileReader(inputFile));
 
-            Pattern coursesPattern = Pattern.compile(COURSES_REGEX);
-            Pattern labsPattern = Pattern.compile(LABS_REGEX);
+            Pattern coursesPattern = Pattern.compile(COURSE_REGEX);
+            Pattern labsPattern = Pattern.compile(LAB_REGEX);
 
             //Line
             String line;
