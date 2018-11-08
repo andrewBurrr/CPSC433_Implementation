@@ -5,6 +5,8 @@ import Structures.Pair;
 import Structures.PartialAssignment;
 import Structures.Preference;
 import Structures.Slot;
+import Structures.NotCompatible;
+import Structures.Unwanted;
 
 import Exceptions.InvalidInputException;
 
@@ -67,11 +69,10 @@ public class Reader {
     private Set<Lab> labs; // generate objects
     private Set<NotCompatible> notCompatible;
     private Set<Unwanted> unwanted;
-    private Set<Preference<String,String,String,String>> preferences;
-    private Set<Pair<String,String>> pairs;
-    private Set<PartialAssignment<String,String,String>> partialAssignments;
-
-    // constructor
+    private Set<Preference> preferences;
+    private Set<Pair> pairs;
+    private Set<PartialAssignment> partialAssignments;
+        // constructor
     public Reader(String fileName) {
 
         Scanner fileRead;
@@ -94,30 +95,27 @@ public class Reader {
                     case "Preferences:": readPreferences(fileRead); break;
                     case "Pairs:": readPairs(fileRead); break;
                     case "Partial assignments": readPartialAssignments(fileRead); break;
-                    default: if (!temp.isEmpty()) throw new InvalidInputException(String.format("Could not parse: %s", temp)); // some condition implies the file is empty) break;
+                    default:
+                        if (!temp.isEmpty()) throw new InvalidInputException(String.format("Could not parse: %s", temp));
+                        else fileRead.close();// some condition implies the file is empty) break;
                 }
-                if (fileRead.nextLine().isEmpty()) break; // whitespaceexception
-
-                // if all vars ae not null then quit
             }
 
         } catch (FileNotFoundException fileNotFoundException) {
-            System.out.printf("The specified document, %s, does not exist", fileName);
+            System.out.printf("The specified document, %s, does not exist\n", fileName);
+            fileNotFoundException.printStackTrace();
             System.exit(-1);
         } catch (InvalidInputException invalidInputException) {
-            System.out.printf("Could not parse line[%d] in ");
+            System.out.println("Parser input error");
             invalidInputException.printStackTrace();
-            // display message
         } catch (EOFException eOFException) {
             eOFException.printStackTrace();
-            // display message
         } catch (IOException iOException) {
             iOException.printStackTrace();
-            // display message
         }
     }
 
-    private void readName(Scanner fileRead) throws IOException, InvalidInputException {
+    private void readName(Scanner fileRead) throws InvalidInputException {
         while (fileRead.hasNext()) {
             if (fileRead.hasNext("^" + namePattern + "$")) {
                 name = fileRead.next();
@@ -130,7 +128,7 @@ public class Reader {
     }
 
     // note, regex does not confirm valid course start time in this version
-    private void readCourseSlots(Scanner fileRead) throws IOException, InvalidInputException {
+    private void readCourseSlots(Scanner fileRead) throws InvalidInputException {
         courseSlots = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext("^" + courseSlotPattern + "$")) { // 2 additional regexs for monday, then tuesday, else error
@@ -144,7 +142,7 @@ public class Reader {
     }
 
     // note, regex does not confirm valid lab start time in this version
-    public void readLabSlots(Scanner fileRead) throws IOException, InvalidInputException {
+    public void readLabSlots(Scanner fileRead) throws InvalidInputException {
         labSlots = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext("^" + labSlotPattern + "$")) {
@@ -273,4 +271,13 @@ public class Reader {
             }
         }
     }
+
+    public String getName() { return name; }
+    public Set<Slot> getCourseSlots() { return courseSlots; }
+    public Set<Slot> getLabSlots() { return labSlots; }
+    public Set<Course> getCourses() { return courses; }
+    public Set<Lab> getLabs() { return labs; }
+    public Set<NotCompatible> getNotCompatible() { return notCompatible; }
+    public Set<Unwanted> getUnwanted() { return unwanted; }
+    public Set<Preference> getPreferences() { return preferences; }
 }
