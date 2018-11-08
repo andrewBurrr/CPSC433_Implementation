@@ -1,4 +1,4 @@
-package Objects;
+package Structures;
 
 public class Lab {
     private final String identifier;

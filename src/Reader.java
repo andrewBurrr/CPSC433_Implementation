@@ -1,25 +1,22 @@
-import Objects.Course;
-import Objects.Lab;
-
-import Structures.Pair;
-import Structures.PartialAssignment;
-import Structures.Preference;
 import Structures.Slot;
+import Structures.Course;
+import Structures.Lab;
 import Structures.NotCompatible;
 import Structures.Unwanted;
+import Structures.Preference;
+import Structures.Pair;
+import Structures.PartialAssignment;
 
 import Exceptions.InvalidInputException;
 
 import java.util.Set;
+import java.util.Scanner;
+import java.io.File;
 import java.util.LinkedHashSet;
-
 import java.util.regex.Pattern;
 
-import java.io.EOFException;
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Scanner;
+
 
 
 /**
@@ -29,11 +26,10 @@ import java.util.Scanner;
  * Date:    October 27, 2018
  * Version: 1
  * Description:
- * Reader is the base class for the file for the parser, that initializes
- * Courses Union Labs
- * after the parser
+ * Read input file to objects and apply regex and validate hard constraints are satisfied
+ * Please leave since and author along with brief notes on changes made after each edit
+ * @since 2018-11-08
  * @author Andrew Burton
- * @version 1
  *
  * */
 public class Reader {
@@ -65,14 +61,15 @@ public class Reader {
     private String name;
     private Set<Slot> courseSlots;
     private Set<Slot> labSlots;
-    private Set<Course> courses; // generate objects
-    private Set<Lab> labs; // generate objects
+    private Set<Course> courses;
+    private Set<Lab> labs;
     private Set<NotCompatible> notCompatible;
     private Set<Unwanted> unwanted;
     private Set<Preference> preferences;
     private Set<Pair> pairs;
     private Set<PartialAssignment> partialAssignments;
-        // constructor
+
+
     public Reader(String fileName) {
 
         Scanner fileRead;
@@ -95,11 +92,10 @@ public class Reader {
                     case "Preferences:": readPreferences(fileRead); break;
                     case "Pairs:": readPairs(fileRead); break;
                     case "Partial assignments": readPartialAssignments(fileRead); break;
-                    default:
-                        if (!temp.isEmpty()) throw new InvalidInputException(String.format("Could not parse: %s", temp));
-                        else fileRead.close();// some condition implies the file is empty) break;
+                    default: if (!temp.isEmpty()) throw new InvalidInputException(String.format("Could not parse: %s", temp));
                 }
             }
+            fileRead.close();
 
         } catch (FileNotFoundException fileNotFoundException) {
             System.out.printf("The specified document, %s, does not exist\n", fileName);
@@ -108,10 +104,6 @@ public class Reader {
         } catch (InvalidInputException invalidInputException) {
             System.out.println("Parser input error");
             invalidInputException.printStackTrace();
-        } catch (EOFException eOFException) {
-            eOFException.printStackTrace();
-        } catch (IOException iOException) {
-            iOException.printStackTrace();
         }
     }
 
@@ -132,7 +124,7 @@ public class Reader {
         courseSlots = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext("^" + courseSlotPattern + "$")) { // 2 additional regexs for monday, then tuesday, else error
-                courseSlots.add(new Slot(fileRead.next().split("[\\s]*,[\\s]*")));
+                courseSlots.add(new Slot(fileRead.next().split(",")));
             } else if (fileRead.hasNext("^" + sectionPattern + "$")) {
                 break;
             } else {
@@ -146,7 +138,7 @@ public class Reader {
         labSlots = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext("^" + labSlotPattern + "$")) {
-                labSlots.add(new Slot(fileRead.next().split("[\\s]*,[\\s]*")));
+                labSlots.add(new Slot(fileRead.next().split(",")));
             } else if (fileRead.hasNext("^" + sectionPattern + "$")) {
                 break;
             } else {
@@ -191,11 +183,11 @@ public class Reader {
         notCompatible = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext("^" + notCompatiblePattern1 + "$")) {
-                // build object
+                notCompatible.add(new NotCompatible(fileRead.next().split(",")));
             } else if (fileRead.hasNext("^" + notCompatiblePattern2 + "$")) {
-                // build object
+                notCompatible.add(new NotCompatible(fileRead.next().split(",")));
             } else if (fileRead.hasNext("^" + notCompatiblePattern3 + "$")) {
-                // build object
+                notCompatible.add(new NotCompatible(fileRead.next().split(",")));
             } else if (fileRead.hasNext("^" + sectionPattern + "$")) {
                 break;
             } else {
@@ -209,15 +201,14 @@ public class Reader {
         unwanted = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext("^" + unwantedPattern1 + "$")) {
-                // build object
+                unwanted.add(new Unwanted(fileRead.next().split(",")));
             } else if (fileRead.hasNext("^" + unwantedPattern2 + "$")) {
-                // build object
+                unwanted.add(new Unwanted(fileRead.next().split(",")));
             } else if (fileRead.hasNext("^" + sectionPattern + "$")) {
                 break;
             } else {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Unwanted: %s", fileRead.next()));
             }
-            break;
         }
     }
 
@@ -226,15 +217,14 @@ public class Reader {
         preferences = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext("^" + preferencePattern1 + "$")) {
-                // build object
+                preferences.add(new Preference(fileRead.next().split(",")));
             } else if (fileRead.hasNext("^" + preferencePattern2 + "$")) {
-                // build object
+                preferences.add(new Preference(fileRead.next().split(",")));
             } else if (fileRead.hasNext("^" + sectionPattern + "$")){
                 break;
             } else {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Preferences: %s", fileRead.next()));
             }
-            break;
         }
     }
 
@@ -243,11 +233,11 @@ public class Reader {
         pairs = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext("^" + pairPattern1 + "$")) {
-                // build object
+                pairs.add(new Pair(fileRead.next().split(",")));
             } else if (fileRead.hasNext("^" + pairPattern2 + "$")) {
-                // build object
+                pairs.add(new Pair(fileRead.next().split(",")));
             } else if (fileRead.hasNext("^" + pairPattern3 + "$")) {
-                // build object
+                pairs.add(new Pair(fileRead.next().split(",")));
             } else if (fileRead.hasNext("^" + sectionPattern + "$")) {
                 break;
             } else {
@@ -261,9 +251,9 @@ public class Reader {
         partialAssignments = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext("^" + partialAssignmentPattern1 + "$")) {
-                // build object
+                partialAssignments.add(new PartialAssignment(fileRead.next().split(",")));
             } else if (fileRead.hasNext("^" + partialAssignmentPattern2 + "$")) {
-                // build object
+                partialAssignments.add(new PartialAssignment(fileRead.next().split(",")));
             } else if (fileRead.hasNext("^" + sectionPattern + "$")) {
                 break;
             } else {
@@ -280,4 +270,6 @@ public class Reader {
     public Set<NotCompatible> getNotCompatible() { return notCompatible; }
     public Set<Unwanted> getUnwanted() { return unwanted; }
     public Set<Preference> getPreferences() { return preferences; }
+    public Set<Pair> getPairs() { return pairs; }
+    public Set<PartialAssignment> getPartialAssignments(){ return partialAssignments; }
 }
