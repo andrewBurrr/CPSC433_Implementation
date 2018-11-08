@@ -39,23 +39,8 @@ public class Reader {
 
     // regular expressions
     private final Pattern sectionPattern = Pattern.compile("[\\s]*(Name|Course[\\s]+slots|Lab[\\s]+slots|Courses|Labs|Not[\\s]+compatible|Unwanted|Preferences|Pair|Partial[\\s]+assignments):[\\s]*");
-    private final Pattern namePattern = Pattern.compile("[\\s]*[\\S]+[\\s]*");
-    private final Pattern courseSlotPattern = Pattern.compile("[\\s]*(MO|TU)[\\s]*,[\\s]*([0-1]?[0-9]|[2][0-3]):([0-5][0-9])[\\s]*,[\\s]*\\d+[\\s]*,[\\s]*\\d+[\\s]*");
-    private final Pattern labSlotPattern = Pattern.compile("[\\s]*(MO|TU|FR)[\\s]*,[\\s]*([0-1]?[0-9]|[2][0-3]):([0-5][0-9])[\\s]*,[\\s]*\\d+[\\s]*,[\\s]*\\d+[\\s]*");
     private final Pattern coursePattern = Pattern.compile("[\\s]*(CPSC|SENG)[\\s]+\\d+[\\s]+(LEC)[\\s]+\\d+[\\s]*");
     private final Pattern labPattern = Pattern.compile("[\\s]*(CPSC|SENG)[\\s]+\\d+[\\s]+(LEC)[\\s]+\\d+[\\s]+(LAB|TUT)[\\s]+\\d+[\\s*]");
-    private final Pattern notCompatiblePattern1 = Pattern.compile(coursePattern + "," + coursePattern);
-    private final Pattern notCompatiblePattern2 = Pattern.compile(coursePattern + "," + labPattern);
-    private final Pattern notCompatiblePattern3 = Pattern.compile(labPattern + "," + labPattern);
-    private final Pattern unwantedPattern1 = Pattern.compile(coursePattern + ",[\\s]*(MO|TU)[\\s]*,[\\s]*([0-1]?[0-9]|[2][0-3]):([0-5][0-9])[\\s]*");
-    private final Pattern unwantedPattern2 = Pattern.compile(labPattern + ",[\\s]*(MO|TU|FR)[\\s]*,[\\s]*([0-1]?[0-9]|[2][0-3]):([0-5][0-9])[\\s]*");
-    private final Pattern preferencePattern1 = Pattern.compile("[\\s]*(MO|TU)[\\s]*,[\\s]*([0-1]?[0-9]|[2][0-3]):([0-5][0-9])[\\s]*," + coursePattern + ",[\\d]+");
-    private final Pattern preferencePattern2 = Pattern.compile("[\\s]*(MO|TU|FR)[\\s]*,[\\s]*([0-1]?[0-9]|[2][0-3]):([0-5][0-9])[\\s]*," + labPattern + ",[\\d]+");
-    private final Pattern pairPattern1 = Pattern.compile(coursePattern + "[\\s]*,[\\s]*" + coursePattern);
-    private final Pattern pairPattern2 = Pattern.compile(coursePattern + "[\\s]*,[\\s]*" + labPattern);
-    private final Pattern pairPattern3 = Pattern.compile(labPattern + "[\\s]*,[\\s]*" + labPattern);
-    private final Pattern partialAssignmentPattern1 = Pattern.compile(coursePattern + ",[\\s]*(MO|TU)[\\s]*,[\\s]*([0-1]?[0-9]|[2][0-3]):([0-5][0-9])[\\s]*");
-    private final Pattern partialAssignmentPattern2 = Pattern.compile(labPattern + ",[\\s]*(MO|TU|FR)[\\s]*,[\\s]*([0-1]?[0-9]|[2][0-3]):([0-5][0-9])[\\s]*");
 
     // named attributes
     private String name;
@@ -108,6 +93,7 @@ public class Reader {
     }
 
     private void readName(Scanner fileRead) throws InvalidInputException {
+		private final Pattern namePattern = Pattern.compile("[\\s]*[\\S]+[\\s]*");
         while (fileRead.hasNext()) {
             if (fileRead.hasNext("^" + namePattern + "$")) {
                 name = fileRead.next();
@@ -121,6 +107,7 @@ public class Reader {
 
     // note, regex does not confirm valid course start time in this version
     private void readCourseSlots(Scanner fileRead) throws InvalidInputException {
+		private final Pattern courseSlotPattern = Pattern.compile("[\\s]*(MO|TU)[\\s]*,[\\s]*([0-1]?[0-9]|[2][0-3]):([0-5][0-9])[\\s]*,[\\s]*\\d+[\\s]*,[\\s]*\\d+[\\s]*");
         courseSlots = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext("^" + courseSlotPattern + "$")) { // 2 additional regexs for monday, then tuesday, else error
@@ -135,6 +122,7 @@ public class Reader {
 
     // note, regex does not confirm valid lab start time in this version
     public void readLabSlots(Scanner fileRead) throws InvalidInputException {
+		final Pattern labSlotPattern = Pattern.compile("[\\s]*(MO|TU|FR)[\\s]*,[\\s]*([0-1]?[0-9]|[2][0-3]):([0-5][0-9])[\\s]*,[\\s]*\\d+[\\s]*,[\\s]*\\d+[\\s]*");
         labSlots = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext("^" + labSlotPattern + "$")) {
@@ -180,6 +168,9 @@ public class Reader {
 
     // needs completion: 3 regex's for switch
     public void readNotCompatible(Scanner fileRead) throws InvalidInputException {
+		final Pattern notCompatiblePattern1 = Pattern.compile(coursePattern + "," + coursePattern);
+		final Pattern notCompatiblePattern2 = Pattern.compile(coursePattern + "," + labPattern);
+		final Pattern notCompatiblePattern3 = Pattern.compile(labPattern + "," + labPattern);
         notCompatible = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext("^" + notCompatiblePattern1 + "$")) {
@@ -198,6 +189,8 @@ public class Reader {
 
     //needs completion: 2 regex's for switch
     public void readUnwanted(Scanner fileRead) throws InvalidInputException {
+		final Pattern unwantedPattern1 = Pattern.compile(coursePattern + ",[\\s]*(MO|TU)[\\s]*,[\\s]*([0-1]?[0-9]|[2][0-3]):([0-5][0-9])[\\s]*");
+		final Pattern unwantedPattern2 = Pattern.compile(labPattern + ",[\\s]*(MO|TU|FR)[\\s]*,[\\s]*([0-1]?[0-9]|[2][0-3]):([0-5][0-9])[\\s]*");
         unwanted = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext("^" + unwantedPattern1 + "$")) {
@@ -214,6 +207,8 @@ public class Reader {
 
     // needs completion: 2 regex's for switch
     public void readPreferences(Scanner fileRead) throws InvalidInputException {
+		final Pattern preferencePattern1 = Pattern.compile("[\\s]*(MO|TU)[\\s]*,[\\s]*([0-1]?[0-9]|[2][0-3]):([0-5][0-9])[\\s]*," + coursePattern + ",[\\d]+");
+		final Pattern preferencePattern2 = Pattern.compile("[\\s]*(MO|TU|FR)[\\s]*,[\\s]*([0-1]?[0-9]|[2][0-3]):([0-5][0-9])[\\s]*," + labPattern + ",[\\d]+");
         preferences = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext("^" + preferencePattern1 + "$")) {
@@ -230,6 +225,9 @@ public class Reader {
 
     // needs completion: 3 regex's for switch
     public void readPairs(Scanner fileRead)throws InvalidInputException {
+		final Pattern pairPattern1 = Pattern.compile(coursePattern + "[\\s]*,[\\s]*" + coursePattern);
+		final Pattern pairPattern2 = Pattern.compile(coursePattern + "[\\s]*,[\\s]*" + labPattern);
+		final Pattern pairPattern3 = Pattern.compile(labPattern + "[\\s]*,[\\s]*" + labPattern);
         pairs = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext("^" + pairPattern1 + "$")) {
@@ -248,6 +246,8 @@ public class Reader {
 
     // needs completion: 2 regex's for switch
     public void readPartialAssignments(Scanner fileRead) throws InvalidInputException {
+		final Pattern partialAssignmentPattern1 = Pattern.compile(coursePattern + ",[\\s]*(MO|TU)[\\s]*,[\\s]*([0-1]?[0-9]|[2][0-3]):([0-5][0-9])[\\s]*");
+		final Pattern partialAssignmentPattern2 = Pattern.compile(labPattern + ",[\\s]*(MO|TU|FR)[\\s]*,[\\s]*([0-1]?[0-9]|[2][0-3]):([0-5][0-9])[\\s]*");
         partialAssignments = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext("^" + partialAssignmentPattern1 + "$")) {
