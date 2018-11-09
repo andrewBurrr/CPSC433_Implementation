@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import Parser.Reader;
 
 public class Main {
@@ -7,3 +8,11 @@ public class Main {
         Reader reader = new Reader(inputFile);
     }
 }
+=======
+public class Main {
+
+    public static void main(String[] args) {
+        System.out.println("Hello World!");
+    }
+}
+>>>>>>> 4119142f9b76d2278cd168c6862db8acee803d87

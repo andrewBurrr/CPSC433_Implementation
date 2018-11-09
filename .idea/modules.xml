@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/SetBasedSearch.iml" filepath="$PROJECT_DIR$/SetBasedSearch.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/.idea/CPSC433_Implementation.iml" filepath="$PROJECT_DIR$/.idea/CPSC433_Implementation.iml" />
+>>>>>>> 4119142f9b76d2278cd168c6862db8acee803d87
     </modules>
   </component>
 </project>
