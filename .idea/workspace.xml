@@ -1,0 +1,587 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="b1487516-ee03-4c66-bf7d-7e52134fc0e7" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Objects/Otree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Objects/Otree.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Reader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Reader.java" afterDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/out/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FUSProjectUsageTrigger">
+    <session id="1690324198">
+      <usages-collector id="statistics.lifecycle.project">
+        <counts>
+          <entry key="project.open.time.19" value="1" />
+          <entry key="project.open.time.3" value="1" />
+          <entry key="project.opened" value="2" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.open">
+        <counts>
+          <entry key="iml" value="1" />
+          <entry key="java" value="47" />
+          <entry key="java59000cb9" value="1" />
+          <entry key="java_LAST" value="1" />
+          <entry key="txt" value="1" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.open">
+        <counts>
+          <entry key="IDEA_MODULE" value="1" />
+          <entry key="JAVA" value="47" />
+          <entry key="PLAIN_TEXT" value="3" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.extensions.edit">
+        <counts>
+          <entry key="java" value="13214" />
+          <entry key="txt" value="54" />
+        </counts>
+      </usages-collector>
+      <usages-collector id="statistics.file.types.edit">
+        <counts>
+          <entry key="JAVA" value="13214" />
+          <entry key="PLAIN_TEXT" value="54" />
+        </counts>
+      </usages-collector>
+    </session>
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Structures/Course.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+              <folding>
+                <element signature="e#107#108#0" expanded="true" />
+                <element signature="e#142#143#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Parser/Reader.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1360">
+              <caret line="92" column="46" selection-start-line="92" selection-start-column="46" selection-end-line="92" selection-end-column="46" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Main.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="85">
+              <caret line="5" column="31" selection-start-line="5" selection-start-column="31" selection-end-line="5" selection-end-column="31" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/InputFiles/deptinst1.txt">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1088">
+              <caret line="661" column="1" selection-start-line="661" selection-end-line="662" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Structures/Unwanted.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="289">
+              <caret line="17" column="18" selection-start-line="17" selection-start-column="18" selection-end-line="17" selection-end-column="18" />
+              <folding>
+                <element signature="e#185#186#0" expanded="true" />
+                <element signature="e#235#236#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Objects/Fact.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Objects/Otree.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="51">
+              <caret line="3" column="6" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Structures/NotCompatible.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="255">
+              <caret line="15" column="58" selection-start-line="15" selection-start-column="58" selection-end-line="15" selection-end-column="58" />
+              <folding>
+                <element signature="e#158#159#0" expanded="true" />
+                <element signature="e#197#198#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Structures/Slot.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="289">
+              <caret line="17" column="5" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
+              <folding>
+                <element signature="e#201#202#0" expanded="true" />
+                <element signature="e#231#232#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Structures/Lab.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+              <folding>
+                <element signature="e#113#114#0" expanded="true" />
+                <element signature="e#156#157#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/src/PartialAssignments.java" />
+        <option value="$PROJECT_DIR$/src/Preference.java" />
+        <option value="$PROJECT_DIR$/src/Slot.java" />
+        <option value="$PROJECT_DIR$/src/Pair.java" />
+        <option value="$PROJECT_DIR$/src/PartialAssignment.java" />
+        <option value="$PROJECT_DIR$/src/Exceptions/UnNamedFileException.java" />
+        <option value="$PROJECT_DIR$/src/Exceptions/InvalidInputException.java" />
+        <option value="$PROJECT_DIR$/src/Structures/Slot.java" />
+        <option value="$PROJECT_DIR$/src/Objects/Lab.java" />
+        <option value="$PROJECT_DIR$/src/Objects/Course.java" />
+        <option value="$PROJECT_DIR$/src/Structures/Unwanted.java" />
+        <option value="$PROJECT_DIR$/src/Structures/NotCompatible.java" />
+        <option value="$PROJECT_DIR$/src/Structures/Preference.java" />
+        <option value="$PROJECT_DIR$/src/Structures/PartialAssignment.java" />
+        <option value="$PROJECT_DIR$/src/Structures/Pair.java" />
+        <option value="$PROJECT_DIR$/src/Reader.java" />
+        <option value="$PROJECT_DIR$/src/Main.java" />
+        <option value="$PROJECT_DIR$/src/Objects/Otree.java" />
+        <option value="$PROJECT_DIR$/src/InputFiles/deptinst1.txt" />
+        <option value="$PROJECT_DIR$/src/Parser/Reader.java" />
+      </list>
+    </option>
+  </component>
+  <component name="JsBuildToolGruntFileManager" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsBuildToolPackageJson" detection-done="true" sorting="DEFINITION_ORDER" />
+  <component name="JsGulpfileManager">
+    <detection-done>true</detection-done>
+    <sorting>DEFINITION_ORDER</sorting>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="305" />
+    <option name="width" value="1950" />
+    <option name="height" value="2075" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="SetBasedSearch" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SetBasedSearch" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SetBasedSearch" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SetBasedSearch" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SetBasedSearch" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SetBasedSearch" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="InputFiles" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SetBasedSearch" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SetBasedSearch" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Objects" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SetBasedSearch" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SetBasedSearch" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="Structures" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1541726162407" />
+    <property name="last.edited.regexp" value="Pair:" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.tools" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="Main" />
+      <module name="SetBasedSearch" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="b1487516-ee03-4c66-bf7d-7e52134fc0e7" name="Default Changelist" comment="" />
+      <created>1540697765698</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1540697765698</updated>
+      <workItem from="1540697770425" duration="33803000" />
+      <workItem from="1541558875785" duration="34581000" />
+    </task>
+    <task id="LOCAL-00001" summary="updated parser: untested">
+      <created>1541639131701</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1541639131701</updated>
+    </task>
+    <task id="LOCAL-00002" summary="updated parser: untested, fixed catch and end state">
+      <created>1541716311483</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1541716311483</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="68384000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-6" y="-6" width="1549" height="837" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13011402" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Image Layers" order="2" />
+      <window_info id="Designer" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Capture Tool" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info anchor="bottom" id="Messages" weight="0.3286119" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3286119" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.3286119" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Version Control" order="10" show_stripe_button="false" />
+      <window_info anchor="right" id="Commander" order="0" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info anchor="right" id="Theme Preview" order="5" />
+      <window_info anchor="right" id="Palette&#9;" order="6" />
+      <window_info anchor="right" id="Database" order="7" />
+      <window_info anchor="right" id="Maven Projects" order="8" />
+    </layout>
+    <layout-to-restore>
+      <window_info id="Image Layers" order="0" />
+      <window_info id="Designer" order="1" />
+      <window_info id="UI Designer" order="2" />
+      <window_info id="Capture Tool" order="3" />
+      <window_info id="Favorites" order="4" side_tool="true" />
+      <window_info active="true" content_ui="combo" id="Project" order="5" visible="true" weight="0.5159501" />
+      <window_info id="Structure" order="6" side_tool="true" weight="0.25" />
+      <window_info anchor="bottom" id="Version Control" order="0" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Terminal" order="1" />
+      <window_info anchor="bottom" id="Event Log" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Database Changes" order="3" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Message" order="4" />
+      <window_info anchor="bottom" id="Find" order="5" />
+      <window_info anchor="bottom" id="Run" order="6" />
+      <window_info anchor="bottom" id="Debug" order="7" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="8" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="9" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="10" />
+      <window_info anchor="right" id="Palette" order="0" />
+      <window_info anchor="right" id="Capture Analysis" order="1" />
+      <window_info anchor="right" id="Theme Preview" order="2" />
+      <window_info anchor="right" id="Palette&#9;" order="3" />
+      <window_info anchor="right" id="Database" order="4" />
+      <window_info anchor="right" id="Maven Projects" order="5" />
+      <window_info anchor="right" id="Commander" order="6" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="7" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="8" weight="0.25" />
+    </layout-to-restore>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="updated parser: untested" />
+    <MESSAGE value="updated parser: untested, fixed catch and end state" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated parser: untested, fixed catch and end state" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/../assign4/src/Pair.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-line="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/WD Backup.swstor/andre/Yjc5NDNiZjY3OWRmNDJiOW/History/Volume{3bb3563d-8f0b-4928-9e63-d4f2ad7c90e8}/Users/andre/Desktop/FileExercise/src/FileExercise.java59000cb9" />
+    <entry file="file://D:/WD Backup.swstor/andre/Yjc5NDNiZjY3OWRmNDJiOW/History/Volume{3bb3563d-8f0b-4928-9e63-d4f2ad7c90e8}/Users/andre/Desktop/FileExercise/src/FileExercise.java_LAST" />
+    <entry file="file://D:/WD Backup.swstor/andre/Yjc5NDNiZjY3OWRmNDJiOW/Volume{3bb3563d-8f0b-4928-9e63-d4f2ad7c90e8}/Users/andre/Desktop/FileExercise/src/FileExercise.java" />
+    <entry file="file://D:/WD Backup.swstor/andre/Yjc5NDNiZjY3OWRmNDJiOW/Volume{3bb3563d-8f0b-4928-9e63-d4f2ad7c90e8}/Users/andre/Desktop/AssignmentMarking/src/AssnMarking.java" />
+    <entry file="file://D:/WD Backup.swstor/andre/Yjc5NDNiZjY3OWRmNDJiOW/Volume{3bb3563d-8f0b-4928-9e63-d4f2ad7c90e8}/Users/andre/Desktop/BattleShip/src/com/Game/Main.java" />
+    <entry file="file://D:/WD Backup.swstor/andre/Yjc5NDNiZjY3OWRmNDJiOW/Volume{3bb3563d-8f0b-4928-9e63-d4f2ad7c90e8}/Users/andre/Desktop/Final Exam Prep/src/Main.java" />
+    <entry file="file://D:/WD Backup.swstor/andre/Yjc5NDNiZjY3OWRmNDJiOW/Volume{3bb3563d-8f0b-4928-9e63-d4f2ad7c90e8}/Users/andre/Desktop/FileExerciseTutorial/src/FirstLetters.java" />
+    <entry file="file://$PROJECT_DIR$/../createDirectoriesTest/src/CopyFileVisitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret selection-end-line="5" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/WD Backup.swstor/andre/Yjc5NDNiZjY3OWRmNDJiOW/Volume{3bb3563d-8f0b-4928-9e63-d4f2ad7c90e8}/Users/andre/Desktop/BattleShipIndividual/src/AI.java" />
+    <entry file="file://D:/WD Backup.swstor/andre/Yjc5NDNiZjY3OWRmNDJiOW/Volume{3bb3563d-8f0b-4928-9e63-d4f2ad7c90e8}/Users/andre/Desktop/BattleShipIndividual/src/Coordinate.java" />
+    <entry file="file://D:/WD Backup.swstor/andre/Yjc5NDNiZjY3OWRmNDJiOW/Volume{3bb3563d-8f0b-4928-9e63-d4f2ad7c90e8}/Users/andre/Desktop/BattleShipIndividual/src/Grid.java" />
+    <entry file="file://D:/WD Backup.swstor/andre/Yjc5NDNiZjY3OWRmNDJiOW/Volume{3bb3563d-8f0b-4928-9e63-d4f2ad7c90e8}/Users/andre/Desktop/BattleShipIndividual/src/Helper.java" />
+    <entry file="file://D:/WD Backup.swstor/andre/Yjc5NDNiZjY3OWRmNDJiOW/Volume{3bb3563d-8f0b-4928-9e63-d4f2ad7c90e8}/Users/andre/Desktop/BattleShipIndividual/src/Main.java" />
+    <entry file="file://D:/WD Backup.swstor/andre/Yjc5NDNiZjY3OWRmNDJiOW/Volume{3bb3563d-8f0b-4928-9e63-d4f2ad7c90e8}/Users/andre/Desktop/BattleShipIndividual/src/Player.java" />
+    <entry file="file://D:/WD Backup.swstor/andre/Yjc5NDNiZjY3OWRmNDJiOW/Volume{3bb3563d-8f0b-4928-9e63-d4f2ad7c90e8}/Users/andre/Desktop/BattleShipIndividual/src/Tile.java" />
+    <entry file="file://D:/WD Backup.swstor/andre/Yjc5NDNiZjY3OWRmNDJiOW/Volume{3bb3563d-8f0b-4928-9e63-d4f2ad7c90e8}/Users/andre/Desktop/CPSC 233/BattleShip/src/Attack.java" />
+    <entry file="file://D:/WD Backup.swstor/andre/Yjc5NDNiZjY3OWRmNDJiOW/Volume{3bb3563d-8f0b-4928-9e63-d4f2ad7c90e8}/Users/andre/Desktop/CPSC 233/BattleShip/src/Boat.java" />
+    <entry file="file://D:/WD Backup.swstor/andre/Yjc5NDNiZjY3OWRmNDJiOW/Volume{3bb3563d-8f0b-4928-9e63-d4f2ad7c90e8}/Users/andre/Desktop/CPSC 233/BattleShip/src/Computer.java" />
+    <entry file="file://D:/WD Backup.swstor/andre/Yjc5NDNiZjY3OWRmNDJiOW/Volume{3bb3563d-8f0b-4928-9e63-d4f2ad7c90e8}/Users/andre/Desktop/CPSC 233/BattleShip/src/Initialize.java" />
+    <entry file="file://D:/WD Backup.swstor/andre/Yjc5NDNiZjY3OWRmNDJiOW/Volume{3bb3563d-8f0b-4928-9e63-d4f2ad7c90e8}/Users/andre/Desktop/CPSC 233/BattleShip/src/Main.java" />
+    <entry file="file://D:/WD Backup.swstor/andre/Yjc5NDNiZjY3OWRmNDJiOW/Volume{3bb3563d-8f0b-4928-9e63-d4f2ad7c90e8}/Users/andre/Desktop/CPSC 233/BattleShip/src/Map.java" />
+    <entry file="file://D:/WD Backup.swstor/andre/Yjc5NDNiZjY3OWRmNDJiOW/Volume{3bb3563d-8f0b-4928-9e63-d4f2ad7c90e8}/Users/andre/Desktop/CPSC 233/BattleShip/src/Player.java" />
+    <entry file="file://D:/WD Backup.swstor/andre/Yjc5NDNiZjY3OWRmNDJiOW/Volume{3bb3563d-8f0b-4928-9e63-d4f2ad7c90e8}/Users/andre/Desktop/CPSC 233/BattleShip_Demov01.30/src/Main.java" />
+    <entry file="file://D:/WD Backup.swstor/andre/Yjc5NDNiZjY3OWRmNDJiOW/Volume{3bb3563d-8f0b-4928-9e63-d4f2ad7c90e8}/Users/andre/Desktop/CPSC 233/Demo/src/Boat.java" />
+    <entry file="file://D:/WD Backup.swstor/andre/Yjc5NDNiZjY3OWRmNDJiOW/Volume{3bb3563d-8f0b-4928-9e63-d4f2ad7c90e8}/Users/andre/Desktop/CPSC 233/Demo/src/Computer.java" />
+    <entry file="file://$PROJECT_DIR$/src/Exceptions/UnNamedFileException.java" />
+    <entry file="file://$PROJECT_DIR$/src/Exceptions/InvalidInputException.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="32" selection-start-line="5" selection-start-column="11" selection-end-line="5" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/SetBasedSearch.iml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" selection-start-line="12" selection-end-line="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Structures/Pair.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="30" selection-start-line="7" selection-start-column="30" selection-end-line="7" selection-end-column="30" />
+          <folding>
+            <element signature="e#154#155#0" expanded="true" />
+            <element signature="e#194#195#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Structures/PartialAssignment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="43" selection-start-line="8" selection-start-column="43" selection-end-line="8" selection-end-column="43" />
+          <folding>
+            <element signature="e#198#199#0" expanded="true" />
+            <element signature="e#248#249#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Structures/Preference.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="53" selection-start-line="9" selection-start-column="53" selection-end-line="9" selection-end-column="53" />
+          <folding>
+            <element signature="e#216#217#0" expanded="true" />
+            <element signature="e#276#277#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Structures/Slot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="5" selection-start-line="17" selection-start-column="5" selection-end-line="17" selection-end-column="5" />
+          <folding>
+            <element signature="e#201#202#0" expanded="true" />
+            <element signature="e#231#232#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Structures/Unwanted.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="18" selection-start-line="17" selection-start-column="18" selection-end-line="17" selection-end-column="18" />
+          <folding>
+            <element signature="e#185#186#0" expanded="true" />
+            <element signature="e#235#236#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Structures/NotCompatible.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="58" selection-start-line="15" selection-start-column="58" selection-end-line="15" selection-end-column="58" />
+          <folding>
+            <element signature="e#158#159#0" expanded="true" />
+            <element signature="e#197#198#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Objects/Fact.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Objects/Otree.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="6" selection-start-line="3" selection-start-column="6" selection-end-line="3" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Main.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="5" column="31" selection-start-line="5" selection-start-column="31" selection-end-line="5" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Structures/Course.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+          <folding>
+            <element signature="e#107#108#0" expanded="true" />
+            <element signature="e#142#143#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Structures/Lab.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+          <folding>
+            <element signature="e#113#114#0" expanded="true" />
+            <element signature="e#156#157#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/InputFiles/deptinst1.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1088">
+          <caret line="661" column="1" selection-start-line="661" selection-end-line="662" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Parser/Reader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1360">
+          <caret line="92" column="46" selection-start-line="92" selection-start-column="46" selection-end-line="92" selection-end-column="46" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>
