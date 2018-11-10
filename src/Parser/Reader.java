@@ -123,30 +123,23 @@ public class Reader {
     // note, regex does not confirm valid course start time in this version
     private void readCourseSlots(Scanner fileRead) throws InvalidInputException {
         courseSlots = new LinkedHashSet<>();
-        System.out.println("Started course slots section");
         String temp;
         while (fileRead.hasNext()) {
-            System.out.println("in loop");
             if (fileRead.hasNext(courseSlotPattern)) { // 2 additional regexs for monday, then tuesday, else error
-                System.out.println("reading course slots");
                 temp = fileRead.next(courseSlotPattern);
                 courseSlots.add(new Slot(temp.split(",")));
-                System.out.println(temp);
             } else if (fileRead.hasNext(sectionPattern)) {
                 break;
             } else if (!fileRead.next().isEmpty()){
                 throw new InvalidInputException(String.format("Failed To Parse Line In Course Slots: %s", fileRead.next()));
             }
-            System.out.println("at least one iteration done");
         }
-        System.out.println("Finished in course slots");
+        System.out.print(courseSlots.toString().replace("[", "").replace(", ", "").replace("]", ""));
     }
 
     // note, regex does not confirm valid lab start time in this version
     public void readLabSlots(Scanner fileRead) throws InvalidInputException {
-        System.out.println("in lab slots");
         labSlots = new LinkedHashSet<>();
-        String temp;
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(labSlotPattern)) {
                 labSlots.add(new Slot(fileRead.nextLine().split(",")));
@@ -156,28 +149,22 @@ public class Reader {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Lab Slots: %s", fileRead.next()));
             }
         }
-        System.out.println("done lab slots");
+        System.out.print(labSlots.toString().replace("[", "").replace(", ", "").replace("]", ""));
     }
 
     // compare regex against hard constraints
     public void readCourses(Scanner fileRead) throws InvalidInputException {
-        System.out.println("in courses");
         courses = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
-            System.out.println("in loop");
             if (fileRead.hasNext(coursePattern)) {
-                System.out.println("add course");
                 courses.add(new Course(fileRead.next()));
             } else if (fileRead.hasNext(sectionPattern)) {
-                System.out.println("done reading");
                 break;
             } else if(!fileRead.next().isEmpty()) {
-                System.out.println("throw exception");
-                System.out.println(fileRead.next());
                 throw new InvalidInputException(String.format("Failed To Parse Line In Courses: %s", fileRead.next()));
             }
         }
-        System.out.println("done courses");
+        System.out.print(courses.toString().replace("[", "").replace(", ", "").replace("]", ""));
     }
 
     // compare regex against hard constraints
@@ -192,26 +179,22 @@ public class Reader {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Labs: %s", fileRead.next()));
             }
         }
-
+        System.out.print(labs.toString().replace("[", "").replace(", ", "").replace("]", ""));
     }
 
     // needs completion: 3 regex's for switch
     public void readNotCompatible(Scanner fileRead) throws InvalidInputException {
         notCompatible = new LinkedHashSet<>();
-        System.out.println("in not compatible");
         while (fileRead.hasNext()) {
-            System.out.println("in loop");
             if (fileRead.hasNext( notCompatiblePattern)) {
-                System.out.println("pattern found");
                 notCompatible.add(new NotCompatible(fileRead.next().split(",")));
             } else if (fileRead.hasNext(sectionPattern)) {
-                System.out.println("next section");
                 break;
             } else if (!fileRead.next().isEmpty()){
-                System.out.println("throwing error");
                 throw new InvalidInputException(String.format("Failed To Parse Line In Not Compatible: %s", fileRead.next()));
             }
         }
+        System.out.print(notCompatible.toString().replace("[", "").replace(", ", "").replace("]", ""));
     }
 
     //needs completion: 2 regex's for switch
@@ -228,6 +211,7 @@ public class Reader {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Unwanted: %s", fileRead.next()));
             }
         }
+        System.out.print(unwanted.toString().replace("[", "").replace(", ", "").replace("]", ""));
     }
 
     // needs completion: 2 regex's for switch
@@ -244,12 +228,11 @@ public class Reader {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Preferences: %s", fileRead.next()));
             }
         }
-        System.out.println("done");
+        System.out.print(preferences.toString().replace("[", "").replace(", ", "").replace("]", ""));
     }
 
     // needs completion: 3 regex's for switch
     public void readPairs(Scanner fileRead)throws InvalidInputException {
-        System.out.println("started");
         pairs = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(pairPattern)) {
@@ -260,7 +243,7 @@ public class Reader {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Pair: %s", fileRead.next()));
             }
         }
-        System.out.println("done");
+        System.out.print(pairs.toString().replace("[", "").replace(", ", "").replace("]", ""));
     }
 
     // needs completion: 2 regex's for switch
@@ -277,6 +260,7 @@ public class Reader {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Partial Assignments: %s", fileRead.next()));
             }
         }
+        System.out.print(partialAssignments.toString().replace("[", "").replace(", ", "").replace("]", ""));
     }
 
     public String getName() { return name; }

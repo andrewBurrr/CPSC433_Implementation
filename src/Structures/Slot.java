@@ -17,6 +17,11 @@ public class Slot {
         this.min = min;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s, %s, %s, %s\n", day, time, max, min);
+    }
+
     public String getDay() { return this.day; }
     public String getTime() { return this.time; }
     public String getMax() { return this.max; }

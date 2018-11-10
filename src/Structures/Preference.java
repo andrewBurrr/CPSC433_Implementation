@@ -16,6 +16,12 @@ public class Preference {
         this.identifier = identifier;
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s, %s, %s, %s\n", day, time, identifier, value);
+    }
+
     public String getDay() { return day; }
     public String getTime() { return time; }
     public String getIdentifier() { return identifier; }

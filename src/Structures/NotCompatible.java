@@ -13,6 +13,11 @@ public class NotCompatible {
         this.yIdentifier = yIdentifier;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s, %s\n", xIdentifier, yIdentifier);
+    }
+
     public String getxIdentifier() { return xIdentifier; }
     public String getyIdentifier() { return yIdentifier; }
 }

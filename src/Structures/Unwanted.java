@@ -15,6 +15,11 @@ public class Unwanted {
         this.time = time;
     }
 
+    @Override
+    public String toString() {
+        return String.format("%s, %s, %s\n", identifier, day, time);
+    }
+
     public String getIdentifier() { return identifier; }
     public String getDay() { return day; }
     public String getTime() { return time; }
