@@ -1,0 +1,61 @@
+Set-Based Search Model:
+    Merge courses and labs into 1 single list labCourseList.    
+    Create a checkHardConstraint function that can be used by our Or-Tree program as well (protected tag is a good choice)
+    (Update: On a second thought I think checkHardConstraint should be in the Or-Tree instead)
+
+    Fact is a set of solutions [Map<CourseLabs, Slot>]. 
+    Fact start as empty
+
+    (We might need an evalList to keep track of all the Eval of Fact, or we add this value into Fact)
+
+    Mutation(random(Fact)) = Or-Tree.runMutation() return newSolution
+    Combination(random(Fact), random(Fact)) = Or-Tree.runCombination() return [newSolution1, newSolution2]
+    
+    Tod(A):
+        numberKilled = killpercent * currentSetLength
+        newFactLength = len(Fact) - numberKilled
+        while len(Fact) > newFactLength:
+            Fact.remove(highestEvalSolution)
+
+    Create an Eval function to calculate the soft constraint 
+
+Set-Based Search Control:
+    maxPopulation 
+    killpercent
+    threshold
+
+    while True:
+        //If we don't have any solution, run depthFirst()
+        if Fact.isEmpty():
+            Or-Tree.depthFirst()
+        else:
+            //If we have too many solution, kill of some solution
+            if len(Fact) > maxPopulation:
+                Tod()
+            else: 
+                //Randomly choosing between Mutation and Combination
+                Random k = random(1-2)
+                if k == 1:
+                    //Mutation return a newSolution that already satisfied the hard constraint checked in Or-Tree
+                    //Add to Fact if the Eval(newSolution) is good enough
+                    newSolution = Mutation(Fact[random(len(Fact))])
+                    if Eval(s) is good enough:
+                        Fact.add(newSolution)     
+                else:
+                    //creating solutionA1 != solutionA2 
+                    solutionA1 = Fact[random(len(Fact))]
+                    solutionA2 = Fact[random(len(Fact))]
+                    while solution1 == solution2:
+                        solution2 = Fact[random(len(Fact))]
+                    //Combination return a list [newSolutionB1, newSolutionB2]
+                    newSolution [] = Combination(solution1, solution2)
+                    //Check each newSolution if Eval(newSolution) is good enough add it to Fact
+                    for i in range(newSolution):
+                        if Eval(newSolution[i]) good enough:
+                            Fact.add(newSolution[i])
+        //Exit the loop if V(eval(s)) <= threshold
+        if V(eval(s)) <= threshold:
+            break 
+    return Fact
+
+
