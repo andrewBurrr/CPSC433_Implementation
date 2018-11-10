@@ -1,15 +1,15 @@
 package Structures;
 
-public class PartialAssignment {
+public class Unwanted {
     private final String identifier;
     private final String day;
     private final String time;
 
-    public PartialAssignment(String[] input) {
+    public Unwanted(String[] input) {
         this(input[0], input[1], input[2]);
     }
 
-    public PartialAssignment( String identifier, String day, String time ) {
+    public Unwanted(String identifier, String day, String time) {
         this.identifier = identifier;
         this.day = day;
         this.time = time;

@@ -1,17 +1,11 @@
-import Utilities.FileManager;
+import Parser.Reader;
 
 public class Main {
 
-    private static final String CONFIG_FILE_NAME = "src/config.txt";
-
     public static void main(String[] args) {
-        //Create file manager
-        FileManager fileManager = new FileManager();
-
-        //Load the config settings
-        fileManager.LoadConfig(CONFIG_FILE_NAME);
-
-        //Write output
-        fileManager.WriteOutput();
+        String inputFile = "src/InputFiles/deptinst1.txt";
+        Reader reader = new Reader(inputFile);
+        inputFile = "src/InputFiles/deptinst2.txt";
+        reader = new Reader(inputFile);
     }
 }

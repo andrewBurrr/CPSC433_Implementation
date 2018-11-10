@@ -1,19 +1,29 @@
 package Structures;
 
-public class Slot<T1, T2, T3, T4> {
-    private final T1 day;
-    private final T2 time;
-    private final T3 max;
-    private final T4 min;
+public class Slot {
+    private final String day;
+    private final String time;
+    private final String max;
+    private final String min;
 
-    public Slot( T1 day, T2 time, T3 max, T4 min ) {
+    public Slot(String[] input) {
+        this(input[0], input[1], input[2], input[3]);
+    }
+
+    public Slot( String day, String time, String max, String min ) {
         this.day = day;
         this.time = time;
         this.max = max;
         this.min = min;
     }
-    public T1 getDay() { return this.day; }
-    public T2 getTime() { return this.time; }
-    public T3 getMax() { return this.max; }
-    public T4 getMin() {return this.min; }
+
+    @Override
+    public String toString() {
+        return String.format("%s, %s, %s, %s\n", day, time, max, min);
+    }
+
+    public String getDay() { return this.day; }
+    public String getTime() { return this.time; }
+    public String getMax() { return this.max; }
+    public String getMin() {return this.min; }
 }
