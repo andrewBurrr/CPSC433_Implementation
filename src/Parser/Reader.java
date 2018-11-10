@@ -36,24 +36,14 @@ import java.io.FileNotFoundException;
  * */
 public class Reader {
 
-    // make objects for all item types
-    // question: determine the difference between no more inputs and a parse exception
-
-    // regular expressions
-    private final Pattern sectionPattern = Pattern.compile("[\\s]*(Name|Course[\\s]+slots|Lab[\\s]+slots|Courses|Labs|Not[\\s]+compatible|Unwanted|Preferences|Pair|Partial[\\s]+assignments):[\\s]*");
-    private final Pattern namePattern = Pattern.compile("[\\s]*[A-Za-z0-9]+[\\s]*");
-    private final Pattern courseSlotPattern = Pattern.compile("[\\s]*(MO|TU)[\\s]*,[\\s]*([0-1]?[0-9]|[2][0-3]):([0-5][0-9])[\\s]*,[\\s]*\\d+[\\s]*,[\\s]*\\d+[\\s]*");
-    private final Pattern labSlotPattern = Pattern.compile("[\\s]*(MO|TU|FR)[\\s]*,[\\s]*([0-1]?[0-9]|[2][0-3]):([0-5][0-9])[\\s]*,[\\s]*\\d+[\\s]*,[\\s]*\\d+[\\s]*");
-    private final Pattern coursePattern = Pattern.compile("[\\s]*(CPSC|SENG)[\\s]+\\d+[\\s]+(LEC)[\\s]+\\d+[\\s]*");
-    private final Pattern labPattern = Pattern.compile("[\\s]*(CPSC|SENG)[\\s]+\\d+[\\s]+((LEC)[\\s]+\\d+[\\s]+)?(LAB|TUT)[\\s]+\\d+[\\s]*");
-    private final Pattern notCompatiblePattern = Pattern.compile("(" + coursePattern + "|" + labPattern + "),(" + coursePattern + "|" + labPattern + ")");
-    private final Pattern unwantedPattern1 = Pattern.compile(coursePattern + ",[\\s]*(MO|TU)[\\s]*,[\\s]*([0-1]?[0-9]|[2][0-3]):([0-5][0-9])[\\s]*");
-    private final Pattern unwantedPattern2 = Pattern.compile(labPattern + ",[\\s]*(MO|TU|FR)[\\s]*,[\\s]*([0-1]?[0-9]|[2][0-3]):([0-5][0-9])[\\s]*");
-    private final Pattern preferencePattern1 = Pattern.compile("[\\s]*(MO|TU)[\\s]*,[\\s]*([0-1]?[0-9]|[2][0-3]):([0-5][0-9])[\\s]*," + coursePattern + ",[\\s]*[\\d]+[\\s]*");
-    private final Pattern preferencePattern2 = Pattern.compile("[\\s]*(MO|TU|FR)[\\s]*,[\\s]*([0-1]?[0-9]|[2][0-3]):([0-5][0-9])[\\s]*," + labPattern + ",[\\s]*[\\d]+[\\s]*");
-    private final Pattern pairPattern = Pattern.compile("(" + coursePattern + "|" + labPattern + "),(" + coursePattern + "|" + labPattern + ")");
-    private final Pattern partialAssignmentPattern1 = Pattern.compile(coursePattern + ",[\\s]*(MO|TU)[\\s]*,[\\s]*([0-1]?[0-9]|[2][0-3]):([0-5][0-9])[\\s]*");
-    private final Pattern partialAssignmentPattern2 = Pattern.compile(labPattern + ",[\\s]*(MO|TU|FR)[\\s]*,[\\s]*([0-1]?[0-9]|[2][0-3]):([0-5][0-9])[\\s]*");
+    // shared regular expressions
+    private final Pattern DAY_COURSE = Pattern.compile("[\\s]*(MO|TU)[\\s]*");
+    private final Pattern DAY_LAB = Pattern.compile("[\\s]*(MO|TU|FR)[\\s]*");
+    private final Pattern TIME = Pattern.compile("[\\s]*([0-1]?[0-9]|[2][0-3]):([0-5][0-9])[\\s]*");
+    private final Pattern VALUE = Pattern.compile("[\\s]*\\d+[\\s+]*");
+    private final Pattern SECTION = Pattern.compile("[\\s]*(Name|Course[\\s]+slots|Lab[\\s]+slots|Courses|Labs|Not[\\s]+compatible|Unwanted|Preferences|Pair|Partial[\\s]+assignments):[\\s]*");
+    private final Pattern COURSE = Pattern.compile("[\\s]*(CPSC|SENG)[\\s]+\\d+[\\s]+(LEC)[\\s]+\\d+[\\s]*");
+    private final Pattern LAB = Pattern.compile("[\\s]*(CPSC|SENG)[\\s]+\\d+[\\s]+((LEC)[\\s]+\\d+[\\s]+)?(LAB|TUT)[\\s]+\\d+[\\s]*");
 
     // named attributes
     private String name;
@@ -107,28 +97,25 @@ public class Reader {
     }
 
     private void readName(Scanner fileRead) throws InvalidInputException {
-        while (fileRead.hasNext()) {
-            if (fileRead.hasNext(namePattern) & name == null) {
-                name = fileRead.nextLine();
-                break;
-            } else if (fileRead.hasNext(sectionPattern) & name != null) {
-                break;
-            } else {
-                throw new InvalidInputException("Name could not be found");
-            }
+        Pattern namePattern = Pattern.compile("[\\s]*[\\S]+[\\s]*");
+        if (fileRead.hasNext(namePattern) & name == null) {
+            name = fileRead.nextLine();
+        } else {
+            throw new InvalidInputException("Name could not be found");
         }
         System.out.println(name);
     }
 
     // note, regex does not confirm valid course start time in this version
     private void readCourseSlots(Scanner fileRead) throws InvalidInputException {
+        Pattern courseSlotPattern = Pattern.compile(DAY_COURSE + "," + TIME + "," + VALUE + "," + VALUE);
         courseSlots = new LinkedHashSet<>();
         String temp;
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(courseSlotPattern)) { // 2 additional regexs for monday, then tuesday, else error
                 temp = fileRead.next(courseSlotPattern);
                 courseSlots.add(new Slot(temp.split(",")));
-            } else if (fileRead.hasNext(sectionPattern)) {
+            } else if (fileRead.hasNext(SECTION)) {
                 break;
             } else if (!fileRead.next().isEmpty()){
                 throw new InvalidInputException(String.format("Failed To Parse Line In Course Slots: %s", fileRead.next()));
@@ -138,12 +125,13 @@ public class Reader {
     }
 
     // note, regex does not confirm valid lab start time in this version
-    public void readLabSlots(Scanner fileRead) throws InvalidInputException {
+    private void readLabSlots(Scanner fileRead) throws InvalidInputException {
+        Pattern labSlotPattern = Pattern.compile(DAY_LAB + "," + TIME + "," + VALUE + "," + VALUE);
         labSlots = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(labSlotPattern)) {
                 labSlots.add(new Slot(fileRead.nextLine().split(",")));
-            } else if (fileRead.hasNext(sectionPattern)) {
+            } else if (fileRead.hasNext(SECTION)) {
                 break;
             } else {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Lab Slots: %s", fileRead.next()));
@@ -153,12 +141,13 @@ public class Reader {
     }
 
     // compare regex against hard constraints
-    public void readCourses(Scanner fileRead) throws InvalidInputException {
+    private void readCourses(Scanner fileRead) throws InvalidInputException {
+        Pattern coursePattern = Pattern.compile("[\\s]*(CPSC|SENG)[\\s]+\\d+[\\s]+(LEC)[\\s]+\\d+[\\s]*");
         courses = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(coursePattern)) {
                 courses.add(new Course(fileRead.next()));
-            } else if (fileRead.hasNext(sectionPattern)) {
+            } else if (fileRead.hasNext(SECTION)) {
                 break;
             } else if(!fileRead.next().isEmpty()) {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Courses: %s", fileRead.next()));
@@ -168,12 +157,13 @@ public class Reader {
     }
 
     // compare regex against hard constraints
-    public void readLabs(Scanner fileRead) throws InvalidInputException {
+    private void readLabs(Scanner fileRead) throws InvalidInputException {
+        Pattern labPattern = Pattern.compile("[\\s]*(CPSC|SENG)[\\s]+\\d+[\\s]+((LEC)[\\s]+\\d+[\\s]+)?(LAB|TUT)[\\s]+\\d+[\\s]*");
         labs = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(labPattern)) {
                 labs.add(new Lab(fileRead.next()));
-            } else if (fileRead.hasNext(sectionPattern)) {
+            } else if (fileRead.hasNext(SECTION)) {
                 break;
             } else if (!fileRead.next().isEmpty()) {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Labs: %s", fileRead.next()));
@@ -183,12 +173,13 @@ public class Reader {
     }
 
     // needs completion: 3 regex's for switch
-    public void readNotCompatible(Scanner fileRead) throws InvalidInputException {
+    private void readNotCompatible(Scanner fileRead) throws InvalidInputException {
+        Pattern notCompatiblePattern = Pattern.compile("(" + COURSE + "|" + LAB + "),(" + COURSE + "|" + LAB + ")");
         notCompatible = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext( notCompatiblePattern)) {
                 notCompatible.add(new NotCompatible(fileRead.next().split(",")));
-            } else if (fileRead.hasNext(sectionPattern)) {
+            } else if (fileRead.hasNext(SECTION)) {
                 break;
             } else if (!fileRead.next().isEmpty()){
                 throw new InvalidInputException(String.format("Failed To Parse Line In Not Compatible: %s", fileRead.next()));
@@ -198,14 +189,13 @@ public class Reader {
     }
 
     //needs completion: 2 regex's for switch
-    public void readUnwanted(Scanner fileRead) throws InvalidInputException {
+    private void readUnwanted(Scanner fileRead) throws InvalidInputException {
+        Pattern unwantedPattern = Pattern.compile("((" + COURSE + "," + DAY_COURSE + ")|(" + LAB + "," + DAY_LAB +"))," + TIME);
         unwanted = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
-            if (fileRead.hasNext(unwantedPattern1)) {
+            if (fileRead.hasNext(unwantedPattern)) {
                 unwanted.add(new Unwanted(fileRead.next().split(",")));
-            } else if (fileRead.hasNext(unwantedPattern2)) {
-                unwanted.add(new Unwanted(fileRead.next().split(",")));
-            } else if (fileRead.hasNext(sectionPattern)) {
+            } else if (fileRead.hasNext(SECTION)) {
                 break;
             } else if (!fileRead.next().isEmpty()) {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Unwanted: %s", fileRead.next()));
@@ -215,14 +205,13 @@ public class Reader {
     }
 
     // needs completion: 2 regex's for switch
-    public void readPreferences(Scanner fileRead) throws InvalidInputException {
+    private void readPreferences(Scanner fileRead) throws InvalidInputException {
+        Pattern preferencePattern = Pattern.compile("((" + DAY_COURSE + "," + TIME + "," + COURSE + ")|(" + DAY_LAB + "," + TIME + "," + COURSE + "))," + VALUE);
         preferences = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
-            if (fileRead.hasNext(preferencePattern1)) {
+            if (fileRead.hasNext(preferencePattern)) {
                 preferences.add(new Preference(fileRead.next().split(",")));
-            } else if (fileRead.hasNext(preferencePattern2)) {
-                preferences.add(new Preference(fileRead.next().split(",")));
-            } else if (fileRead.hasNext(sectionPattern)){
+            } else if (fileRead.hasNext(SECTION)){
                 break;
             } else  if (!fileRead.next().isEmpty()) {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Preferences: %s", fileRead.next()));
@@ -232,12 +221,13 @@ public class Reader {
     }
 
     // needs completion: 3 regex's for switch
-    public void readPairs(Scanner fileRead)throws InvalidInputException {
+    private void readPairs(Scanner fileRead)throws InvalidInputException {
+        Pattern pairPattern = Pattern.compile("(" + COURSE + "|" + LAB + "),(" + COURSE + "|" + LAB + ")");
         pairs = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(pairPattern)) {
                 pairs.add(new Pair(fileRead.next().split(",")));
-            } else if (fileRead.hasNext(sectionPattern)) {
+            } else if (fileRead.hasNext(SECTION)) {
                 break;
             } else if (!fileRead.next().isEmpty()) {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Pair: %s", fileRead.next()));
@@ -247,14 +237,13 @@ public class Reader {
     }
 
     // needs completion: 2 regex's for switch
-    public void readPartialAssignments(Scanner fileRead) throws InvalidInputException {
+    private void readPartialAssignments(Scanner fileRead) throws InvalidInputException {
+        Pattern partialAssignmentPattern = Pattern.compile("((" + COURSE + "," + DAY_COURSE + ")|(" + LAB + "," + DAY_LAB +"))" + "," + TIME);
         partialAssignments = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
-            if (fileRead.hasNext(partialAssignmentPattern1)) {
+            if (fileRead.hasNext(partialAssignmentPattern)) {
                 partialAssignments.add(new PartialAssignment(fileRead.next().split(",")));
-            } else if (fileRead.hasNext(partialAssignmentPattern2)) {
-                partialAssignments.add(new PartialAssignment(fileRead.next().split(",")));
-            } else if (fileRead.hasNext(sectionPattern)) {
+            } else if (fileRead.hasNext(SECTION)) {
                 break;
             } else if (!fileRead.next().isEmpty()) {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Partial Assignments: %s", fileRead.next()));
