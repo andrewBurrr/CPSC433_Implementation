@@ -1,6 +1,6 @@
 Or-Tree Search Model:
-    Each problem description is a vector of all labs and courses assigned or unassigned to a slot
-  
+    - Each problem description is a vector of all labs and courses assigned or unassigned to a slot
+  	
     **** Variables ****
     G - guide vector
     - Access to slots, courses, and labs
