@@ -48,7 +48,7 @@ Or-Tree Search Model:
                 break
             else if unsolvable(leaf):
                 change leaf to unsovlable
-            else if s is a leaf node in G:
+            else if s is a leaf node in G at the current depth:
                 extend s
             else:
                 extend deepest left most pr==? leaf node using alter(s)
