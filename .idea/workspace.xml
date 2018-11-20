@@ -2,14 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="85d91dc8-b4a4-4286-849b-25b9ac43d33f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Structures/Lecture.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Objects/Prob.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/InputFiles/deptinst1.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/InputFiles/deptinst1.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Objects/Fact.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Objects/Fact.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Parser/Reader.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Parser/Reader.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Objects/Otree.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Objects/Otree.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Structures/Course.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Structures/Course.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Structures/Lab.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Structures/Lab.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -30,33 +27,33 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="33" />
+          <entry key="java" value="35" />
           <entry key="txt" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="33" />
+          <entry key="JAVA" value="35" />
           <entry key="PLAIN_TEXT" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="2931" />
-          <entry key="txt" value="179" />
+          <entry key="java" value="4259" />
+          <entry key="txt" value="225" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="2931" />
-          <entry key="PLAIN_TEXT" value="179" />
+          <entry key="JAVA" value="4259" />
+          <entry key="PLAIN_TEXT" value="225" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Parser/Reader.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="34">
@@ -71,8 +68,36 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" column="2" selection-start-line="14" selection-start-column="2" selection-end-line="14" selection-end-column="2" />
+            <state relative-caret-position="272">
+              <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/Objects/Otree.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="204">
+              <caret line="12" column="42" selection-start-line="12" selection-start-column="42" selection-end-line="12" selection-end-column="42" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#128#129#0" expanded="true" />
+                <element signature="e#196#197#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/Objects/Prob.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="136">
+              <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#167#168#0" expanded="true" />
+                <element signature="e#196#197#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -80,8 +105,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/InputFiles/deptinst1.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="332">
-              <caret line="778" column="50" selection-start-line="778" selection-start-column="50" selection-end-line="778" selection-end-column="50" />
+            <state relative-caret-position="13209">
+              <caret line="777" selection-start-line="777" selection-end-line="777" />
             </state>
           </provider>
         </entry>
@@ -89,14 +114,16 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Objects/Fact.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="13" column="35" selection-start-line="13" selection-start-column="29" selection-end-line="13" selection-end-column="35" />
+            <state relative-caret-position="68">
+              <caret line="10" column="27" lean-forward="true" selection-start-line="9" selection-start-column="4" selection-end-line="10" selection-end-column="27" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#226#227#0" expanded="true" />
                 <element signature="e#284#285#0" expanded="true" />
                 <element signature="e#336#337#0" expanded="true" />
                 <element signature="e#373#374#0" expanded="true" />
+                <element signature="e#603#604#0" expanded="true" />
+                <element signature="e#641#642#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -138,32 +165,6 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Structures/Pair.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="17" column="38" selection-start-line="17" selection-start-column="38" selection-end-line="17" selection-end-column="38" />
-              <folding>
-                <element signature="e#383#384#0" expanded="true" />
-                <element signature="e#457#458#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Structures/PartialAssignment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="19" column="42" selection-start-line="19" selection-start-column="42" selection-end-line="19" selection-end-column="42" />
-              <folding>
-                <element signature="e#466#467#0" expanded="true" />
-                <element signature="e#541#542#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Structures/Preference.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="323">
@@ -191,7 +192,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/Objects/Otree.java" />
         <option value="$PROJECT_DIR$/src/Structures/Unwanted.java" />
         <option value="$PROJECT_DIR$/src/Structures/Slot.java" />
         <option value="$PROJECT_DIR$/src/Structures/Preference.java" />
@@ -201,10 +201,12 @@
         <option value="$PROJECT_DIR$/src/Structures/Lecture.java" />
         <option value="$PROJECT_DIR$/src/Structures/Lab.java" />
         <option value="$PROJECT_DIR$/src/Structures/Course.java" />
-        <option value="$PROJECT_DIR$/src/Objects/Fact.java" />
-        <option value="$PROJECT_DIR$/src/Main.java" />
-        <option value="$PROJECT_DIR$/src/InputFiles/deptinst1.txt" />
         <option value="$PROJECT_DIR$/src/Parser/Reader.java" />
+        <option value="$PROJECT_DIR$/src/InputFiles/deptinst1.txt" />
+        <option value="$PROJECT_DIR$/src/Main.java" />
+        <option value="$PROJECT_DIR$/src/Objects/Fact.java" />
+        <option value="$PROJECT_DIR$/src/Objects/Prob.java" />
+        <option value="$PROJECT_DIR$/src/Objects/Otree.java" />
       </list>
     </option>
   </component>
@@ -215,8 +217,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="305" />
-    <option name="width" value="1950" />
+    <option name="x" value="-15" />
+    <option name="width" value="1948" />
     <option name="height" value="2075" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -278,7 +280,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542743423802" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1542747710003" />
     <property name="last.edited.regexp" value="" />
     <property name="settings.editor.selected.configurable" value="editor.preferences.smartKeys" />
   </component>
@@ -329,7 +331,7 @@
       <workItem from="1541727278586" duration="12373000" />
       <workItem from="1542157142855" duration="10417000" />
       <workItem from="1542224101215" duration="1198000" />
-      <workItem from="1542672143555" duration="4220000" />
+      <workItem from="1542672143555" duration="7867000" />
     </task>
     <task id="LOCAL-00001" summary="Parser Prints both sample files">
       <created>1541821930002</created>
@@ -345,17 +347,24 @@
       <option name="project" value="LOCAL" />
       <updated>1541828684154</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Parser: fixed error in preferences section">
+      <created>1542743536499</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1542743536499</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="28208000" />
+    <option name="totallyTimeSpent" value="31855000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-6" y="-6" width="1549" height="837" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.16633132" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16633132" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -364,7 +373,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49966466" visible="true" weight="0.34985834" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49966466" visible="true" weight="0.20113315" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -425,20 +434,14 @@
     <MESSAGE value="Parser with print testing" />
     <MESSAGE value="Parser Prints both sample files" />
     <MESSAGE value="Parser: removed Unnecessary Global Regex, general clean-up" />
-    <option name="LAST_COMMIT_MESSAGE" value="Parser: removed Unnecessary Global Regex, general clean-up" />
+    <MESSAGE value="Parser: fixed error in preferences section" />
+    <option name="LAST_COMMIT_MESSAGE" value="Parser: fixed error in preferences section" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/Exceptions/InvalidInputException.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Objects/Otree.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" selection-start-line="3" selection-end-line="3" />
         </state>
       </provider>
     </entry>
@@ -508,6 +511,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/Parser/Reader.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="212" column="9" selection-start-line="212" selection-start-column="9" selection-end-line="212" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/Structures/Course.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
@@ -526,20 +539,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Objects/Fact.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="13" column="35" selection-start-line="13" selection-start-column="29" selection-end-line="13" selection-end-column="35" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#226#227#0" expanded="true" />
-            <element signature="e#284#285#0" expanded="true" />
-            <element signature="e#336#337#0" expanded="true" />
-            <element signature="e#373#374#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/Structures/Lecture.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
@@ -551,26 +550,56 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Main.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="2" selection-start-line="14" selection-start-column="2" selection-end-line="14" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/InputFiles/deptinst1.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="332">
-          <caret line="778" column="50" selection-start-line="778" selection-start-column="50" selection-end-line="778" selection-end-column="50" />
+        <state relative-caret-position="13209">
+          <caret line="777" selection-start-line="777" selection-end-line="777" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Parser/Reader.java">
+    <entry file="file://$PROJECT_DIR$/src/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="212" column="9" selection-start-line="212" selection-start-column="9" selection-end-line="212" selection-end-column="9" />
+        <state relative-caret-position="272">
+          <caret line="16" lean-forward="true" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Objects/Fact.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="10" column="27" lean-forward="true" selection-start-line="9" selection-start-column="4" selection-end-line="10" selection-end-column="27" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#226#227#0" expanded="true" />
+            <element signature="e#284#285#0" expanded="true" />
+            <element signature="e#336#337#0" expanded="true" />
+            <element signature="e#373#374#0" expanded="true" />
+            <element signature="e#603#604#0" expanded="true" />
+            <element signature="e#641#642#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Objects/Prob.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#167#168#0" expanded="true" />
+            <element signature="e#196#197#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Objects/Otree.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="42" selection-start-line="12" selection-start-column="42" selection-end-line="12" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#128#129#0" expanded="true" />
+            <element signature="e#196#197#0" expanded="true" />
           </folding>
         </state>
       </provider>

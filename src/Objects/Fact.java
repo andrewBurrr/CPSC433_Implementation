@@ -23,6 +23,16 @@ public class Fact {
          this.evaluation = evaluation;
      }
 
+     // needs
+     public void setSchedule() {
+         System.out.println("setSchedule is unfinished");
+     }
+
+     public int getEvaluation() {
+         // call sum from other eval functions defined in assignment description
+         return -1;
+     }
+
     @Override
     public String toString() {
         StringBuilder temp = new StringBuilder("Eval-value: " + evaluation + "\n");
