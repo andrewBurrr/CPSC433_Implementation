@@ -1,16 +1,8 @@
 package Structures;
 
-public class Lab {
-    private final String identifier;
+public class Lab extends Course {
 
     public Lab(String identifier) {
-        this.identifier = identifier;
+        super(identifier);
     }
-
-    @Override
-    public String toString() {
-        return String.format("%s\n", identifier);
-    }
-
-    public String getIdentifier() { return identifier; }
 }
