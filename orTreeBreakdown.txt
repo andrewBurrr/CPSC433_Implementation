@@ -28,10 +28,10 @@ Or-Tree Search Model:
     - depth() implements search control K_{\lor_1}
     depth():
     while true:
-      if solvable leaf:
+      if solvable(leaf):
         change leaf to solved
         break
-      else if unsolvable leaf:
+      else if unsolvable(leaf):
         change leaf to unsovlable
       else:
         extend deepest pr==? leaf using alter(s)
@@ -40,10 +40,10 @@ Or-Tree Search Model:
     - guided() implments seach control K_{\lor_2}
     guided(G): 
         while true:
-            if solvable leaf:
+            if solvable(leaf):
                 change leaf to solved
                 break
-            else if unsolvable leaf:
+            else if unsolvable(leaf):
                 change leaf to unsovlable
             else if s is a leaf node in G:
                 extend s
