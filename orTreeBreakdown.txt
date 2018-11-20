@@ -42,14 +42,17 @@ Or-Tree Search Model:
 
     - guided() implments seach control K_{\lor_2}
     guided(G): 
+        int depth = 0 
         while true:
             if solvable(leaf):
                 change leaf to solved
                 break
             else if unsolvable(leaf):
                 change leaf to unsovlable
-            else if s is a leaf node in G at the current depth:
+            else if s==G[depth]:
+                depth++
                 extend s
             else:
+                depth++
                 extend deepest left most pr==? leaf node using alter(s)
         return solved leafnode
