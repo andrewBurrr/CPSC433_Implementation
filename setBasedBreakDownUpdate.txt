@@ -24,7 +24,7 @@ Set-Based Search Model:
             solution2 = Fact[random(len(Fact))]
         //Generate guides
         solutionG1 = solutionA1[0:len(solutionA1)/2]+solutionA2[len(solutionA1)/2:]
-        solutionG2 = solutionA2[0:len(solutionA1)/2]+solutionA1[len(solutionA1)/2:]
+        solutionG2 = reverse(solutionA2[0:len(solutionA1)/2]+solutionA1[len(solutionA1)/2:])
         //Run ortree
         return [ortree.guided(solutionG1),ortree.guided(soluitonG2)]
     
