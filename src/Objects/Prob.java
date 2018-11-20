@@ -16,8 +16,8 @@ public class Prob {
 
     private enum State {
         SOLVED { public String toString() { return "Yes"; } },
-        UNSOLVED { public String toString() {return "No"; } },
-        UNSOLVABLE { public String toString() {return "?"; } }
+        UNSOLVABLE { public String toString() {return "No"; } },
+        UNSOLVED { public String toString() {return "?"; } }
     }
 
     public Prob() {
