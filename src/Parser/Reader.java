@@ -1,55 +1,49 @@
 package Parser;
-
+// container types
 import Structures.Slot;
-import Structures.Course;
+import Structures.Lecture;
 import Structures.Lab;
 import Structures.NotCompatible;
 import Structures.Unwanted;
 import Structures.Preference;
 import Structures.Pair;
 import Structures.PartialAssignment;
-
+// exceptions
 import Exceptions.InvalidInputException;
-
+// java libraries
 import java.util.Set;
-import java.util.Scanner;
-import java.io.File;
 import java.util.LinkedHashSet;
+import java.util.Scanner;
 import java.util.regex.Pattern;
-
+import java.io.File;
 import java.io.FileNotFoundException;
 
 
 
 /**
- * File:    Parser.Reader.java
- * Author:  Andrew Burton
- * Section: CPSC 433, Fall 2018
- * Date:    October 27, 2018
- * Version: 1
- * Description:
+ *
  * Read input file to objects and apply regex and validate hard constraints are satisfied
  * Please leave since and author along with brief notes on changes made after each edit
- * @since 2018-11-08
+ * @since 2018-11-13
  * @author Andrew Burton
- *
- * */
+ **/
 public class Reader {
 
     // shared regular expressions
     private final Pattern DAY_COURSE = Pattern.compile("[\\s]*(MO|TU)[\\s]*");
     private final Pattern DAY_LAB = Pattern.compile("[\\s]*(MO|TU|FR)[\\s]*");
     private final Pattern TIME = Pattern.compile("[\\s]*([0-1]?[0-9]|[2][0-3]):([0-5][0-9])[\\s]*");
-    private final Pattern VALUE = Pattern.compile("[\\s]*\\d+[\\s+]*");
+    private final Pattern VALUE = Pattern.compile("[\\s]*\\d+[\\s]*");
     private final Pattern SECTION = Pattern.compile("[\\s]*(Name|Course[\\s]+slots|Lab[\\s]+slots|Courses|Labs|Not[\\s]+compatible|Unwanted|Preferences|Pair|Partial[\\s]+assignments):[\\s]*");
     private final Pattern COURSE = Pattern.compile("[\\s]*(CPSC|SENG)[\\s]+\\d+[\\s]+(LEC)[\\s]+\\d+[\\s]*");
     private final Pattern LAB = Pattern.compile("[\\s]*(CPSC|SENG)[\\s]+\\d+[\\s]+((LEC)[\\s]+\\d+[\\s]+)?(LAB|TUT)[\\s]+\\d+[\\s]*");
+    // MO, 17:00, CPSC 203 LEC 95 TUT 95, 25
 
     // named attributes
     private String name;
     private Set<Slot> courseSlots;
     private Set<Slot> labSlots;
-    private Set<Course> courses;
+    private Set<Lecture> courses;
     private Set<Lab> labs;
     private Set<NotCompatible> notCompatible;
     private Set<Unwanted> unwanted;
@@ -146,7 +140,7 @@ public class Reader {
         courses = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(coursePattern)) {
-                courses.add(new Course(fileRead.next()));
+                courses.add(new Lecture(fileRead.next()));
             } else if (fileRead.hasNext(SECTION)) {
                 break;
             } else if(!fileRead.next().isEmpty()) {
@@ -206,7 +200,7 @@ public class Reader {
 
     // needs completion: 2 regex's for switch
     private void readPreferences(Scanner fileRead) throws InvalidInputException {
-        Pattern preferencePattern = Pattern.compile("((" + DAY_COURSE + "," + TIME + "," + COURSE + ")|(" + DAY_LAB + "," + TIME + "," + COURSE + "))," + VALUE);
+        Pattern preferencePattern = Pattern.compile("((" + DAY_COURSE + "," + TIME + "," + COURSE + ")|(" + DAY_LAB + "," + TIME + "," + LAB + "))," + VALUE);
         preferences = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(preferencePattern)) {
@@ -255,7 +249,7 @@ public class Reader {
     public String getName() { return name; }
     public Set<Slot> getCourseSlots() { return courseSlots; }
     public Set<Slot> getLabSlots() { return labSlots; }
-    public Set<Course> getCourses() { return courses; }
+    public Set<Lecture> getCourses() { return courses; }
     public Set<Lab> getLabs() { return labs; }
     public Set<NotCompatible> getNotCompatible() { return notCompatible; }
     public Set<Unwanted> getUnwanted() { return unwanted; }
