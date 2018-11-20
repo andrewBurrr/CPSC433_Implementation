@@ -3,7 +3,7 @@ Set-Based Search Model:
     Create a checkHardConstraint function that can be used by our Or-Tree program as well (protected tag is a good choice)
     (Update: On a second thought I think checkHardConstraint should be in the Or-Tree instead)
 
-    Facts is a set of solutions [Map<CourseLabs, Slot>]. 
+    Facts is a set of solutions [Array<CourseLabs, Slot>]. 
     Facts start as empty
 
     (We might need an evalList to keep track of all the Eval of Fact, or we add this value into Fact)
