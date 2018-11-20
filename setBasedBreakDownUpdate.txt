@@ -10,8 +10,7 @@ Set-Based Search Model:
 
     Mutation() return newSolution:
         solution = Fact[random(len(Fact))]
-        rand = random(len(solution))
-        mut = solution.pop(rand) 
+        mut = solution.pop(random(len(solution))) 
         mut.slot = randomslot
         solution = solution.add(0,mut)
         newsolution = ortree.guided(solution)
