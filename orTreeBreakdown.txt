@@ -2,7 +2,6 @@ Or-Tree Search Model:
     - Each problem description is a vector of all labs and courses assigned or unassigned to a slot
   	
     **** Variables ****
-    G - guide vector
     - Access to slots, courses, and labs
     - Anything else needed for checkHard()
         - maxLabs
@@ -39,8 +38,7 @@ Or-Tree Search Model:
     return solved leafnode
 
     - guided() implments seach control K_{\lor_2}
-    guided(G'):
-        G = G' 
+    guided(G): 
         while true:
             if solvable leaf:
                 change leaf to solved
