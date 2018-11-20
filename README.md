@@ -1,3 +1,2 @@
 # CPSC433_Implementation
-this is the code stuff
-README
+Implementation of set-based search system to find optimal assignment of courses for a department, as part of an artificial intelligence course.
