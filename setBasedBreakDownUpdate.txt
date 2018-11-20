@@ -8,7 +8,7 @@ Set-Based Search Model:
 
     (We might need an evalList to keep track of all the Eval of Fact, or we add this value into Fact)
 
-    Mutation() = Or-Tree.runMutation() return newSolution:
+    Mutation() return newSolution:
         solution = Fact[random(len(Fact))]
         rand = random(len(solution))
         mut = solution.pop(rand) 
@@ -17,7 +17,7 @@ Set-Based Search Model:
         newsolution = ortree.guided(solution)
         return newsolution
         
-    Combination(random(Fact), random(Fact)) = Or-Tree.runCombination() return [newSolution1, newSolution2]:
+    Combination(random(Fact), random(Fact)) return [newSolution1, newSolution2]:
         //creating solutionA1 != solutionA2 
         solutionA1 = Fact[random(len(Fact))]
         solutionA2 = Fact[random(len(Fact))]
