@@ -25,7 +25,7 @@ Or-Tree Search Model:
         - s is a (partial) solution that breaks the hard constraints 
         
     - Function to return alternatives
-    altern(s, course=s.pr.get(random)):
+    altern(s, course=s.pr.get(randomNotAssigned)):
         fact = s.pr
         fact.getValue(course)
         children = ArrayList<Prob>
@@ -49,7 +49,7 @@ Or-Tree Search Model:
     - guided() implments seach control K_{\lor_2}
     guided(G): 
         int depth = 0 
-        leafs = ArrayList<nodes>
+        leafs = ArrayList<Node>
         leafs.add(G[0])
         while true:
             if solvable(leaf):
@@ -62,4 +62,4 @@ Or-Tree Search Model:
             else:
                 depth++
                 leafs.add(altern(leaf))
-        return null leaf //We didnt find a solution
+        return null  //We didnt find a solution should never happen
