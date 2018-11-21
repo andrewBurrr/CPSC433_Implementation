@@ -4,7 +4,6 @@ Set-Based Search Model:
     Facts is a set of solutions. Set<Fact> Facts;
     Facts start as empty
 
-    (We might need an evalList to keep track of all the Eval of Fact, or we add this value into Fact)
 
     Mutation() return newSolution:
         solution = Fact[random(len(Fact))]
@@ -33,7 +32,7 @@ Set-Based Search Model:
             Fact.remove(highestEvalSolution)
 
     Create an Eval function to calculate the soft constraint 
-
+       
 Set-Based Search Control:
     maxPopulation 
     killpercent
@@ -55,14 +54,14 @@ Set-Based Search Control:
                     newSolution = Mutation()
                     newSolution.setEvaluation = Eval(newSolution)
                     //Add new solutions
-                    Fact.add(new Fact(newSolution)
+                    Facts.add(new Fact(newSolution)
                 else:
                     //Combination return a list [newSolutionB1, newSolutionB2]
                     newSolution [] = Combination()
                     //Add new solutions
                     for i in range(newSolution):
                         newSolutions[i].setEvaluation = Eval(newSolution[i])
-                        Fact.add(newSolution[i])
+                        Facts.add(newSolution[i])
         //Exit the loop if V(eval(s)) <= threshold
         if V(eval(s)) <= threshold:
             break 

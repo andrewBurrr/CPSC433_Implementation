@@ -111,7 +111,7 @@ public class Reader {
                 courseSlots.add(new Slot(temp.split(",")));
             } else if (fileRead.hasNext(SECTION)) {
                 break;
-            } else if (!fileRead.next().isEmpty()){
+            } else if (!fileRead.nextLine().equals("")){
                 throw new InvalidInputException(String.format("Failed To Parse Line In Course Slots: %s", fileRead.next()));
             }
         }
@@ -127,7 +127,7 @@ public class Reader {
                 labSlots.add(new Slot(fileRead.nextLine().split(",")));
             } else if (fileRead.hasNext(SECTION)) {
                 break;
-            } else {
+            } else if (!fileRead.nextLine().equals("")){
                 throw new InvalidInputException(String.format("Failed To Parse Line In Lab Slots: %s", fileRead.next()));
             }
         }
@@ -143,7 +143,7 @@ public class Reader {
                 courses.add(new Lecture(fileRead.next()));
             } else if (fileRead.hasNext(SECTION)) {
                 break;
-            } else if(!fileRead.next().isEmpty()) {
+            } else if (!fileRead.nextLine().equals("")){
                 throw new InvalidInputException(String.format("Failed To Parse Line In Courses: %s", fileRead.next()));
             }
         }
@@ -159,7 +159,7 @@ public class Reader {
                 labs.add(new Lab(fileRead.next()));
             } else if (fileRead.hasNext(SECTION)) {
                 break;
-            } else if (!fileRead.next().isEmpty()) {
+            } else if (!fileRead.nextLine().equals("")){
                 throw new InvalidInputException(String.format("Failed To Parse Line In Labs: %s", fileRead.next()));
             }
         }
@@ -175,7 +175,7 @@ public class Reader {
                 notCompatible.add(new NotCompatible(fileRead.next().split(",")));
             } else if (fileRead.hasNext(SECTION)) {
                 break;
-            } else if (!fileRead.next().isEmpty()){
+            } else if (!fileRead.nextLine().equals("")){
                 throw new InvalidInputException(String.format("Failed To Parse Line In Not Compatible: %s", fileRead.next()));
             }
         }
@@ -191,7 +191,7 @@ public class Reader {
                 unwanted.add(new Unwanted(fileRead.next().split(",")));
             } else if (fileRead.hasNext(SECTION)) {
                 break;
-            } else if (!fileRead.next().isEmpty()) {
+            } else if (!fileRead.nextLine().equals("")){
                 throw new InvalidInputException(String.format("Failed To Parse Line In Unwanted: %s", fileRead.next()));
             }
         }
@@ -207,7 +207,7 @@ public class Reader {
                 preferences.add(new Preference(fileRead.next().split(",")));
             } else if (fileRead.hasNext(SECTION)){
                 break;
-            } else  if (!fileRead.next().isEmpty()) {
+            } else if (!fileRead.nextLine().equals("")){
                 throw new InvalidInputException(String.format("Failed To Parse Line In Preferences: %s", fileRead.next()));
             }
         }
@@ -223,7 +223,7 @@ public class Reader {
                 pairs.add(new Pair(fileRead.next().split(",")));
             } else if (fileRead.hasNext(SECTION)) {
                 break;
-            } else if (!fileRead.next().isEmpty()) {
+            } else if (!fileRead.nextLine().equals("")){
                 throw new InvalidInputException(String.format("Failed To Parse Line In Pair: %s", fileRead.next()));
             }
         }
@@ -239,7 +239,7 @@ public class Reader {
                 partialAssignments.add(new PartialAssignment(fileRead.next().split(",")));
             } else if (fileRead.hasNext(SECTION)) {
                 break;
-            } else if (!fileRead.next().isEmpty()) {
+            } else if (!fileRead.nextLine().equals("")){
                 throw new InvalidInputException(String.format("Failed To Parse Line In Partial Assignments: %s", fileRead.next()));
             }
         }
