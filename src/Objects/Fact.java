@@ -33,6 +33,9 @@ public class Fact {
          return -1;
      }
 
+     public void setEvaluation(int evaluation){
+         this.evaluation = evaluation;
+     }
     @Override
     public String toString() {
         StringBuilder temp = new StringBuilder("Eval-value: " + evaluation + "\n");
