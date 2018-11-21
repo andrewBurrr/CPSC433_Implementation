@@ -25,8 +25,14 @@ Or-Tree Search Model:
         - s is a (partial) solution that breaks the hard constraints 
         
     - Function to return alternatives
-    altern(s):
-        return s extended
+    altern(s, course=s.pr.get(random)):
+        fact = s.pr
+        fact.getValue(course)
+        children = ArrayList<Prob>
+        for slot in slots:
+            child = fact.add(course,slot)
+            children.add(child)
+        return children
 
     - depth() implements search control K_{\lor_1}
     depth():
