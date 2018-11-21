@@ -49,16 +49,17 @@ Or-Tree Search Model:
     - guided() implments seach control K_{\lor_2}
     guided(G): 
         int depth = 0 
+        leafs = ArrayList<nodes>
+        leafs.add(G[0])
         while true:
             if solvable(leaf):
-                change leaf to solved
-                break
+                return leaf
             else if unsolvable(leaf):
-                change leaf to unsovlable
+                leafs.remove(leaf)
             else if s==G[depth]:
                 depth++
-                extend s
+                leafs.add(altern(leaf,G[depth]))
             else:
                 depth++
-                extend deepest left most pr==? leaf node using alter(s)
-        return solved leafnode
+                leafs.add(altern(leaf))
+        return null leaf //We didnt find a solution
