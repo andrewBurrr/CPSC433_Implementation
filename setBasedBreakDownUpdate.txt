@@ -35,7 +35,7 @@ Set-Based Search Model:
             Fact.remove(highestEvalSolution)
 
     Create an Eval function to calculate the soft constraint 
-
+       
 Set-Based Search Control:
     maxPopulation 
     killpercent
@@ -55,14 +55,18 @@ Set-Based Search Control:
                 if k == 1:
                     //Mutation return a newSolution that already satisfied the hard constraint checked in Or-Tree
                     newSolution = Mutation()
+                    Fact newFact = new Fact(newSolution)
+                    newFact.evaluation = Eval(newSolution)
                     //Add new solutions
-                    Fact.add(newSolution)     
+                    Fact.add(newFact)     
                 else:
                     //Combination return a list [newSolutionB1, newSolutionB2]
                     newSolution [] = Combination()
                     //Add new solutions
                     for i in range(newSolution):
-                        Fact.add(newSolution[i])
+                        Fact newFact = new Fact(newSolution[i])
+                        newFact.evaluation = Eval(newSolution)
+                        Fact.add(newFact)
         //Exit the loop if V(eval(s)) <= threshold
         if V(eval(s)) <= threshold:
             break 
