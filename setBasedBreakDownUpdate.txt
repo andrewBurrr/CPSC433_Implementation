@@ -1,12 +1,9 @@
 Set-Based Search Model:
     Merge courses and labs into 1 single list labCourseList.    
-    Create a checkHardConstraint function that can be used by our Or-Tree program as well (protected tag is a good choice)
-    (Update: On a second thought I think checkHardConstraint should be in the Or-Tree instead)
 
-    Facts is a set of solutions [Array<CourseLabs, Slot>]. 
+    Facts is a set of Fact objects
     Facts start as empty
 
-    (We might need an evalList to keep track of all the Eval of Fact, or we add this value into Fact)
 
     Mutation() return newSolution:
         solution = Fact[random(len(Fact))]
@@ -58,7 +55,7 @@ Set-Based Search Control:
                     Fact newFact = new Fact(newSolution)
                     newFact.evaluation = Eval(newSolution)
                     //Add new solutions
-                    Fact.add(newFact)     
+                    Facts.add(newFact)
                 else:
                     //Combination return a list [newSolutionB1, newSolutionB2]
                     newSolution [] = Combination()
@@ -66,7 +63,7 @@ Set-Based Search Control:
                     for i in range(newSolution):
                         Fact newFact = new Fact(newSolution[i])
                         newFact.evaluation = Eval(newSolution)
-                        Fact.add(newFact)
+                        Facts.add(newFact)
         //Exit the loop if V(eval(s)) <= threshold
         if V(eval(s)) <= threshold:
             break 
