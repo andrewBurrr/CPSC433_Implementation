@@ -7,6 +7,7 @@ package OrTree;
 
 import Objects.Fact;
 import Structures.Assignment;
+import static java.lang.Integer.max;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -16,18 +17,16 @@ import java.util.Comparator;
  * @author thomasnewton
  */
 public class OrTreeControl1 implements Comparator<Fact>{
-    private final ArrayList<Assignment> guide;
     private final OTreeModel model;
     
-    public OrTreeControl1(ArrayList<Assignment> guide, OTreeModel model){
-        this.guide = guide;
+    public OrTreeControl1(OTreeModel model){
         this.model = model;
     }
     
     @Override
     public int compare(Fact o1, Fact o2) {
         int val1,val2;
-        int max = 4*guide.size();
+        int max = 4*max(o1.getScheduel().size(),o2.getScheduel().size());
         // 1st priority solved problems
         val1 = (model.solved(o1)) ? 0:max;
         val2 = (model.solved(o2)) ? 0:max;
