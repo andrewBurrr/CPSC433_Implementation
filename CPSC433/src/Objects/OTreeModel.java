@@ -60,7 +60,7 @@ public class OTreeModel {
     }
     
     public Fact guided(ArrayList<Assignment> guide){
-        FactComparator comparator = new FactComparator(guide,this);
+        OrTreeControl comparator = new OrTreeControl(guide,this);
         int depth = 0;
         PriorityQueue<Fact> leafs = new PriorityQueue(guide.size(), comparator);
         
@@ -75,6 +75,10 @@ public class OTreeModel {
                 }
             } 
         }
+        return null;
+    }
+    
+    public Fact depthFirst(){
         return null;
     }
 }

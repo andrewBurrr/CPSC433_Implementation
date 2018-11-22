@@ -34,8 +34,8 @@ public class OrTreeControl implements Comparator<Fact>{
         val1 += (model.unsolvable(o1)) ? 0:max/2;
         val2 += (model.unsolvable(o2)) ? 0:max/2;
         // 3rd priority guide problems
-        val1 += (o1.getScheduel().containsKey(guide.get(o1.getScheduel().size()-1))) ? 0:max/2-1;
-        val2 += (o2.getScheduel().containsKey(guide.get(o2.getScheduel().size()-1))) ? 0:max/2-1;
+        val1 += (o1.getScheduel().containsKey(guide.get(o1.getScheduel().size()-1).getCourse())) ? 0:max/2-1;
+        val2 += (o2.getScheduel().containsKey(guide.get(o2.getScheduel().size()-1).getCourse())) ? 0:max/2-1;
         // 4th priority deep problems
         val1 += o1.getScheduel().size();
         val2 += o2.getScheduel().size();
