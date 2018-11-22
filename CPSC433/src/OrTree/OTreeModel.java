@@ -6,10 +6,12 @@ import Structures.Assignment;
 import Structures.Course;
 import Structures.Lecture;
 import Structures.Slot;
+import static java.lang.Math.random;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
+import java.util.Random;
 
 import java.util.Set;
 
@@ -88,14 +90,15 @@ public class OTreeModel {
         while(!leafs.isEmpty()){
             Fact leaf = leafs.poll();
             if(solved(leaf)){
-                return leaf;
+                return leaf; // Return solution
             } else if(!unsolvable(leaf)){ //Leaf is in guide or not, doesnt matter we do the same thing
-                altern(leaf, avaCourses.pollLast()).forEach((fact) -> {
+                Random rand = new Random();
+                altern(leaf, avaCourses.remove(rand.nextInt(avaCourses.size()))).forEach((fact) -> {
                     leafs.add(fact);
                 });
             } 
         }
-        return null;
+        return null; // Should never happen
     }
 }
 
