@@ -6,9 +6,7 @@
 package OrTree;
 
 import Objects.Fact;
-import Structures.Assignment;
 import static java.lang.Integer.max;
-import java.util.ArrayList;
 import java.util.Comparator;
 
 /**

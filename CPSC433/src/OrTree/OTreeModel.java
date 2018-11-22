@@ -74,7 +74,7 @@ public class OTreeModel {
             } else if(!unsolvable(leaf)){ // Leaf is in guide or not, doesnt matter
                 depth++;
                 for(Fact fact:altern(leaf, guide.get(depth+1).getCourse())){
-                    leafs.add(fact);   
+                    leafs.add(fact);
                 }
             } 
         }
