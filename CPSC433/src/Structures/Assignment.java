@@ -23,4 +23,11 @@ public class Assignment {
         this.slot = slot;
     }
     
+    public Course getCourse(){
+        return course;
+    }
+    
+    public Slot getSlot(){
+        return slot;
+    }
 }

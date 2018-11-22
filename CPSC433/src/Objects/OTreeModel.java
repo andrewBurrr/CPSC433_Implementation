@@ -1,7 +1,9 @@
 package Objects;
 
+import Parser.Reader;
 import Structures.Assignment;
 import Structures.Course;
+import Structures.Lecture;
 import Structures.Slot;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,11 +11,12 @@ import java.util.PriorityQueue;
 
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Set;
 
 public class OTreeModel {
     private HashMap<Slot, Integer> maxLabs;
     private HashMap<Slot, Integer> maxCourses;
-    private FactComparator comparator;
+    private Reader parser;
     // Partial Assignments
     // Unwanted
     // Additional Constraints
@@ -22,30 +25,42 @@ public class OTreeModel {
     public OTreeModel() {
         this.maxLabs = null;
         this.maxCourses = null;
-        this.comparator = null;
+        this.parser = null;
     }
     
-    public OTreeModel(HashMap<Slot, Integer> maxLabs, HashMap<Slot, Integer> maxCourses){
+    public OTreeModel(HashMap<Slot, Integer> maxLabs, HashMap<Slot, Integer> maxCourses, Reader parser){
         this.maxCourses = maxCourses;
         this.maxLabs = maxLabs;
-        this.comparator = null;
+        this.parser = parser;
     }
     
-    private boolean solved(Fact leaf){
+    public boolean solved(Fact leaf){
         return false;
     }
     
-    private boolean unsolvable(Fact leaf){
+    public boolean unsolvable(Fact leaf){
         return false;
     }
     
     private ArrayList<Fact> altern(Fact leaf, Assignment g){
-        
-        return null;
+        ArrayList<Fact> alterns = new ArrayList();
+        Set<Slot> slots;
+        if(g.getCourse() instanceof Lecture){
+            slots = parser.getCourseSlots();
+        } else {
+            slots = parser.getLabSlots();
+        }
+        for(Slot slot:slots){
+            HashMap<Course, Slot> newMap = new HashMap((HashMap<Course, Slot>) leaf.getScheduel());
+            newMap.put(g.getCourse(),slot);
+            Fact newFact = new Fact(newMap);
+            alterns.add(newFact);
+        }
+        return alterns;
     }
     
     public Fact guided(ArrayList<Assignment> guide){
-        this.comparator = new FactComparator(guide);
+        FactComparator comparator = new FactComparator(guide,this);
         int depth = 0;
         PriorityQueue<Fact> leafs = new PriorityQueue(guide.size(), comparator);
         
@@ -55,7 +70,7 @@ public class OTreeModel {
                 return leaf;
             } else if(!unsolvable(leaf)){ // Leaf is in guide or not, doesnt matter
                 depth++;
-                for(Fact fact:altern(leaf, guide.get(depth))){
+                for(Fact fact:altern(leaf, guide.get(depth+1))){
                     leafs.add(fact);   
                 }
             } 

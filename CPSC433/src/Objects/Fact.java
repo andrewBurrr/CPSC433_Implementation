@@ -33,6 +33,10 @@ public class Fact {
          return -1;
      }
 
+     public Map<Course, Slot> getScheduel(){
+         return schedule;
+     }
+     
     @Override
     public String toString() {
         StringBuilder temp = new StringBuilder("Eval-value: " + evaluation + "\n");

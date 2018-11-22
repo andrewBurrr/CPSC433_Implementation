@@ -15,15 +15,20 @@ import java.util.Comparator;
  * @author thomasnewton
  */
 public class FactComparator implements Comparator<Fact>{
-
+    private ArrayList<Assignment> guide;
+    private OTreeModel model;
     
-    public FactComparator(ArrayList<Assignment> guide){
-        
+    public FactComparator(ArrayList<Assignment> guide, OTreeModel model){
+        this.guide = guide;
+        this.model = model;
     }
     
     @Override
     public int compare(Fact o1, Fact o2) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        int val1=0,val2=0;
+        val1 = (model.solved(o1)) ? 0 : 1;
+        val2 = (model.solved(o2)) ? 0 : 1;
+        
     }
     
 }
