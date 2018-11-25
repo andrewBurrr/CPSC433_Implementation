@@ -1,7 +1,7 @@
 Set-Based Search Model:
     Merge courses and labs into 1 single list labCourseList.    
 
-    Facts is a set of Fact objects
+    Facts is a set of solutions. Set<Fact> Facts;
     Facts start as empty
 
 
