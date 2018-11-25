@@ -93,12 +93,13 @@ public class OTreeModel {
     }
     
     /**
-     * Checks the state of a leaf with no parent.
-     * @param leaf
+     * Checks the state of a schedule with no parent.
+     * @param schedule
      * @return 
      */
-    private String getState(Prob leaf){
-        return null;
+    private String getState(HashMap<Course, Slot> schedule){
+        
+        return "?";
     }
     
     private ArrayList<Prob> altern(Prob leaf, Course g){
@@ -109,12 +110,9 @@ public class OTreeModel {
         } else {
             slots = parser.getLabSlots();
         }
-        slots.stream().map((slot) -> {
-            HashMap<Course, Slot> newMap = new HashMap((HashMap<Course, Slot>) leaf.getScheduel());
-            newMap.put(g,slot);
-            return newMap;
-        }).map((newMap) -> new Prob(newMap)).forEachOrdered((newFact) -> {
-            alterns.add(newFact);
+        slots.forEach((slot) -> {
+            Assignment newAsign = new Assignment(g,slot);
+            alterns.add(new Prob(leaf, newAsign, getState(leaf,newAsign)));
         });
         return alterns;
     }
@@ -132,7 +130,7 @@ public class OTreeModel {
             avaCourses.remove(assign.getCourse()); 
             //Might want to check partial assign course exists
         });
-        Prob root = new Prob(partAssigns);
+        Prob root = new Prob(partAssigns, getState(partAssigns));
         leafs.add(root);
         
         while(!leafs.isEmpty()){
@@ -157,7 +155,7 @@ public class OTreeModel {
             guide.remove(new Assignment(assign.getCourse(), assign.getSlot()));
             //Might want to check partial assign course exists
         });
-        Prob root = new Prob(partAssigns);
+        Prob root = new Prob(partAssigns, getState(partAssigns));
         OrTreeControl2 control = new OrTreeControl2(guide.toArray(new Assignment[0]), partAssigns.size());
         PriorityQueue<Prob> leafs = new PriorityQueue(guide.size(), control);
         

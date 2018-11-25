@@ -1,6 +1,7 @@
 package OrTree;
 
 import Objects.Fact;
+import Structures.Assignment;
 import Structures.Course;
 import Structures.Slot;
 import java.util.HashMap;
@@ -37,6 +38,16 @@ public class Prob extends Fact{
         }
     }
 
+    Prob(Prob leaf, Assignment assignment, String sol) {
+        super(leaf, assignment);
+        switch(sol) {
+            case "Yes": this.state = State.SOLVED;
+            break;
+            case "No": this.state = State.UNSOLVABLE;
+            break;
+            default: this.state = State.UNSOLVED;
+        }
+    }
     
     // Is this needed?
     public boolean isValid() {
