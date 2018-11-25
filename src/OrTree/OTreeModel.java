@@ -42,6 +42,7 @@ public class OTreeModel {
         Course newCourse = newAsign.getCourse();
         Slot newSlot = newAsign.getSlot();
         HashMap<Course, Slot> schedule = (HashMap<Course, Slot>) parent.getScheduel();
+        
         // Check Not Compatible set against new assignment
         for(NotCompatible notComp:parser.getNotCompatible()){
             if(notComp.getCourse(0).equals(newAsign.getCourse())){
@@ -117,7 +118,8 @@ public class OTreeModel {
      * @return 
      */
     private String getState(HashMap<Course, Slot> schedule){
-        
+        // Check not compatible set
+        for()
         return "?";
     }
     

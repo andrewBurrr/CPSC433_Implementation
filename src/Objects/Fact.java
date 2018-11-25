@@ -6,7 +6,9 @@ import Structures.Lecture;
 import Structures.Slot;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 public class Fact {
     private Map<Course, Slot> schedule;
@@ -26,7 +28,18 @@ public class Fact {
          this.schedule = schedule;
          this.evaluation = evaluation;
          // Something to generate numCourseSlot and numLabSlot
-         
+         Set<Map.Entry<Course, Slot>> map = schedule.entrySet();
+         Iterator<Map.Entry<Course,Slot>> intor = map.iterator();
+         while(intor.hasNext()){
+             Map.Entry<Course,Slot> entry = intor.next();
+             Course course = entry.getKey();
+             Slot slot = entry.getValue();
+             if(course instanceof Lecture){
+                this.numCourseSlot.put(slot, this.numCourseSlot.getOrDefault(slot,0)+1);
+             } else {
+                 this.numLabSlot.put(slot, this.numLabSlot.getOrDefault(slot,0)+1);
+             }
+         }
      }
      
      public Fact(Fact parent, Assignment newAssign){
