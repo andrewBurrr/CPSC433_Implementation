@@ -38,31 +38,35 @@ Set-Based Search Control:
     killpercent
     threshold
 
+    if Fact.isEmpty():
+    Or-Tree.depthFirst()
+
+
     while True:
-        //If we don't have any solution, run depthFirst()
-        if Fact.isEmpty():
-            Or-Tree.depthFirst()
-        else:
-            //If we have too many solution, kill of some solution
-            if len(Fact) > maxPopulation:
-                Tod()
-            else: 
-                //Randomly choosing between Mutation and Combination
-                Random k = random(1-2)
-                if k == 1:
-                    //Mutation return a newSolution that already satisfied the hard constraint checked in Or-Tree
-                    newSolution = Mutation()
-                    newSolution.setEvaluation = Eval(newSolution)
-                    //Add new solutions
-                    Facts.add(new Fact(newSolution)
-                else:
-                    //Combination return a list [newSolutionB1, newSolutionB2]
-                    newSolution [] = Combination()
-                    //Add new solutions
-                    for i in range(newSolution):
-                        newSolutions[i].setEvaluation = Eval(newSolution[i])
-                        Facts.add(newSolution[i])
-        //Exit the loop if V(eval(s)) <= threshold
-        if V(eval(s)) <= threshold:
-            break 
-    return Fact
+        //If we have too many solution, kill of some solution
+        if len(Fact) > maxPopulation:
+            Tod()
+        else: 
+            //Randomly choosing between Mutation and Combination
+            Random k = random(1-2)
+            if k == 1:
+                //Mutation return a newSolution that already satisfied the hard constraint checked in Or-Tree
+                newSolution = Mutation()
+                Fact newFact = new Fact(newSolution)
+                newFact.evaluation = Eval(newSolution)
+                //Add new solutions
+                Facts.add(newFact)
+            else:
+                //Combination return a list [newSolutionB1, newSolutionB2]
+                newSolution [] = Combination()
+                //Add new solutions
+                for i in range(newSolution):
+                    Fact newFact = new Fact(newSolution[i])
+                    newFact.evaluation = Eval(newSolution)
+                    Facts.add(newFact)
+    //Exit the loop if V(eval(s)) <= threshold
+    if V(eval(s)) <= threshold:
+        break 
+return Fact
+
+
