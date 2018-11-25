@@ -32,8 +32,16 @@ public class OTreeModel {
         this.parser = parser;
     }
     
-    private String getState(Prob leaf, Assignment newAsign){
-        HashMap<Course, Slot> schedule = (HashMap<Course, Slot>) leaf.getScheduel();
+    /**
+     * Checks the state of a parent with a parent and a new assignment.
+     * @param parent
+     * @param newAsign
+     * @return 
+     */
+    private String getState(Prob parent, Assignment newAsign){
+        Course newCourse = newAsign.getCourse();
+        Slot newSlot = newAsign.getSlot();
+        HashMap<Course, Slot> schedule = (HashMap<Course, Slot>) parent.getScheduel();
         // Check Not Compatible set against new assignment
         for(NotCompatible notComp:parser.getNotCompatible()){
             if(notComp.getCourse(0).equals(newAsign.getCourse())){
@@ -57,11 +65,22 @@ public class OTreeModel {
         }
         
         // Check courseMax
-        
-        
-        // Check labMax
-        
-        
+        if(newCourse instanceof Lecture){
+            HashMap<Slot, Integer> numCourse = parent.getNumCourses();
+            if(numCourse.containsKey(newSlot)){
+                if(numCourse.get(newSlot)+1>=Integer.parseInt(newSlot.getMax())){
+                    return "No";
+                }
+            }
+        } else{        // Check labMax
+           HashMap<Slot, Integer> numLab = parent.getNumLabs();
+            if(numLab.containsKey(newSlot)){
+                if(numLab.get(newSlot)+1>=Integer.parseInt(newSlot.getMax())){
+                    return "No";
+                }
+            } 
+        }
+    
         // Check labs and courses are not at same time
         
         
@@ -73,6 +92,11 @@ public class OTreeModel {
         return "?";
     }
     
+    /**
+     * Checks the state of a leaf with no parent.
+     * @param leaf
+     * @return 
+     */
     private String getState(Prob leaf){
         return null;
     }
