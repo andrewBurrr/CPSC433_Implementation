@@ -6,7 +6,6 @@ import Structures.Course;
 import Structures.Lab;
 import Structures.Lecture;
 import Structures.NotCompatible;
-import Structures.PartialAssignment;
 import Structures.Slot;
 import Structures.Unwanted;
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ import java.util.Set;
 
 public class OTreeModel {
     private final Reader parser;
+    private final int evening = 12;
     // Partial Assignments
     // Unwanted
     // Additional Constraints
@@ -82,9 +82,28 @@ public class OTreeModel {
         }
     
         // Check labs and courses are not at same time
+        if(newCourse instanceof Lecture){
+            Lecture newLecture = (Lecture) newCourse;
+            Set<Lab> labs = parser.getCourseLabs().get(newLecture);
+            for(Lab lab:labs){
+                if(schedule.get(lab).equals(newSlot)){
+                    return "No";
+                }
+            }
+        }
         
+        // Check additional constraints
+         
+        if(newSlot.getDay().equals("TU") && newSlot.getTime().equals("20:00")){
+            return "No";
+        }
         
-        // Check additional constraints 
+        if(newCourse.getIdentifier().matches("[\\s]*(CPSC|SENG)[\\s]+\\d+[\\s]+(LEC)[\\s]+(09)+[\\s]*")){
+            if(Integer.parseInt(newSlot.getTime().substring(0,2))<evening){
+                return "No";
+            }
+        }
+        
         int numCourseLab = parser.getCourses().size()+parser.getLabs().size();
         if(schedule.size()+1==numCourseLab){
             return "Yes";

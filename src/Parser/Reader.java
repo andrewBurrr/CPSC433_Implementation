@@ -17,6 +17,8 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.HashSet;
 
 
 
@@ -256,4 +258,5 @@ public class Reader {
     public Set<Preference> getPreferences() { return preferences; }
     public Set<Pair> getPairs() { return pairs; }
     public Set<PartialAssignment> getPartialAssignments(){ return partialAssignments; }
+    public HashMap<Lecture, Set<Lab>> getCourseLabs(){ return null;}
 }

@@ -26,6 +26,7 @@ public class Fact {
          this.schedule = schedule;
          this.evaluation = evaluation;
          // Something to generate numCourseSlot and numLabSlot
+         
      }
      
      public Fact(Fact parent, Assignment newAssign){
