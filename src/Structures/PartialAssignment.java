@@ -20,6 +20,14 @@ public class PartialAssignment {
         return String.format("%s, %s, %s\n", identifier, day, time);
     }
 
+    public Course getCourse(){
+        return null;
+    }
+    
+    public Slot getSlot(){
+        return null;
+    }
+    
     public String getIdentifier() { return identifier; }
     public String getDay() { return day; }
     public String getTime() { return time; }

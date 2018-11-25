@@ -5,41 +5,46 @@
  */
 package OrTree;
 
-import Objects.Fact;
 import Structures.Assignment;
-import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Random;
 
 /**
  * Used by the PriorityQueue to order leaf nodes (Facts) based on or-tree 
  * search control.
  * @author thomasnewton
  */
-public class OrTreeControl2 implements Comparator<Fact>{
-    private final ArrayList<Assignment> guide;
-    private final OTreeModel model;
+public class OrTreeControl2 implements Comparator<Prob>{
+    private final Assignment[] guide;
+    private final int numPartAssign;
     
-    public OrTreeControl2(ArrayList<Assignment> guide, OTreeModel model){
+    public OrTreeControl2(Assignment[] guide, int numPartAssign){
         this.guide = guide;
-        this.model = model;
+        this.numPartAssign = numPartAssign;
     }
     
     @Override
-    public int compare(Fact o1, Fact o2) {
+    public int compare(Prob o1, Prob o2) {
         int val1,val2;
-        int max = 4*guide.size();
+        int max = 4*guide.length;
         // 1st priority solved problems
-        val1 = (model.solved(o1)) ? 0:max;
-        val2 = (model.solved(o2)) ? 0:max;
+        val1 = (o1.isSolved()) ? 0:max;
+        val2 = (o2.isSolved()) ? 0:max;
         // 2nd priority unsolvable problems
-        val1 += (model.unsolvable(o1)) ? 0:max/2;
-        val2 += (model.unsolvable(o2)) ? 0:max/2;
+        val1 += (o1.isUnsolvable()) ? 0:max/2;
+        val2 += (o2.isUnsolvable()) ? 0:max/2;
         // 3rd priority guide problems
-        val1 += (o1.getScheduel().containsKey(guide.get(o1.getScheduel().size()-1).getCourse())) ? 0:max/2-1;
-        val2 += (o2.getScheduel().containsKey(guide.get(o2.getScheduel().size()-1).getCourse())) ? 0:max/2-1;
+        Assignment g = guide[o1.getScheduel().size()-numPartAssign-1];
+        val1 += (o1.getScheduel().get(g.getCourse()).equals(g.getSlot())) ? 0:max/4;
+        g = guide[o2.getScheduel().size()-numPartAssign-1];
+        val2 += (o2.getScheduel().get(g.getCourse()).equals(g.getSlot())) ? 0:max/4;
         // 4th priority deep problems
-        val1 += o1.getScheduel().size();
-        val2 += o2.getScheduel().size();
+        val1 += o1.getScheduel().size()/2;
+        val2 += o2.getScheduel().size()/2;
+        // Add some random value
+        Random rand = new Random();
+        val1 += rand.nextInt(4);
+        val2 += rand.nextInt(4);
         
         return val1-val2;
     }

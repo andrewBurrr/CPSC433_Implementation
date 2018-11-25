@@ -5,35 +5,33 @@
  */
 package OrTree;
 
-import Objects.Fact;
 import static java.lang.Integer.max;
 import java.util.Comparator;
+import java.util.Random;
 
 /**
  * Used by the PriorityQueue to order leaf nodes (Facts) based on or-tree 
  * search control.
  * @author thomasnewton
  */
-public class OrTreeControl1 implements Comparator<Fact>{
-    private final OTreeModel model;
-    
-    public OrTreeControl1(OTreeModel model){
-        this.model = model;
-    }
-    
+public class OrTreeControl1 implements Comparator<Prob>{    
     @Override
-    public int compare(Fact o1, Fact o2) {
+    public int compare(Prob o1, Prob o2) {
         int val1,val2;
         int max = 4*max(o1.getScheduel().size(),o2.getScheduel().size());
         // 1st priority solved problems
-        val1 = (model.solved(o1)) ? 0:max;
-        val2 = (model.solved(o2)) ? 0:max;
+        val1 = (o1.isSolved()) ? 0:max;
+        val2 = (o2.isSolved()) ? 0:max;
         // 2nd priority unsolvable problems
-        val1 += (model.unsolvable(o1)) ? 0:max/2;
-        val2 += (model.unsolvable(o2)) ? 0:max/2;
+        val1 += (o1.isUnsolvable()) ? 0:max/2;
+        val2 += (o2.isUnsolvable()) ? 0:max/2;
         // 3rd priority deep problems
         val1 += o1.getScheduel().size();
         val2 += o2.getScheduel().size();
+        // Add some random value 
+        Random rand = new Random();
+        val1 += rand.nextInt(max/4-1);
+        val2 += rand.nextInt(max/4)-1;
         
         return val1-val2;
     }

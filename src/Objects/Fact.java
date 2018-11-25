@@ -9,6 +9,8 @@ import java.util.Map;
 public class Fact {
     private Map<Course, Slot> schedule;
     private int evaluation;
+    private HashMap<Slot, Integer> numCourseSlot;
+    private HashMap<Slot, Integer> numLabSlot;
 
      public Fact() {
             this(new HashMap<Course,Slot>(), Integer.MAX_VALUE);
@@ -35,6 +37,14 @@ public class Fact {
 
      public Map<Course, Slot> getScheduel(){
          return schedule;
+     }
+     
+     public HashMap<Slot, Integer> getNumCourses(){
+         return numCourseSlot;
+     }
+     
+     public HashMap<Slot, Integer> getNumLabs(){
+         return numLabSlot;
      }
      
     @Override
