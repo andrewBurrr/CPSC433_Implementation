@@ -32,23 +32,6 @@ public class OTreeModel {
         this.parser = parser;
     }
     
-    public boolean solved(Prob leaf){
-        Set<Lecture> lects = parser.getCourses();
-        Set<Lab> labs = parser.getLabs();
-
-        
-        
-        Set<NotCompatible> notCompatible = parser.getNotCompatible();
-        Set<PartialAssignment> partAssig = parser.getPartialAssignments();
-        Set<Unwanted> unwanted = parser.getUnwanted();
-        
-        
-        
-        Set<Slot> courseSlots = parser.getCourseSlots();
-        Set<Slot> labSlots = parser.getLabSlots();
-        return false;
-    }
-    
     private String getState(Prob leaf, Assignment newAsign){
         HashMap<Course, Slot> schedule = (HashMap<Course, Slot>) leaf.getScheduel();
         // Check Not Compatible set against new assignment
