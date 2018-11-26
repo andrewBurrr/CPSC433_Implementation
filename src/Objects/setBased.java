@@ -66,8 +66,8 @@ public class setBased {
         //Generate guides
         solutionG1 = solutionA1[0:len(solutionA1)/2]+solutionA2[len(solutionA1)/2:]
         solutionG2 = reverse(solutionA2[0:len(solutionA1)/2]+solutionA1[len(solutionA1)/2:])
-
         */
+
         Random r = new Random();
         Fact solution_1 = null;
         Fact solution_2 = null;
@@ -96,9 +96,40 @@ public class setBased {
             j++;
         }
 
-        // cant slice a hash map lol
+        Object [] c1 = solution_1.return_schedule().keySet().toArray();
+        Object [] c2 = solution_2.return_schedule().keySet().toArray();
+        int solution_length = solution_1.return_schedule().size();
+        int k = 0;
 
-        return new Fact[2];
+        // may need be done in nested for loops for coverage. since this may not produce a full result.
+        while (k < solution_length) {
+            // try to make 50/50 hash map.
+            if (!solution_3.return_schedule().containsKey(c1[k]) && !!solution_3.return_schedule().containsKey(c2[k])) {
+                if(k % 2 == 0) {
+                    solution_3.return_schedule().put((Course)c1[k], solution_1.return_schedule().get(c1[k]));
+                } else {
+                    solution_3.return_schedule().put((Course)c2[k], solution_2.return_schedule().get(c2[k]));
+                }
+            }
+            k++;
+        }
+
+        k = 0;
+        while (k < solution_length) {
+            // try to make 50/50 hash map.
+            if (!solution_4.return_schedule().containsKey(c1[k]) && !!solution_3.return_schedule().containsKey(c2[k])) {
+                if(k % 2 == 0) {
+                    solution_4.return_schedule().put((Course)c2[k], solution_2.return_schedule().get(c2[k]));
+                } else {
+                    solution_4.return_schedule().put((Course)c1[k], solution_1.return_schedule().get(c1[k]));
+                }
+            }
+            k++;
+        }
+
+        Fact[] solutions = {solution_3, solution_4};
+        return solutions;
+//        return new Fact[2];
     }
 
     //TODO: Implement Tod
