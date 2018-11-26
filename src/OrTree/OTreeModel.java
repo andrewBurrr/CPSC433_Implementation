@@ -312,6 +312,7 @@ public class OTreeModel {
         return null; // Should never happen unless bad input
     }
     
+    // Change this to HashMap of required guide and do depth first for the rest
     public Prob guided(LinkedList<Assignment> guide){
         guide.stream().filter((assign) -> (usedCourses.contains(assign.getCourse()))).forEachOrdered((assign) -> {
             guide.remove(assign);
