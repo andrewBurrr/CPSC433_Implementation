@@ -10,6 +10,7 @@ import Structures.Slot;
 import Structures.Unwanted;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
@@ -166,6 +167,11 @@ public class OTreeModel {
         }
         
         // Check 500-level classes dont conflict
+        if(newCourse.getIdentifier().matches("[\\s]*(CPSC)[\\s]+(5)+\\d+[\\s]+(LEC)[\\s]+\\d+[\\s]*")){
+            if(parent.get500Slots().contains(newSlot)){
+                return "No";
+            }
+        }
         
         
         // Check if all labs and courses are scheduled 
@@ -184,6 +190,7 @@ public class OTreeModel {
     private Prob checkPartials(HashMap<Course, Slot> schedule){
         Set<Map.Entry<Course, Slot>> map = schedule.entrySet();
         Iterator<Map.Entry<Course, Slot>> itor = map.iterator();
+        HashSet<Slot> num500 = new HashSet();
         
         // Iterate over all assignments checking one-side of constraints for each
         while(itor.hasNext()){
@@ -229,6 +236,14 @@ public class OTreeModel {
                     return null;
                 }
             }
+             // Check 500-level classes dont conflict
+             if(course.getIdentifier().matches("[\\s]*(CPSC)[\\s]+(5)+\\d+[\\s]+(LEC)[\\s]+\\d+[\\s]*")){
+                if(num500.contains(slot)){
+                    return null;
+                } else{
+                    num500.add(slot);
+                }
+             }
         }
         
         Prob part = new Prob(schedule);
@@ -250,7 +265,6 @@ public class OTreeModel {
                 return null;
             }
         }
-        
         
         // Check if all labs and courses are scheduled 
         int numCourseLab = parser.getCourses().size()+parser.getLabs().size();
