@@ -44,12 +44,12 @@ public class OTreeModel {
         HashMap<Course, Slot> schedule = (HashMap<Course, Slot>) parent.getScheduel();
         // Check Not Compatible set against new assignment
         for(NotCompatible notComp:parser.getNotCompatible()){
-            if(notComp.getCourseCourse().equals(newAsign.getCourse())){
-               if(schedule.get(notComp.getCourseCourse()).equals(newAsign.getSlot())){
+            if(notComp.getCourse().equals(newAsign.getCourse())){
+               if(schedule.get(notComp.getCourse()).equals(newAsign.getSlot())){
                    return "No";
                } 
-            } else if (notComp.getCourseCourse().equals(newAsign.getCourse())){
-                if(schedule.get(notComp.getCourseCourse()).equals(newAsign.getSlot())){
+            } else if (notComp.getCourse().equals(newAsign.getCourse())){
+                if(schedule.get(notComp.getCourse()).equals(newAsign.getSlot())){
                     return "No";
                 }
             }
@@ -78,9 +78,9 @@ public class OTreeModel {
                 if(numLab.get(newSlot)+1>=Integer.parseInt(newSlot.getMax())){
                     return "No";
                 }
-            } 
+            }
         }
-    
+
         // Check labs and courses are not at same time
         
         
