@@ -23,6 +23,9 @@ public class Fact {
          this.evaluation = evaluation;
      }
 
+     public int get_length() {
+         return this.schedule.size();
+     }
      // needs
      public void setSchedule() {
          System.out.println("setSchedule is unfinished");
@@ -32,6 +35,10 @@ public class Fact {
          // call sum from other eval functions defined in assignment description
          return -1;
      }
+
+     public Map<Course, Slot> return_schedule() {
+         return this.schedule;
+    }
 
      public void setEvaluation(int evaluation){
          this.evaluation = evaluation;
