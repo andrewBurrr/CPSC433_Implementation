@@ -1,19 +1,11 @@
 package Parser;
 // container types
-import Structures.Slot;
-import Structures.Lecture;
-import Structures.Lab;
-import Structures.NotCompatible;
-import Structures.Unwanted;
-import Structures.Preference;
-import Structures.Pair;
-import Structures.PartialAssignment;
+import Structures.*;
 // exceptions
 import Exceptions.InvalidInputException;
+import org.omg.CORBA.DynAnyPackage.Invalid;
 // java libraries
-import java.util.Set;
-import java.util.LinkedHashSet;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -172,7 +164,46 @@ public class Reader {
         notCompatible = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext( notCompatiblePattern)) {
-                notCompatible.add(new NotCompatible(fileRead.next().split(",")));
+                String[] notCompatibleList = fileRead.next().split(",");
+                if ((notCompatibleList[1].contains("TUT")) || (notCompatibleList[1].contains("LAB"))){
+                    if ((notCompatibleList[0].contains("TUT")) || (notCompatibleList[0].contains("LAB"))){
+                        Lab lab1 = new Lab(notCompatibleList[0]);
+                        Lab lab2 = new Lab(notCompatibleList[1]);
+                        if ((labs.equals(lab1)) && (labs.equals(lab2))){
+                            HashMap<Lab, Lab> labLab = new HashMap<>();
+                            labLab.put(lab1, lab2);
+                            notCompatible.add(new NotCompatible(null, null, labLab));
+                        }
+                        else{
+                            throw new InvalidInputException("At least 1 lab could not be found in Labs");
+                        }
+                    } else {
+                        Course course = new Course(notCompatibleList[0]);
+                        Lab lab = new Lab(notCompatibleList[1]);
+                        if ((labs.equals(course)) && (labs.equals(lab))){
+                            HashMap<Course, Lab> courseLab = new HashMap<>();
+                            courseLab.put(new Course(notCompatibleList[0]), new Lab(notCompatibleList[1]));
+                            notCompatible.add(new NotCompatible(null, courseLab, null));
+                        }else{
+                            System.out.println("Test");
+                            throw new InvalidInputException("Either Course or Lab could not be found");
+                        }
+                    }
+                } else {
+                    Course course1 = new Course(notCompatibleList[0]);
+                    Course course2 = new Course(notCompatibleList[1]);
+                    if ((courses.equals(course1)) && (courses.equals(course2))){
+                        HashMap<Course, Course> courseCourse = new HashMap<>();
+                        courseCourse.put(new Course(notCompatibleList[0]), new Course(notCompatibleList[1]));
+                        notCompatible.add(new NotCompatible(courseCourse, null, null));
+                    }else{
+                        System.out.println("Course 1 string: " + course1.getIdentifier());
+                        System.out.println("Course 2 string: " + course2.getIdentifier());
+                        System.out.println("Course 1 in courses: " + courses.contains(course1));
+                        System.out.println("Course 2 in courses: " + courses.contains(course2));
+                        throw new InvalidInputException("At least 1 Course could not be found");
+                    }
+                }
             } else if (fileRead.hasNext(SECTION)) {
                 break;
             } else if (!fileRead.nextLine().equals("")){
@@ -188,7 +219,40 @@ public class Reader {
         unwanted = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(unwantedPattern)) {
-                unwanted.add(new Unwanted(fileRead.next().split(",")));
+                //unwantedList = [Course/Lab Indentifier, Slot Day, Slot Time]
+                String [] unwantedList = fileRead.next().split(",");
+                // if unwanted[0] contains "TUT" or "LAB" it is a Lab
+                if ((unwantedList[0].contains("TUT")) || (unwantedList[0].contains("LAB"))){
+                    Lab lab = new Lab(unwantedList[0]);
+                    if (labs.equals(lab)){
+                        for(Slot slot:labSlots){
+                            //Search through the labSlot and find the one that matches Day and Time
+                            if((slot.getDay().equals(unwantedList[1])) && (slot.getTime()) == unwantedList[2]){
+                                //Add to unwanted set
+                                unwanted.add(new Unwanted(lab, slot));
+                            } else{
+                                throw new InvalidInputException("There is no labSlot that matches the input");
+                            }
+                        }
+                    } else{
+                        throw new InvalidInputException("There is no Lab that matches the input");
+                    }
+                } else { //otherwise it is a Course Identifier
+                    Course course = new Course(unwantedList[0]);
+                        //Search through the course to find the one that matches with Course Identifier
+                    if(courses.equals(course)){
+                        for(Slot slot:courseSlots){
+                            //Search through courseSlot to find the one that matches Day and Time
+                            if ((slot.getDay().equals(unwantedList[1])) && (slot.getTime() == unwantedList[2])){
+                                unwanted.add(new Unwanted(course, slot));
+                            } else{
+                                throw new InvalidInputException("There is no courseSlot that matches input");
+                            }
+                        }
+                    } else{
+                        throw new InvalidInputException("There is no Course that matches input");
+                    }
+                }
             } else if (fileRead.hasNext(SECTION)) {
                 break;
             } else if (!fileRead.nextLine().equals("")){
@@ -204,7 +268,34 @@ public class Reader {
         preferences = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(preferencePattern)) {
-                preferences.add(new Preference(fileRead.next().split(",")));
+                String [] preferenceList = fileRead.next().split(",");
+                if ((preferenceList[2].contains("TUT")) || (preferenceList[2].contains("LAB"))){
+                    Lab lab = new Lab(preferenceList[2]);
+                    if (labs.equals(lab)){
+                        for(Slot slot:labSlots){
+                            if ((slot.getDay().equals(preferenceList[0])) && (slot.getTime().equals(preferenceList[1]))){
+                                preferences.add(new Preference(lab, slot, preferenceList[3]));
+                            } else{
+                                throw new InvalidInputException("Error incorrect Slot input");
+                            }
+                        }
+                    } else{
+                        throw new InvalidInputException("Error incorrect Lab input");
+                    }
+                }else{
+                    Course course = new Course(preferenceList[2]);
+                    if (courses.equals(course)){
+                        for (Slot slot:courseSlots){
+                            if ((slot.getDay().equals(preferenceList[0])) && (slot.getTime().equals(preferenceList[1]))){
+                                preferences.add(new Preference(course, slot, preferenceList[3]));
+                            } else{
+                                throw new InvalidInputException("Error incorrect Slot input");
+                            }
+                        }
+                    }else{
+                        throw new InvalidInputException("Error incorrect Course Input");
+                    }
+                }
             } else if (fileRead.hasNext(SECTION)){
                 break;
             } else if (!fileRead.nextLine().equals("")){
@@ -220,7 +311,41 @@ public class Reader {
         pairs = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(pairPattern)) {
-                pairs.add(new Pair(fileRead.next().split(",")));
+                String[] pairList = fileRead.next().split(",");
+                if ((pairList[1].contains("TUT")) || (pairList[1].contains("LAB"))){
+                    if ((pairList[0].contains("TUT")) || (pairList[0].contains("LAB"))){
+                        Lab lab1 = new Lab(pairList[0]);
+                        Lab lab2 = new Lab(pairList[1]);
+                        if ((labs.equals(lab1)) && (labs.equals(lab2))){
+                            HashMap<Lab, Lab> labLab = new HashMap<>();
+                            labLab.put(lab1, lab2);
+                            notCompatible.add(new NotCompatible(null, null, labLab));
+                        }
+                        else{
+                            throw new InvalidInputException("At least 1 lab could not be found in Labs");
+                        }
+                    } else {
+                        Course course = new Course(pairList[0]);
+                        Lab lab = new Lab(pairList[1]);
+                        if ((labs.equals(course)) && (labs.equals(lab))){
+                            HashMap<Course, Lab> courseLab = new HashMap<>();
+                            courseLab.put(new Course(pairList[0]), new Lab(pairList[1]));
+                            notCompatible.add(new NotCompatible(null, courseLab, null));
+                        }else{
+                            throw new InvalidInputException("Either Course or Lab could not be found");
+                        }
+                    }
+                } else {
+                    Course course1 = new Course(pairList[0]);
+                    Course course2 = new Course(pairList[1]);
+                    if ((courses.equals(course1)) && (courses.equals(course2))){
+                        HashMap<Course, Course> courseCourse = new HashMap<>();
+                        courseCourse.put(new Course(pairList[0]), new Course(pairList[1]));
+                        notCompatible.add(new NotCompatible(courseCourse, null, null));
+                    }else{
+                        throw new InvalidInputException("At least 1 Course could not be found");
+                    }
+                }
             } else if (fileRead.hasNext(SECTION)) {
                 break;
             } else if (!fileRead.nextLine().equals("")){
@@ -236,7 +361,39 @@ public class Reader {
         partialAssignments = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(partialAssignmentPattern)) {
-                partialAssignments.add(new PartialAssignment(fileRead.next().split(",")));
+                //partAssignList = [Course/Lab Indentifier, Slot Day, Slot Time]
+                String [] partAssignList = fileRead.next().split(",");
+                // if partAssignList[0] contains "TUT" or "LAB" it is a Lab
+                if ((partAssignList[0].contains("TUT")) || (partAssignList[0].contains("LAB"))){
+                    Lab lab = new Lab(partAssignList[0]);
+                    if (labs.equals(lab)){
+                        for(Slot slot:labSlots){
+                            //Search through the labSlot and find the one that matches Day and Time
+                            if((slot.getDay().equals(partAssignList[1])) && (slot.getTime()) == partAssignList[2]){
+                                //Add to unwanted set
+                                unwanted.add(new Unwanted(lab, slot));
+                            } else{
+                                throw new InvalidInputException("There is no labSlot that matches the input");
+                            }
+                        }
+                    } else{
+                        throw new InvalidInputException("There is no Lab that matches the input");
+                    }
+                } else { //otherwise it is a Course Identifier
+                    Course course = new Course(partAssignList[0]);
+                    if(courses.equals(course)){
+                        for(Slot slot:courseSlots){
+                            //Search through courseSlot to find the one that matches Day and Time
+                            if ((slot.getDay().equals(partAssignList[1])) && (slot.getTime() == partAssignList[2])){
+                                unwanted.add(new Unwanted(course, slot));
+                            } else{
+                                throw new InvalidInputException("There is no courseSlot that matches input");
+                            }
+                        }
+                    } else{
+                        throw new InvalidInputException("There is no Course that matches input");
+                    }
+                }
             } else if (fileRead.hasNext(SECTION)) {
                 break;
             } else if (!fileRead.nextLine().equals("")){

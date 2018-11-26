@@ -1,23 +1,36 @@
 package Structures;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Pair {
-    private final String xIdentifier;
-    private final String yIdentifier;
+    private final Map<Course, Course> courseCourse;
+    private final Map<Course, Lab> courseLab;
+    private final Map<Lab, Lab> labLab;
 
-    public Pair(String[] input) {
-        this(input[0], input[1]);
-    }
-
-    public Pair( String xIdentifier, String yIdentifier ) {
-        this.xIdentifier = xIdentifier;
-        this.yIdentifier = yIdentifier;
+    public Pair(HashMap<Course, Course> CourseCourse, HashMap<Course, Lab> CourseLab,
+                HashMap <Lab, Lab> LabLab ) {
+        this.courseCourse = CourseCourse;
+        this.courseLab = CourseLab;
+        this.labLab = LabLab;
     }
 
     @Override
     public String toString() {
-        return String.format("%s, %s\n", xIdentifier, yIdentifier);
+        if (!courseCourse.isEmpty()){
+            Course course1 = (Course) courseCourse.keySet().toArray()[0];
+            return String.format("%s, %s\n", course1.getIdentifier(),
+                    courseCourse.get(course1).getIdentifier());
+        } else if(!courseLab.isEmpty()){
+            Course course1 = (Course) courseLab.keySet().toArray()[0];
+            return String.format("$s, %s\n", course1.getIdentifier(),
+                    courseLab.get(course1).getIdentifier());
+        } else{
+            Lab lab1 = (Lab) labLab.keySet().toArray()[0];
+            return String.format("%s, %s\n", lab1, labLab.get(lab1).getIdentifier());
+        }
     }
 
-    public String getxIdentifier() { return xIdentifier; }
-    public String getyIdentifier() { return yIdentifier; }
+//    public String getxIdentifier() { return xIdentifier; }
+//    public String getyIdentifier() { return yIdentifier; }
 }

@@ -1,28 +1,39 @@
 package Structures;
 
+import Exceptions.InvalidInputException;
+
+import java.util.HashMap;
+import java.util.Map;
+
 public class NotCompatible {
-    private final Course course1;
-    private final Course course2;
+    private final Map<Course, Course> courseCourse;
+    private final Map<Course, Lab> courseLab;
+    private final Map<Lab, Lab> labLab;
 
-    public NotCompatible(Course[] input) {
-        this(input[0], input[1]);
-    }
-
-    public NotCompatible(Course xIdentifier, Course yIdentifier) {
-        this.course1 = xIdentifier;
-        this.course2 = yIdentifier;
+    public NotCompatible(HashMap<Course, Course> CourseCourse, HashMap<Course, Lab> CourseLab,
+                         HashMap <Lab, Lab> LabLab) {
+        this.courseCourse = CourseCourse;
+        this.courseLab = CourseLab;
+        this.labLab = LabLab;
     }
 
     @Override
     public String toString() {
-        return String.format("%s, %s\n", course1.toString(), course2.toString());
-    }
-
-    public Course getCourse(int num){
-        switch(num){
-            case 0: return course1;
-            case 1: return course2;
-            default: return null;
+        if (!courseCourse.isEmpty()){
+            Course course1 = (Course) courseCourse.keySet().toArray()[0];
+            return String.format("%s, %s\n", course1.getIdentifier(),
+                    courseCourse.get(course1).getIdentifier());
+        } else if(!courseLab.isEmpty()){
+            Course course1 = (Course) courseLab.keySet().toArray()[0];
+            return String.format("$s, %s\n", course1.getIdentifier(),
+                    courseLab.get(course1).getIdentifier());
+        } else{
+            Lab lab1 = (Lab) labLab.keySet().toArray()[0];
+            return String.format("%s, %s\n", lab1, labLab.get(lab1).getIdentifier());
         }
     }
+
+    public Map<Course, Course> getCourseCourse(){ return courseCourse;}
+    public Map<Course,Lab> getCourseLab(){return courseLab;}
+    public Map<Lab, Lab> getLabLab(){return labLab;}
 }

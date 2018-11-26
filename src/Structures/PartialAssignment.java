@@ -1,34 +1,35 @@
 package Structures;
 
 public class PartialAssignment {
-    private final String identifier;
-    private final String day;
-    private final String time;
+    private final Course course;
+    private final Slot slot;
+    private final Lab lab;
 
-    public PartialAssignment(String[] input) {
-        this(input[0], input[1], input[2]);
+
+    public PartialAssignment( Course course, Slot slot ) {
+        this.course = course;
+        this.slot = slot;
+        this.lab = null;
     }
 
-    public PartialAssignment( String identifier, String day, String time ) {
-        this.identifier = identifier;
-        this.day = day;
-        this.time = time;
+    public PartialAssignment(Lab lab, Slot slot){
+        this.lab = lab;
+        this.slot = slot;
+        this.course = null;
+    }
+
+    public Course getCourse(){
+        return course;
+    }
+
+    public Slot getSlot(){
+        return slot;
     }
 
     @Override
     public String toString() {
-        return String.format("%s, %s, %s\n", identifier, day, time);
+        return String.format("%s, %s, %s\n", course.getIdentifier(),
+                slot.getDay(), slot.getTime());
     }
 
-    public Course getCourse(){
-        return null;
-    }
-    
-    public Slot getSlot(){
-        return null;
-    }
-    
-    public String getIdentifier() { return identifier; }
-    public String getDay() { return day; }
-    public String getTime() { return time; }
 }
