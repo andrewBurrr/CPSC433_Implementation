@@ -10,7 +10,9 @@ import Structures.Slot;
 import Structures.Unwanted;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Random;
 
@@ -19,6 +21,7 @@ import java.util.Set;
 public class OTreeModel {
     private final Reader parser;
     private final int evening = 12;
+    private HashMap<
     // Partial Assignments
     // Unwanted
     // Additional Constraints
@@ -94,17 +97,18 @@ public class OTreeModel {
         }
         
         // Check additional constraints
-         
         if(newSlot.getDay().equals("TU") && newSlot.getTime().equals("20:00")){
             return "No";
         }
         
+        // Check to make sure all Lec 09 are after evening(variable [0,24])
         if(newCourse.getIdentifier().matches("[\\s]*(CPSC|SENG)[\\s]+\\d+[\\s]+(LEC)[\\s]+(09)+[\\s]*")){
             if(Integer.parseInt(newSlot.getTime().substring(0,2))<evening){
                 return "No";
             }
         }
         
+        // Check if all labs and courses are scheduled 
         int numCourseLab = parser.getCourses().size()+parser.getLabs().size();
         if(schedule.size()+1==numCourseLab){
             return "Yes";
@@ -117,9 +121,43 @@ public class OTreeModel {
      * @param schedule
      * @return 
      */
-    private String getState(HashMap<Course, Slot> schedule){
-        // Check not compatible set
-        for()
+    private String checkPartials(HashMap<Course, Slot> schedule){
+        Set<Map.Entry<Course, Slot>> map = schedule.entrySet();
+        Iterator<Map.Entry<Course, Slot>> itor = map.iterator();
+        
+        // Iterate over all assignments checking one-side of constraints for each
+        while(itor.hasNext()){
+            Map.Entry<Course, Slot> entry = itor.next();
+            Course course = entry.getKey();
+            Slot slot = entry.getValue();
+            
+            // Check not compatible set
+            for(NotCompatible notComp:parser.getNotCompatible()){
+                if(notComp.getCourse(0).equals(course)){
+                    if(schedule.get(notComp.getCourse(1)).equals(slot)){
+                        return "No";
+                    }
+                }
+            }
+            
+            // Check Unwanted
+            for(Unwanted unwanted:parser.getUnwanted()){
+                if(unwanted.getCourse().equals(course)){
+                    if(unwanted.getSlot().equals(slot)){
+                        return "No";
+                    }
+                }
+            }
+            
+            // Check 
+            
+        }
+        
+        // Check if all labs and courses are scheduled 
+        int numCourseLab = parser.getCourses().size()+parser.getLabs().size();
+        if(schedule.size()+1==numCourseLab){
+            return "Yes";
+        } 
         return "?";
     }
     
@@ -142,16 +180,16 @@ public class OTreeModel {
         OrTreeControl1 control = new OrTreeControl1();
         LinkedList<Course> avaCourses = new LinkedList(parser.getCourses());
         avaCourses.addAll(parser.getLabs());
-        PriorityQueue<Prob> leafs = new PriorityQueue(avaCourses.size(), control);
+        PriorityQueue<Prob> leafs = new PriorityQueue(avaCourses.size()*avaCourses.size(), control);
         
-        // root node has partial assignments 
+        // Generate root from partial assignments  
         HashMap<Course, Slot> partAssigns = new HashMap();
         parser.getPartialAssignments().forEach((assign) -> {
             partAssigns.put(assign.getCourse(),assign.getSlot());
             avaCourses.remove(assign.getCourse()); 
             //Might want to check partial assign course exists
         });
-        Prob root = new Prob(partAssigns, getState(partAssigns));
+        Prob root = new Prob(partAssigns, "?");
         leafs.add(root);
         
         while(!leafs.isEmpty()){
@@ -176,9 +214,9 @@ public class OTreeModel {
             guide.remove(new Assignment(assign.getCourse(), assign.getSlot()));
             //Might want to check partial assign course exists
         });
-        Prob root = new Prob(partAssigns, getState(partAssigns));
+        Prob root = new Prob(partAssigns, "?");
         OrTreeControl2 control = new OrTreeControl2(guide.toArray(new Assignment[0]), partAssigns.size());
-        PriorityQueue<Prob> leafs = new PriorityQueue(guide.size(), control);
+        PriorityQueue<Prob> leafs = new PriorityQueue(guide.size()*guide.size(), control);
         
         leafs.add(root);
         while(!leafs.isEmpty()){

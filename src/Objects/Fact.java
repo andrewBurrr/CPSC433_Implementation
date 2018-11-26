@@ -2,6 +2,7 @@ package Objects;
 
 import Structures.Assignment;
 import Structures.Course;
+import Structures.Lab;
 import Structures.Lecture;
 import Structures.Slot;
 
@@ -27,17 +28,26 @@ public class Fact {
      public Fact(HashMap<Course,Slot> schedule, int evaluation) {
          this.schedule = schedule;
          this.evaluation = evaluation;
+         this.numCourseSlot = new HashMap<>(schedule.size());
+         this.numLabSlot = new HashMap<>(schedule.size());
+         
+         
          // Something to generate numCourseSlot and numLabSlot
-         Set<Map.Entry<Course, Slot>> map = schedule.entrySet();
-         Iterator<Map.Entry<Course,Slot>> intor = map.iterator();
-         while(intor.hasNext()){
-             Map.Entry<Course,Slot> entry = intor.next();
-             Course course = entry.getKey();
-             Slot slot = entry.getValue();
-             if(course instanceof Lecture){
+         Set<Map.Entry<Course, Slot>> map = schedule.entrySet(); //Convert map to set of entries <Course,Slot>
+         Iterator<Map.Entry<Course,Slot>> itor = map.iterator(); //COnvert set to an iterator
+         while(itor.hasNext()){ 
+             Map.Entry<Course,Slot> entry = itor.next(); // Get next entry
+             Course course = entry.getKey(); // Get the course from entry
+             Slot slot = entry.getValue(); // Get the slot from entry
+             if(course instanceof Lecture){ // If course is a lecture 
+                 // If slot already exits i slot get the Integer and increment else set to 1
                 this.numCourseSlot.put(slot, this.numCourseSlot.getOrDefault(slot,0)+1);
-             } else {
-                 this.numLabSlot.put(slot, this.numLabSlot.getOrDefault(slot,0)+1);
+             } else if(course instanceof Lab){ // If course is a lab
+                 // If slot already exits i slot get the Integer and increment else set to 1
+                this.numLabSlot.put(slot, this.numLabSlot.getOrDefault(slot,0)+1);
+             } else{
+                //Error checking just in case, even though this should never happen
+                System.out.println("Error the new schedule has neither Course or Lab");
              }
          }
      }
@@ -50,20 +60,15 @@ public class Fact {
          this.schedule.put(newAssign.getCourse(),newAssign.getSlot());
          Course newCourse = newAssign.getCourse();
          Slot newSlot = newAssign.getSlot();
-         if(newCourse instanceof Lecture){
-             if(this.numCourseSlot.containsKey(newSlot)){
-                 Integer put = this.numCourseSlot.get(newSlot)+1;
-                 this.numCourseSlot.put(newSlot, put);
-             } else {
-                 this.numCourseSlot.put(newSlot, 1);
-             }
-         } else {
-             if(this.numLabSlot.containsKey(newSlot)){
-                 Integer put = this.numLabSlot.get(newSlot)+1;
-                 this.numLabSlot.put(newSlot, put);
-             } else {
-                 this.numLabSlot.put(newSlot, 1);
-             }
+         if(newCourse instanceof Lecture){ // If new course is a lecture
+             // If slot already exits i slot get the Integer and increment else set to 1
+            this.numCourseSlot.put(newSlot, this.numCourseSlot.getOrDefault(newSlot,0)+1);
+         } else if(newCourse instanceof Lab) { // If new course is a lab
+             // If slot already exits i slot get the Integer and increment else set to 1
+            this.numLabSlot.put(newSlot, this.numLabSlot.getOrDefault(newSlot,0)+1);
+         } else{
+             //Error checking just in case, even though this should never happen
+            System.out.println("Error the new schedule has neither Course or Lab");
          }
      }
      
