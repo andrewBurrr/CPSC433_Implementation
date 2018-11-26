@@ -299,11 +299,9 @@ public class OTreeModel {
     }
     
     public Prob guided(LinkedList<Assignment> guide){
-        for(Assignment assign: guide){
-            if(usedCourses.contains(assign.getCourse())){
-                guide.remove(assign);
-            }
-        }
+        guide.stream().filter((assign) -> (usedCourses.contains(assign.getCourse()))).forEachOrdered((assign) -> {
+            guide.remove(assign);
+        });
         OrTreeControl2 control = new OrTreeControl2(guide.toArray(new Assignment[0]), usedCourses.size());
         PriorityQueue<Prob> leafs = new PriorityQueue(guide.size()*guide.size(), control);
         
