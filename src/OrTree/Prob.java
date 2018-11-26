@@ -49,10 +49,14 @@ public class Prob extends Fact{
         }
     }
     
-    // Is this needed?
-    public boolean isValid() {
-        // do stuff to check partial solution constraints
-        return true;
+    public void setState(String sol){
+        switch(sol) {
+            case "Yes": this.state = State.SOLVED;
+            break;
+            case "No": this.state = State.UNSOLVABLE;
+            break;
+            default: this.state = State.UNSOLVED;
+        }
     }
     
     public boolean isSolved(){
