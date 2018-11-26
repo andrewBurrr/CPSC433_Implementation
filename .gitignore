@@ -6,3 +6,5 @@ out/
 *iml
 *.mf
 nbproject/
+/build/
+/src/Structures/Test.java

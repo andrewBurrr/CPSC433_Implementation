@@ -1,5 +1,7 @@
 package Structures;
 
+import java.util.Objects;
+
 public class Slot {
     private final String day;
     private final String time;
@@ -23,6 +25,29 @@ public class Slot {
         this.min = min;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 47 * hash + Objects.hashCode(this.day);
+        hash = 47 * hash + Objects.hashCode(this.time);
+        hash = 47 * hash + this.max;
+        hash = 47 * hash + this.min;
+        return hash;
+    }
+
+        
+    @Override
+    public boolean equals(Object obj){
+        if(obj instanceof Slot){
+            Slot s = (Slot) obj;
+            if((this.day.equals(s.day))&&(this.max==s.max)&&(this.min==s.min)&&(this.time.equals(s.time))){
+                return true;
+            }
+        }
+        return false;
+    }
+        
+        
     @Override
     public String toString() {
         return String.format("%s, %s, %s, %s\n", day, time, max, min);
