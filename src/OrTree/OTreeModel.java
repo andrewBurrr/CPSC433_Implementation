@@ -100,13 +100,10 @@ public class OTreeModel {
             }
         }
         
-        // Check Unwanted 
-        for(Unwanted unwanted:parser.getUnwanted()){
-            if(unwanted.getCourse().equals(newAsign.getCourse())){
-                if(unwanted.getSlot().equals(newAsign.getSlot())){
-                    return "No";
-                }
-            }
+        // Check Unwanted
+        Set<Unwanted> unwanted = parser.getUnwanted();
+        if(unwanted.contains(new Unwanted(newCourse, newSlot))){ // Redefine equals for Unwanted
+            return "No";
         }
         
         // Check courseMax
@@ -312,7 +309,6 @@ public class OTreeModel {
         return null; // Should never happen unless bad input
     }
     
-    // Change this to HashMap of required guide and do depth first for the rest
     public Prob guided(LinkedList<Assignment> guide){
         guide.stream().filter((assign) -> (usedCourses.contains(assign.getCourse()))).forEachOrdered((assign) -> {
             guide.remove(assign);
