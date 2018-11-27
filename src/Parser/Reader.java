@@ -100,7 +100,8 @@ public class Reader {
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(courseSlotPattern)) { // 2 additional regexs for monday, then tuesday, else error
                 temp = fileRead.next(courseSlotPattern);
-                courseSlots.add(new Slot(temp.split(",")));
+                System.out.println(temp.split(","));
+                courseSlots.add(new Slot(temp.split(", ")));
             } else if (fileRead.hasNext(SECTION)) {
                 break;
             } else if (!fileRead.nextLine().equals("")){
@@ -167,49 +168,90 @@ public class Reader {
         while (fileRead.hasNext()) {
             if (fileRead.hasNext( notCompatiblePattern)) {
                 // notCompatible = [Course/Lab, Course/Lab]
-                String[] notCompatibleList = fileRead.next().split(",");
+                String[] notCompatibleList = fileRead.next().split(", ");
                 if ((notCompatibleList[1].contains("TUT")) || (notCompatibleList[1].contains("LAB"))){
                     // if it is [Lab, Lab]
                     if ((notCompatibleList[0].contains("TUT")) || (notCompatibleList[0].contains("LAB"))){
-                        Lab lab1 = new Lab(notCompatibleList[0]);
-                        Lab lab2 = new Lab(notCompatibleList[1]);
-                        //If labs contains lab1 and lab2 aka valid input
-                        if ((labs.equals(lab1)) && (labs.equals(lab2))){
-                            HashMap<Course, Course> labLab = new HashMap<>();
+                        Lab lab1 = null;
+                        Lab lab2 = null;
+                        for(Lab lab:labs){
+                            //#TODO: Have to fix notCompatibleList[0].length() == 15 instead of 16
+                            if (lab.getIdentifier().contains(notCompatibleList[0])){ lab1 = lab; }
+                            else if (lab.getIdentifier().equals(notCompatibleList[1])){ lab2 = lab; }
+                        }
+                        if ((lab1 != null) && (lab2!= null)) {
+                            HashMap<Course, Course> labLab = new HashMap<Course, Course>();
                             labLab.put(lab1, lab2);
                             notCompatible.add(new NotCompatible(labLab));
-                        }
-                        else{
-                            throw new InvalidInputException("At least 1 lab could not be found in Labs");
+                        } else{
+                            throw new InvalidInputException("Error at least 1 lab could not be found");
                         }
                     } else {
                         //[Course, Lab]
-                        Course course = new Course(notCompatibleList[0]);
-                        Lab lab = new Lab(notCompatibleList[1]);
+                        Course course = null;
+                        Lab lab = null;
                         //If valid input
-                        if ((labs.equals(course)) && (labs.equals(lab))){
-                            HashMap<Course, Course> courseLab = new HashMap<>();
+                        for (Course courseMem:courses){
+                            System.out.println(course.getIdentifier());
+                            if (courseMem.getIdentifier().contains(notCompatibleList[0])) {
+                                System.out.println("Test1");
+                                course = courseMem;}
+                        }
+                        for (Lab labMem:labs){
+                            if (labMem.getIdentifier().equals(notCompatibleList[1])); {
+                                System.out.println("Test2");
+                                lab = labMem;}
+                        }
+                        if ((course != null) && (lab != null)){
+                            HashMap<Course, Course> courseLab = new HashMap<Course, Course>();
                             courseLab.put(course, lab);
                             notCompatible.add(new NotCompatible(courseLab));
+                            System.out.println("Added courseLab");
                         }else{
-                            System.out.println("Test");
                             throw new InvalidInputException("Either Course or Lab could not be found");
                         }
                     }
-                } else {
+                } else if ((notCompatibleList[0].contains("TUT")) || (notCompatibleList[0].contains("LAB"))) {
+                    //[Lab, Course]
+                    Course course = null;
+                    Lab lab = null;
+                    //If valid input
+                    for (Course courseMem:courses){
+                        if (courseMem.getIdentifier().equals(notCompatibleList[1])) {
+                            System.out.println("Test1");
+                            course = courseMem;}
+                    }
+                    for (Lab labMem:labs){
+                        if (labMem.getIdentifier().contains(notCompatibleList[0])); {
+                            lab = labMem;}
+                    }
+                    if ((course != null) && (lab != null)){
+                        HashMap<Course, Course> courseLab = new HashMap<Course, Course>();
+                        courseLab.put(course, lab);
+                        notCompatible.add(new NotCompatible(courseLab));
+                        System.out.println("Added courseLab");
+                    }else{
+                        throw new InvalidInputException("Either Lab or Course could not be found");
+                    }
+                } else{
                     //[Course, Course]
-                    Course course1 = new Course(notCompatibleList[0]);
-                    Course course2 = new Course(notCompatibleList[1]);
-                    if ((courses.equals(course1)) && (courses.equals(course2))){
-                        HashMap<Course, Course> courseCourse = new HashMap<>();
+                    Course course1 = null;
+                    Course course2 = null;
+                    for (Course course:courses){
+                        //#TODO: a bug need to be fix. Currently I have to use contains because somehow notCompatibleList[0] has 15 length
+                        // But a regular course has 16th. notCompatibleList[1] has 16th length and works fine
+                        if (course.getIdentifier().contains(notCompatibleList[0])) {
+                            course1 = course; }
+                        else if (course.getIdentifier().equals(notCompatibleList[1])) {
+                            course2 = course;
+                        }
+                    }
+                    if ((course1 != null) && (course2 != null)) {
+                        HashMap<Course, Course> courseCourse = new HashMap<Course, Course>();
                         courseCourse.put(course1, course2);
                         notCompatible.add(new NotCompatible(courseCourse));
-                    }else{
-                        System.out.println("Course 1 string: " + course1.getIdentifier());
-                        System.out.println("Course 2 string: " + course2.getIdentifier());
-                        System.out.println("Course 1 in courses: " + courses.contains(course1));
-                        System.out.println("Course 2 in courses: " + courses.contains(course2));
-                        throw new InvalidInputException("At least 1 Course could not be found");
+                    } else{
+                        throw new InvalidInputException("At least one course could not be found");
                     }
                 }
             } else if (fileRead.hasNext(SECTION)) {
