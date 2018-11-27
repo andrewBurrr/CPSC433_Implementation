@@ -93,8 +93,8 @@ public class OTreeModel {
                if(schedule.get(notComp.getCourse(1)).equals(newAsign.getSlot())){
                    return "No";
                } 
-            } else if (notComp.getCourse(1).equals(newAsign.getCourse())){
-                if(schedule.get(notComp.getCourse(0)).equals(newAsign.getSlot())){
+            } else if (notComp.getCourse().equals(newAsign.getCourse())){
+                if(schedule.get(notComp.getCourse()).equals(newAsign.getSlot())){
                     return "No";
                 }
             }
@@ -120,9 +120,9 @@ public class OTreeModel {
                 if(numLab.get(newSlot)+1 >= newSlot.getMax()){
                     return "No";
                 }
-            } 
+            }
         }
-    
+
         // Check labs and courses are not at same time
         if(newCourse instanceof Lecture){
             Lecture newLecture = (Lecture) newCourse;

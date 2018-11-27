@@ -9,7 +9,15 @@ public class Slot {
     private final int min;
 
     public Slot(String[] input) {
-        this(input[0], input[1], input[2], input[3]);
+        this.day = input[0];
+        this.time = input[1];
+        if(input.length==4){
+            this.max = Integer.parseInt(input[2]);
+            this.min = Integer.parseInt(input[3]);
+        } else{
+            this.max = Integer.MAX_VALUE;
+            this.min = 0;
+        }
     }
 
     public Slot( String day, String time, String max, String min ) {
@@ -40,7 +48,7 @@ public class Slot {
     public boolean equals(Object obj){
         if(obj instanceof Slot){
             Slot s = (Slot) obj;
-            if((this.day.equals(s.day))&&(this.max==s.max)&&(this.min==s.min)&&(this.time.equals(s.time))){
+            if((this.day.equals(s.day))&&(this.time.equals(s.time))){
                 return true;
             }
         }

@@ -19,6 +19,7 @@ public class Unwanted {
     
     @Override
     public String toString() {
-        return String.format("%s, %s\n", course.toString(), slot.toString());
+        return String.format("%s, %s, %s\n", course.getIdentifier(),
+                slot.getDay(), slot.getTime());
     }
 }
