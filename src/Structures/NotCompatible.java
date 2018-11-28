@@ -1,23 +1,21 @@
 package Structures;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class NotCompatible {
-    private final String xIdentifier;
-    private final String yIdentifier;
+    private final Map<Course, Course> courseCourse;
 
-    public NotCompatible(String[] input) {
-        this(input[0], input[1]);
-    }
-
-    public NotCompatible(String xIdentifier, String yIdentifier) {
-        this.xIdentifier = xIdentifier;
-        this.yIdentifier = yIdentifier;
+    public NotCompatible(HashMap<Course, Course> CourseCourse) {
+        this.courseCourse = CourseCourse;
     }
 
     @Override
     public String toString() {
-        return String.format("%s, %s\n", xIdentifier, yIdentifier);
+        Course course1 = (Course) courseCourse.keySet().toArray()[0];
+        return String.format("%s, %s\n", course1.getIdentifier(),
+                courseCourse.get(course1).getIdentifier());
     }
 
-    public String getxIdentifier() { return xIdentifier; }
-    public String getyIdentifier() { return yIdentifier; }
+    public Map<Course, Course> getCourse(){ return courseCourse;}
 }
