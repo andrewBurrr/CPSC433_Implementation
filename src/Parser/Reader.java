@@ -60,6 +60,7 @@ public class Reader {
 
             while (fileRead.hasNext()) {
                 temp = fileRead.nextLine().trim();
+                temp = temp.replaceAll("\\r", "");
                 System.out.println(temp);
                 switch (temp) {
                     case "Name:": readName(fileRead); break;
@@ -107,6 +108,7 @@ public class Reader {
             if (fileRead.hasNext(courseSlotPattern)) { // 2 additional regexs for monday, then tuesday, else error
                 temp = fileRead.next(courseSlotPattern);
                 System.out.println(temp);
+                temp = temp.replaceAll("\\s*","");
                 courseSlots.add(new Slot(temp.split(",\\s*")));
             } else if (fileRead.hasNext(SECTION)) {
                 break;
@@ -141,7 +143,7 @@ public class Reader {
         courses = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(coursePattern)) {
-                courses.add(new Lecture(fileRead.next()));
+                courses.add(new Lecture(fileRead.next().replaceAll("\\r","")));
             } else if (fileRead.hasNext(SECTION)) {
                 break;
             } else if (!fileRead.nextLine().equals("")){
@@ -157,7 +159,7 @@ public class Reader {
         labs = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(labPattern)) {
-                labs.add(new Lab(fileRead.next()));
+                labs.add(new Lab(fileRead.next().replaceAll("\\r","")));
             } else if (fileRead.hasNext(SECTION)) {
                 break;
             } else if (!fileRead.nextLine().equals("")){
@@ -174,7 +176,7 @@ public class Reader {
         while (fileRead.hasNext()) {
             if (fileRead.hasNext( notCompatiblePattern)) {
                 // notCompatible = [Course/Lab, Course/Lab]
-                String[] notCompatibleList = fileRead.next().split(",\\s*");
+                String[] notCompatibleList = fileRead.next().replaceAll("\\r","").split(",\\s*");
                 if ((notCompatibleList[1].contains("TUT")) || (notCompatibleList[1].contains("LAB"))){
                     // if it is [Lab, Lab]
                     if ((notCompatibleList[0].contains("TUT")) || (notCompatibleList[0].contains("LAB"))){
@@ -240,7 +242,7 @@ public class Reader {
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(unwantedPattern)) {
                 //unwantedList = [Course/Lab Indentifier, Slot Day, Slot Time]
-                String [] unwantedList = fileRead.next().split(",\\s*");
+                String [] unwantedList = fileRead.next().replaceAll("\\r","").split(",\\s*");
                 // if unwanted[0] contains "TUT" or "LAB" it is a Lab
                 if ((unwantedList[0].contains("TUT")) || (unwantedList[0].contains("LAB"))){
                     Lab lab = new Lab(unwantedList[0]);
@@ -288,7 +290,7 @@ public class Reader {
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(preferencePattern)) {
                 //preferenceList = [Day, Time, Course/Lab, Value]
-                String [] preferenceList = fileRead.next().split(",\\s*");
+                String [] preferenceList = fileRead.next().replaceAll("\\r","").split(",\\s*");
                 // If it is a Lab
                 if ((preferenceList[2].contains("TUT")) || (preferenceList[2].contains("LAB"))){
                     Lab lab = new Lab(preferenceList[2]);
@@ -332,7 +334,7 @@ public class Reader {
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(pairPattern)) {
                 // pairList = [Course/Lab, Course/Lab]
-                String[] pairList = fileRead.next().split(",\\s*");
+                String[] pairList = fileRead.next().replaceAll("\\r","").split(",\\s*");
                 if ((pairList[1].contains("TUT")) || (pairList[1].contains("LAB"))){
                     //[Lab, Lab]
                     if ((pairList[0].contains("TUT")) || (pairList[0].contains("LAB"))){
@@ -384,7 +386,7 @@ public class Reader {
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(partialAssignmentPattern)) {
                 //partAssignList = [Course/Lab Indentifier, Slot Day, Slot Time]
-                String [] partAssignList = fileRead.next().split(",\\s*");
+                String [] partAssignList = fileRead.next().replaceAll("\\r","").split(",\\s*");
                 // if partAssignList[0] contains "TUT" or "LAB" it is a Lab
                 if ((partAssignList[0].contains("TUT")) || (partAssignList[0].contains("LAB"))){
                     Lab lab = new Lab(partAssignList[0]);
