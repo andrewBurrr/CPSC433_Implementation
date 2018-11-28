@@ -51,8 +51,8 @@ public class OTreeModel {
             Iterator<NotCompatible> itor = notCompatible.iterator();
             while(itor.hasNext()){
                 NotCompatible noPair = itor.next();
-                if(noPair.getCourse(0).equals(new Lecture("CPSC 313 LEC 01"))){
-                    notCompatible.add(new NotCompatible(noPair.getCourse(0), new Lab("CPSC 813 TUT 01")));
+                if(noPair.getCourse().equals(new Lecture("CPSC 313 LEC 01"))){
+                    notCompatible.add(new NotCompatible((HashMap<Course, Course>) noPair.getCourse()));
                 }
             }
         } 
@@ -62,8 +62,8 @@ public class OTreeModel {
             Iterator<NotCompatible> itor = notCompatible.iterator();
             while(itor.hasNext()){
                 NotCompatible noPair = itor.next();
-                if(noPair.getCourse(0).equals(new Lecture("CPSC 413 LEC 01"))){
-                    notCompatible.add(new NotCompatible(noPair.getCourse(0), new Lab("CPSC 913 TUT 01")));
+                if(noPair.getCourse().equals(new Lecture("CPSC 413 LEC 01"))){
+                    notCompatible.add(new NotCompatible((HashMap<Course, Course>) noPair.getCourse()));
                 }
             }
         }
@@ -89,8 +89,8 @@ public class OTreeModel {
         
         // Check Not Compatible set against new assignment
         for(NotCompatible notComp:notCompatible){
-            if(notComp.getCourse(0).equals(newAsign.getCourse())){
-               if(schedule.get(notComp.getCourse(1)).equals(newAsign.getSlot())){
+            if(notComp.getCourse().equals(newAsign.getCourse())){
+               if(schedule.get(notComp.getCourse()).equals(newAsign.getSlot())){
                    return "No";
                } 
             } else if (notComp.getCourse().equals(newAsign.getCourse())){
@@ -197,8 +197,8 @@ public class OTreeModel {
             
             // Check not compatible set
             for(NotCompatible notComp:notCompatible){
-                if(notComp.getCourse(0).equals(course)){
-                    if(schedule.get(notComp.getCourse(1)).equals(slot)){
+                if(notComp.getCourse().equals(course)){
+                    if(schedule.get(notComp.getCourse()).equals(slot)){
                         return null;
                     }
                 }
