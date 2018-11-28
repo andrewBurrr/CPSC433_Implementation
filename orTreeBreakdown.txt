@@ -49,6 +49,7 @@ Or-Tree Search Model:
     - guided() implments seach control K_{\lor_2}
     guided(G): 
         int depth = 0 
+
         leafs = ArrayList<Node>
         leafs.add(G[0])
         while true:
