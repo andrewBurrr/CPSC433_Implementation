@@ -21,9 +21,7 @@ public class Course {
     public boolean equals(Object obj){
         if(obj instanceof Course){
             Course c = (Course) obj;
-            if(this.identifier.equals(c.identifier)){
-                return true;
-            }
+            return this.identifier.equals(c.identifier);
         }
         return false;
     }
