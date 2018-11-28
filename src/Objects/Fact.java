@@ -80,9 +80,12 @@ public class Fact {
 
      public int getEvaluation() {
          // call sum from other eval functions defined in assignment description
-         return -1;
+         return evaluation;
      }
 
+     public void setEvaluation(int evaluation){
+         this.evaluation = evaluation;
+     }
      public Map<Course, Slot> getScheduel(){
          return schedule;
      }
