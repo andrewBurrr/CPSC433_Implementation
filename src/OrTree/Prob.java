@@ -43,7 +43,7 @@ public class Prob extends Fact{
             Map.Entry<Course, Slot> entry = itor.next();
             Course course = entry.getKey();
             Slot slot = entry.getValue();
-            if(course.getIdentifier().matches("[\\s]*(CPSC)[\\s]+(5)+\\d+[\\s]+(LEC)[\\s]+\\d+[\\s]*")){
+            if(course.getNumber().matches("5\\d\\d")){
                 this.slots500.add(slot);
             }
         }
@@ -60,7 +60,7 @@ public class Prob extends Fact{
             default: this.state = State.UNSOLVED;
         }
         this.slots500 = leaf.slots500;
-        if(assignment.getCourse().getIdentifier().matches("[\\s]*(CPSC)[\\s]+(5)+\\d+[\\s]+(LEC)[\\s]+\\d+[\\s]*")){
+        if(assignment.getCourse().getNumber().matches("5\\d\\d")) {
             this.slots500.add(assignment.getSlot());
         }
     }
