@@ -66,11 +66,12 @@ public class OTreeModel {
         }
         
         Prob part = checkPartials(partAssign);
-        if(part==null){
+        if(part.isUnsolvable()){
             System.out.println("Error: Partial assignments are not valid");
         } else{
             root = part;
         }
+        System.out.println(root.toString());
     }
     
     /**
@@ -196,7 +197,7 @@ public class OTreeModel {
             for(NotCompatible notComp:notCompatible){
                 if(notComp.getClass(0).equals(course)){
                     if(schedule.get(notComp.getClass(1)).equals(slot)){
-                        return null;
+                        return new Prob(schedule, "No");
                     }
                 }
             }
@@ -204,7 +205,7 @@ public class OTreeModel {
             // Check Unwanted
             Set<Unwanted> unwanted = parser.getUnwanted();
             if(unwanted.contains(new Unwanted(course, slot))){
-                return null;
+                return new Prob(schedule, "No");
             }
             
             // Check labs and courses are not at the same time 
@@ -213,7 +214,7 @@ public class OTreeModel {
                 Set<Lab> labs = parser.getCourseLabs().get(newLecture);
                 for(Lab lab:labs){
                     if(slot.equals(schedule.get(lab))){
-                        return null;
+                        return new Prob(schedule, "No");
                     }
                 }
             } 
@@ -221,19 +222,19 @@ public class OTreeModel {
             // Check no lecture at TU 11:00-12:30
             if(course instanceof Lecture){
                 if(slot.getDay().equals("TU") && slot.getTime().equals("11:00")){
-                    return null;
+                    return new Prob(schedule, "No");
                 }
             }
             // Check to make sure all Lec 09 are after evening(variable [0,24])
             if(course.getSection().equals("09")){
                 if(Integer.parseInt(slot.getTime().substring(0,2))<evening){
-                    return null;
+                    return new Prob(schedule, "No");
                 }
             }
              // Check 500-level classes dont conflict
              if(course.getSection().matches("5\\d\\d")) {
                 if(num500.contains(slot)){
-                    return null;
+                    return new Prob(schedule, "No");
                 } else{
                     num500.add(slot);
                 }
@@ -247,7 +248,8 @@ public class OTreeModel {
         while(itorCMax.hasNext()){
             Map.Entry<Slot, Integer> entrCMax = itorCMax.next();
             if(entrCMax.getKey().getMax()<entrCMax.getValue()){
-                return null;
+                part.setState("No");
+                return part;
             }
         }
         
@@ -256,7 +258,8 @@ public class OTreeModel {
         while(itorLMax.hasNext()){
             Map.Entry<Slot, Integer> entrLMax = itorLMax.next();
             if(entrLMax.getKey().getMax()<entrLMax.getValue()){
-                return null;
+                part.setState("No");
+                return part;
             }
         }
         
@@ -291,7 +294,26 @@ public class OTreeModel {
         OrTreeControl1 control = new OrTreeControl1();
         PriorityQueue<Prob> leafs = new PriorityQueue(avaCourses.size()*avaCourses.size(), control);
         
-        leafs.add(root);
+        if(root == null){
+            leafs.add(root);
+        } else{
+            Random rand = new Random();
+            Course course = avaCourses.remove(rand.nextInt((avaCourses.size())));
+            if( course instanceof Lecture){
+                for(Slot slot: parser.getCourseSlots()){
+                    HashMap<Course, Slot> schedule = new HashMap();
+                    schedule.put(course, slot);
+                    leafs.add(checkPartials(schedule));
+                }
+            } else {
+                for(Slot slot: parser.getLabSlots()){
+                    HashMap<Course, Slot> schedule = new HashMap();
+                    schedule.put(course, slot);
+                    leafs.add(checkPartials(schedule));
+                }
+            }
+            
+        }
         while(!leafs.isEmpty()){
             Prob leaf = leafs.poll();
             if(leaf.isSolved()){

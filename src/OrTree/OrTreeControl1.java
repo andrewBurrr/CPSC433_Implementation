@@ -30,7 +30,7 @@ public class OrTreeControl1 implements Comparator<Prob>{
         val2 += o2.getScheduel().size();
         // Add some random value 
         Random rand = new Random();
-        val1 += rand.nextInt(max/4-1);
+        val1 += rand.nextInt(max/4)-1;
         val2 += rand.nextInt(max/4)-1;
         
         return val1-val2;

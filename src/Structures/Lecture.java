@@ -19,9 +19,7 @@ public class Lecture extends Course {
         super(input[0], input[1], input[2], input[3]);
         if(input.length >=6){
             this.labs = Arrays.copyOfRange(input, 5, input.length+1);
-            System.out.println(Arrays.toString(labs));
             for(int i = 0; i <this.labs.length; i++){
-                System.out.println(labs[i]);
                 this.labs[i] = this.labs[i].trim();
             }
         } else {

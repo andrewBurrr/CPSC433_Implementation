@@ -6,6 +6,7 @@ import Structures.Course;
 import Structures.Slot;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 
 import java.util.Map;
 import java.util.Set;
@@ -43,6 +44,7 @@ public class Prob extends Fact{
             Map.Entry<Course, Slot> entry = itor.next();
             Course course = entry.getKey();
             Slot slot = entry.getValue();
+            this.slots500 = new LinkedHashSet();
             if(course.getNumber().matches("5\\d\\d")){
                 this.slots500.add(slot);
             }
