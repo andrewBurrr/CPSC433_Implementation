@@ -1,10 +1,7 @@
-package Objects;
+package SetBased;
 
-import java.util.HashMap;
 import java.util.Random;
 import java.util.Set;
-import Structures.Class;
-import Structures.Slot;
 
 
 public class setBased {

@@ -2,9 +2,9 @@ package OrTree;
 
 import Parser.Reader;
 import Structures.Assignment;
-import Structures.Class;
-import Structures.Lab;
 import Structures.Course;
+import Structures.Lab;
+import Structures.Lecture;
 import Structures.NotCompatible;
 import Structures.Slot;
 import Structures.Unwanted;
@@ -24,7 +24,7 @@ public class OTreeModel {
     private final int evening = 12;
     private Prob root;
     private Set<NotCompatible> notCompatible;
-    private LinkedList<Class> usedCourses;
+    private HashMap<Course, Slot> usedCourses;
     
     
     public OTreeModel() {
@@ -36,33 +36,30 @@ public class OTreeModel {
         this.parser = parser;
         
         // Get partial assignments
-        HashMap<Class, Slot> partAssign = new HashMap<>();
-        parser.getPartialAssignments().forEach((assign) -> {
-            partAssign.put(assign.getCourse(),assign.getSlot());
-            usedCourses.remove(assign.getCourse());
-        });
+        HashMap<Course, Slot> partAssign = parser.getPartialAssignments();
+        usedCourses = partAssign;
         
         // Check for CPSC 313 and 413 and add 813/913 and their not-compatibles
         notCompatible = parser.getNotCompatible();
         // Check for CPSC 313
-        Set<Course> courses = parser.getCourses();
-        if(courses.contains(new Course("CPSC 313 LEC 01"))){
-            partAssign.put(new Lab("CPSC 813 TUT 01"), new Slot("TU","18:00", Integer.MAX_VALUE,0));
+        Set<Lecture> courses = parser.getCourses();
+        if(courses.contains(new Lecture("CPSC 313 LEC 01"))){
+            partAssign.put(new Lab("CPSC 813 TUT 01"), new Slot("TU","18:00", Integer.MAX_VALUE,0)); // Might over load slot if this slot exists
             Iterator<NotCompatible> itor = notCompatible.iterator();
             while(itor.hasNext()){
                 NotCompatible noPair = itor.next();
-                if(noPair.getClass(0).equals(new Course("CPSC 313 LEC 01"))){
+                if(noPair.getClass(0).equals(new Lecture("CPSC 313 LEC 01"))){
                     notCompatible.add(new NotCompatible(noPair.getClass(0), new Lab("CPSC 813 TUT 01")));
                 }
             }
         } 
         // Check for CPSC 413
-        if(courses.contains(new Course("CPSC 413 LEC 01"))){
-            partAssign.put(new Lab("CPSC 913 TUT 01"), new Slot("TU","18:00", Integer.MAX_VALUE,0));
+        if(courses.contains(new Lecture("CPSC 413 LEC 01"))){
+            partAssign.put(new Lab("CPSC 913 TUT 01"), new Slot("TU","18:00", Integer.MAX_VALUE,0));  // Might over load slot if this slot exists
             Iterator<NotCompatible> itor = notCompatible.iterator();
             while(itor.hasNext()){
                 NotCompatible noPair = itor.next();
-                if(noPair.getClass(0).equals(new Course("CPSC 413 LEC 01"))){
+                if(noPair.getClass(0).equals(new Lecture("CPSC 413 LEC 01"))){
                     notCompatible.add(new NotCompatible(noPair.getClass(0), new Lab("CPSC 913 TUT 01")));
                 }
             }
@@ -83,9 +80,9 @@ public class OTreeModel {
      * @return 
      */
     private String getState(Prob parent, Assignment newAsign){
-        Class newCourse = newAsign.getCourse();
+        Course newCourse = newAsign.getCourse();
         Slot newSlot = newAsign.getSlot();
-        HashMap<Class, Slot> schedule = (HashMap<Class, Slot>) parent.getScheduel();
+        HashMap<Course, Slot> schedule = (HashMap<Course, Slot>) parent.getScheduel();
         
         // Check Not Compatible set against new assignment
         for(NotCompatible notComp:notCompatible){
@@ -107,7 +104,7 @@ public class OTreeModel {
         }
         
         // Check courseMax
-        if(newCourse instanceof Course){
+        if(newCourse instanceof Lecture){
             HashMap<Slot, Integer> numCourse = parent.getNumCourses();
             if(numCourse.containsKey(newSlot)){
                 if(numCourse.get(newSlot)+1 >= newSlot.getMax()){
@@ -124,8 +121,8 @@ public class OTreeModel {
         }
 
         // Check labs and courses are not at same time
-        if(newCourse instanceof Course){
-            Course newLecture = (Course) newCourse;
+        if(newCourse instanceof Lecture){
+            Lecture newLecture = (Lecture) newCourse;
             Set<Lab> labs = parser.getCourseLabs().get(newLecture);
             for(Lab lab:labs){
                 if(schedule.get(lab).equals(newSlot)){
@@ -133,11 +130,11 @@ public class OTreeModel {
                 }
             }
         } else{ // Check to see if lab conflicts with lecture 
-            Iterator<Map.Entry<Course, Set<Lab>>> map = parser.getCourseLabs().entrySet().iterator();
+            Iterator<Map.Entry<Lecture, Set<Lab>>> map = parser.getCourseLabs().entrySet().iterator();
             outerloop:
             while(map.hasNext()){
-                Map.Entry<Course, Set<Lab>> entry = map.next();
-                Course lecture = entry.getKey();
+                Map.Entry<Lecture, Set<Lab>> entry = map.next();
+                Lecture lecture = entry.getKey();
                 Set<Lab> labs = entry.getValue();
                 for(Lab lab:labs){
                     if(lab.equals((Lab) newCourse)){
@@ -157,14 +154,14 @@ public class OTreeModel {
         }
         
         // Check to make sure all Lec 09 are after evening(variable [0,24])
-        if(newCourse.getIdentifier().matches("[\\s]*(CPSC|SENG)[\\s]+\\d+[\\s]+(LEC)[\\s]+(09)+[\\s]*")){
+        if(newCourse.getSection().equals("09")) {
             if(Integer.parseInt(newSlot.getTime().substring(0,2))<evening){
                 return "No";
             }
         }
         
         // Check 500-level classes dont conflict
-        if(newCourse.getIdentifier().matches("[\\s]*(CPSC)[\\s]+(5)+\\d+[\\s]+(LEC)[\\s]+\\d+[\\s]*")){
+        if(newCourse.getNumber().matches("5\\d\\d")){
             if(parent.get500Slots().contains(newSlot)){
                 return "No";
             }
@@ -184,15 +181,15 @@ public class OTreeModel {
      * @param schedule
      * @return 
      */
-    private Prob checkPartials(HashMap<Class, Slot> schedule){
-        Set<Map.Entry<Class, Slot>> map = schedule.entrySet();
-        Iterator<Map.Entry<Class, Slot>> itor = map.iterator();
+    private Prob checkPartials(HashMap<Course, Slot> schedule){
+        Set<Map.Entry<Course, Slot>> map = schedule.entrySet();
+        Iterator<Map.Entry<Course, Slot>> itor = map.iterator();
         HashSet<Slot> num500 = new HashSet();
         
         // Iterate over all assignments checking one-side of constraints for each
         while(itor.hasNext()){
-            Map.Entry<Class, Slot> entry = itor.next();
-            Class course = entry.getKey();
+            Map.Entry<Course, Slot> entry = itor.next();
+            Course course = entry.getKey();
             Slot slot = entry.getValue();
             
             // Check not compatible set
@@ -211,8 +208,8 @@ public class OTreeModel {
             }
             
             // Check labs and courses are not at the same time 
-            if(course instanceof Course){ // Check to see if lecture conflicts
-                Course newLecture = (Course) course;
+            if(course instanceof Lecture){ // Check to see if lecture conflicts
+                Lecture newLecture = (Lecture) course;
                 Set<Lab> labs = parser.getCourseLabs().get(newLecture);
                 for(Lab lab:labs){
                     if(slot.equals(schedule.get(lab))){
@@ -222,19 +219,19 @@ public class OTreeModel {
             } 
             
             // Check no lecture at TU 11:00-12:30
-            if(course instanceof Course){
+            if(course instanceof Lecture){
                 if(slot.getDay().equals("TU") && slot.getTime().equals("11:00")){
                     return null;
                 }
             }
             // Check to make sure all Lec 09 are after evening(variable [0,24])
-            if(course.getIdentifier().matches("[\\s]*(CPSC|SENG)[\\s]+\\d+[\\s]+(LEC)[\\s]+(09)+[\\s]*")){
+            if(course.getSection().equals("09")){
                 if(Integer.parseInt(slot.getTime().substring(0,2))<evening){
                     return null;
                 }
             }
              // Check 500-level classes dont conflict
-             if(course.getIdentifier().matches("[\\s]*(CPSC)[\\s]+(5)+\\d+[\\s]+(LEC)[\\s]+\\d+[\\s]*")){
+             if(course.getSection().matches("5\\d\\d")) {
                 if(num500.contains(slot)){
                     return null;
                 } else{
@@ -272,10 +269,10 @@ public class OTreeModel {
         return part;
     }
     
-    private ArrayList<Prob> altern(Prob leaf, Class g){
+    private ArrayList<Prob> altern(Prob leaf, Course g){
         ArrayList<Prob> alterns = new ArrayList();
         Set<Slot> slots;
-        if(g instanceof Course){
+        if(g instanceof Lecture){
             slots = parser.getCourseSlots();
         } else {
             slots = parser.getLabSlots();
@@ -288,9 +285,9 @@ public class OTreeModel {
     }
     
     public Prob depthFirst(){
-        LinkedList<Class> avaCourses = new LinkedList(parser.getCourses());
+        LinkedList<Course> avaCourses = new LinkedList(parser.getCourses());
         avaCourses.addAll(parser.getLabs());
-        avaCourses.removeAll(usedCourses);
+        avaCourses.removeAll(usedCourses.keySet());
         OrTreeControl1 control = new OrTreeControl1();
         PriorityQueue<Prob> leafs = new PriorityQueue(avaCourses.size()*avaCourses.size(), control);
         
@@ -310,7 +307,7 @@ public class OTreeModel {
     }
     
     public Prob guided(LinkedList<Assignment> guide){
-        guide.stream().filter((assign) -> (usedCourses.contains(assign.getCourse()))).forEachOrdered((assign) -> {
+        guide.stream().filter((assign) -> (usedCourses.containsKey(assign.getCourse()))).forEachOrdered((assign) -> {
             guide.remove(assign);
         });
         OrTreeControl2 control = new OrTreeControl2(guide.toArray(new Assignment[0]), usedCourses.size());

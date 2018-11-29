@@ -1,43 +1,40 @@
 package Structures;
 
+import java.util.Arrays;
+
 public class Preference {
-    private final Class course;
-    private final Lab lab;
+    private final Course course;
     private final Slot slot;
     private final int value;
 
-//    public Preference(String[] input) {
-//        this(input[0], input[1], input[2], input[3]);
-//    }
-
-    public Preference( Class course, Slot slot, String value) {
+    public Preference( Course course, Slot slot, String value) {
         this.course = course;
-        this.lab = null;
         this.slot = slot;
-        this.value = Integer.parseInt(value);
+        this.value = Integer.parseInt(value.trim());
     }
-
-    public Preference(Lab lab, Slot slot, String value){
-        this.lab = lab;
-        this.course = null;
-        this.slot = slot;
-        this.value = Integer.parseInt(value);
+    
+    public Preference(String[] input){
+        this(Arrays.copyOfRange(input, 0, 2), input[2], input[3]);
     }
-    @Override
-    public String toString() {
-        if (course != null) {
-            return String.format("%s, %s, %s, %s\n",
-                    slot.getDay(), slot.getTime(), course.getIdentifier(), value);
-        } else {
-            return String.format("%s, %s, %s, %s\n",
-                    slot.getDay(), slot.getTime(), lab.getIdentifier(), value);
+    
+    public Preference(String[] slot, String course, String pref){
+        this.slot = new Slot(slot);
+        this.value = Integer.parseInt(pref.trim());
+        if(course.matches(".*(TUT|LAB).*")){ 
+            this.course = new Lab(course);
+        } else{
+            this.course = new Lecture(course);
         }
     }
-    public Class getCourse(){ return course; }
+    
+    @Override
+    public String toString() {
+        return String.format("%s, %s, %s\n",
+                slot.toString(), course.toString(), value);
+    }
+    public Course getCourse(){ return course; }
 
     public Slot getSlot(){ return slot; }
-
-    public Lab getLab(){ return lab; }
 
     public int getValue(){ return value; }
 }

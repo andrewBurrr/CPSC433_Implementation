@@ -1,17 +1,17 @@
 package Structures;
 
 public class PartialAssignment {
-    private final Class course;
+    private final Course course;
     private final Slot slot;
 
 
-    public PartialAssignment( Class course, Slot slot ) {
+    public PartialAssignment( Course course, Slot slot ) {
         this.course = course;
         this.slot = slot;
     }
 
 
-    public Class getCourse(){
+    public Course getCourse(){
         return course;
     }
 
@@ -21,8 +21,8 @@ public class PartialAssignment {
 
     @Override
     public String toString() {
-        return String.format("%s, %s, %s\n", course.getIdentifier(),
-                slot.getDay(), slot.getTime());
+        return String.format("%s, %s\n", course.toString(),
+                slot.toString());
     }
 
 }

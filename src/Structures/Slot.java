@@ -9,11 +9,11 @@ public class Slot {
     private final int min;
 
     public Slot(String[] input) {
-        this.day = input[0];
-        this.time = input[1];
+        this.day = input[0].trim();
+        this.time = input[1].trim();
         if(input.length==4){
-            this.max = Integer.parseInt(input[2]);
-            this.min = Integer.parseInt(input[3]);
+            this.max = Integer.parseInt(input[2].trim());
+            this.min = Integer.parseInt(input[3].trim());
         } else{
             this.max = Integer.MAX_VALUE;
             this.min = 0;
@@ -21,14 +21,15 @@ public class Slot {
     }
 
     public Slot( String day, String time, String max, String min ) {
-        this.day = day;
-        this.time = time;
-        this.max = Integer.parseInt(max);
-        this.min = Integer.parseInt(min);
+        this.day = day.trim();
+        this.time = time.trim();
+        this.max = Integer.parseInt(max.trim());
+        this.min = Integer.parseInt(min.trim());
     }
-        public Slot( String day, String time, int max, int min ) {
-        this.day = day;
-        this.time = time;
+    
+    public Slot( String day, String time, int max, int min ) {
+        this.day = day.trim();
+        this.time = time.trim();
         this.max = max;
         this.min = min;
     }

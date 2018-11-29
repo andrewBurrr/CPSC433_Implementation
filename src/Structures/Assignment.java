@@ -10,7 +10,7 @@ package Structures;
  * @author thomasnewton
  */
 public class Assignment {
-    private final Class course;
+    private final Course course;
     private final Slot slot;
     
     public Assignment(){
@@ -18,12 +18,12 @@ public class Assignment {
         this.slot = null;
     }
     
-    public Assignment(Class course, Slot slot){
+    public Assignment(Course course, Slot slot){
         this.course = course;
         this.slot = slot;
     }
     
-    public Class getCourse(){
+    public Course getCourse(){
         return course;
     }
     
