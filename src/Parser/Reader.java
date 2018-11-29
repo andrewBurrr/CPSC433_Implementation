@@ -58,6 +58,8 @@ public class Reader {
 
     public Reader(String fileName) {
 
+        courseLabs = new HashMap();
+        
         Scanner fileRead;
         String temp;
 
@@ -168,7 +170,8 @@ public class Reader {
                     courseLabs.get(tempLec).add(tempLab);
                 } else {
                     LinkedHashSet<Lab> temp = new LinkedHashSet();
-                    courseLabs.pi(tempLec, temp.add(tempLab));
+                    temp.add(tempLab);
+                    courseLabs.put(tempLec, temp);
                 }
                 
             } else if (fileRead.hasNext(SECTION)) {
