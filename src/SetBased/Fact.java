@@ -102,7 +102,7 @@ public class Fact {
     public String toString() {
         StringBuilder temp = new StringBuilder("Eval-value: " + evaluation + "\n");
         for (Map.Entry<Course, Slot> entry : schedule.entrySet()) {
-            temp.append(String.format("%-26s:%s", entry.getKey(), entry.getValue()));
+            temp.append(String.format("%-26s\t:%s\n", entry.getKey(), entry.getValue()));
         }
         return temp.toString();
     }

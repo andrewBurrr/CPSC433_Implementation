@@ -24,7 +24,7 @@ public class Course {
     
     @Override
     public String toString() {
-        return String.format("%s, %s, %s, %s\n", name, number, type, section);
+        return String.format("%s, %s, %s, %s", name, number, type, section);
     }
 
     public String getName() { return name; }

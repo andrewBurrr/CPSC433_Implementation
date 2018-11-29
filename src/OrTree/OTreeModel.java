@@ -337,8 +337,6 @@ public class OTreeModel {
         }
         while(!leafs.isEmpty()){
             Prob leaf = leafs.poll();
-            System.out.printf("Unsolvable:%b\n",leaf.isUnsolvable());
-            System.out.printf("Solved:%b\n",leaf.isSolved());
             if(leaf.isSolved()){
                 return leaf; // Return solution
             } else if(!leaf.isUnsolvable()){ 

@@ -33,6 +33,6 @@ public class Lab extends Course {
     @Override
    public String toString(){
        String s = super.toString();
-       return String.format("%s, LEC %s\n", s.replace("\n", ""), lecture);
+       return String.format("%s, LEC %s", s, lecture);
    }
 }

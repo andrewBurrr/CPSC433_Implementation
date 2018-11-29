@@ -18,6 +18,7 @@ public class Main {
         }
         
         Prob f = otree.depthFirst();
+        System.out.println("\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
         System.out.println(f.toString());
     }
 }
