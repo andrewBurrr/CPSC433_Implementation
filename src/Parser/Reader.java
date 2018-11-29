@@ -65,7 +65,7 @@ public class Reader {
 
         try {
 
-            fileRead = new Scanner(new File(fileName)).useDelimiter("\n");
+            fileRead = new Scanner(new File(fileName)).useDelimiter("\\n");
 
             while (fileRead.hasNext()) {
                 temp = fileRead.nextLine().trim();
@@ -113,11 +113,11 @@ public class Reader {
         String temp;
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(courseSlotPattern)) { // 2 additional regexs for monday, then tuesday, else error
-                temp = fileRead.next(courseSlotPattern);
-                courseSlots.add(new Slot(temp.split(",")));
+                temp = fileRead.next(courseSlotPattern).trim();
+                courseSlots.add(new Slot(temp.split(",\\s*")));
             } else if (fileRead.hasNext(SECTION)) {
                 break;
-            } else if (!fileRead.next().isEmpty()){
+            } else if (!(fileRead.next().trim().isEmpty())){
                 throw new InvalidInputException(String.format("Failed To Parse Line In Course Slots: %s", fileRead.next()));
             }
         }
@@ -133,7 +133,7 @@ public class Reader {
                 labSlots.add(new Slot(fileRead.nextLine().split(",")));
             } else if (fileRead.hasNext(SECTION)) {
                 break;
-            } else {
+            } else if (!(fileRead.next().trim().isEmpty())){
                 throw new InvalidInputException(String.format("Failed To Parse Line In Lab Slots: %s", fileRead.next()));
             }
         }
@@ -146,11 +146,11 @@ public class Reader {
         courses = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(coursePattern)) {
-                Lecture temp = new Lecture(fileRead.next());
+                Lecture temp = new Lecture(fileRead.next().trim());
                 courses.add(temp);
             } else if (fileRead.hasNext(SECTION)) {
                 break;
-            } else if(!fileRead.next().isEmpty()) {
+            } else if(!fileRead.next().trim().isEmpty()) {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Courses: %s", fileRead.next()));
             }
         }
@@ -163,7 +163,7 @@ public class Reader {
         labs = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(labPattern)) {
-                Lab tempLab = new Lab(fileRead.next());
+                Lab tempLab = new Lab(fileRead.next().trim());
                 labs.add(tempLab);
                 Lecture tempLec = new Lecture(tempLab.getName(), tempLab.getNumber(),"LEC", tempLab.getSection());
                 if(courseLabs.containsKey(tempLec)){
@@ -176,7 +176,7 @@ public class Reader {
                 
             } else if (fileRead.hasNext(SECTION)) {
                 break;
-            } else if (!fileRead.next().isEmpty()) {
+            } else if (!fileRead.next().trim().isEmpty()) {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Labs: %s", fileRead.next()));
             }
         }
@@ -189,10 +189,10 @@ public class Reader {
         notCompatible = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext( notCompatiblePattern)) {
-                notCompatible.add(new NotCompatible(fileRead.next().split(",")));
+                notCompatible.add(new NotCompatible(fileRead.next().trim().split(",")));
             } else if (fileRead.hasNext(SECTION)) {
                 break;
-            } else if (!fileRead.next().isEmpty()){
+            } else if (!fileRead.next().trim().isEmpty()){
                 throw new InvalidInputException(String.format("Failed To Parse Line In Not Compatible: %s", fileRead.next()));
             }
         }
@@ -205,10 +205,10 @@ public class Reader {
         unwanted = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(unwantedPattern)) {
-                unwanted.add(new Unwanted(fileRead.next().split(",")));
+                unwanted.add(new Unwanted(fileRead.next().trim().split(",")));
             } else if (fileRead.hasNext(SECTION)) {
                 break;
-            } else if (!fileRead.next().isEmpty()) {
+            } else if (!fileRead.next().trim().isEmpty()) {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Unwanted: %s", fileRead.next()));
             }
         }
@@ -221,10 +221,10 @@ public class Reader {
         preferences = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(preferencePattern)) {
-                preferences.add(new Preference(fileRead.next().split(",")));
+                preferences.add(new Preference(fileRead.next().trim().split(",")));
             } else if (fileRead.hasNext(SECTION)){
                 break;
-            } else  if (!fileRead.next().isEmpty()) {
+            } else  if (!fileRead.next().trim().isEmpty()) {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Preferences: %s", fileRead.next()));
             }
         }
@@ -237,10 +237,10 @@ public class Reader {
         pairs = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(pairPattern)) {
-                pairs.add(new Pair(fileRead.next().split(",")));
+                pairs.add(new Pair(fileRead.next().trim().split(",")));
             } else if (fileRead.hasNext(SECTION)) {
                 break;
-            } else if (!fileRead.next().isEmpty()) {
+            } else if (!fileRead.next().trim().isEmpty()) {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Pair: %s", fileRead.next()));
             }
         }
@@ -253,7 +253,7 @@ public class Reader {
         partialAssignments = new HashMap<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(partialAssignmentPattern)) {
-                String[] line = fileRead.next().split(",");
+                String[] line = fileRead.next().trim().split(",");
                 if(line[0].matches(".*(TUT|LAB).*")) {
                     partialAssignments.put(new Lab(line[0]), new Slot(Arrays.copyOfRange(line, 1, 3)));
                 } else {
@@ -261,7 +261,7 @@ public class Reader {
                 }
             } else if (fileRead.hasNext(SECTION)) {
                 break;
-            } else if (!fileRead.next().isEmpty()) {
+            } else if (!fileRead.next().trim().isEmpty()) {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Partial Assignments: %s", fileRead.next()));
             }
         }
