@@ -2,7 +2,7 @@ package OrTree;
 
 import Objects.Fact;
 import Structures.Assignment;
-import Structures.Course;
+import Structures.Class;
 import Structures.Slot;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -29,7 +29,7 @@ public class Prob extends Fact{
     }
     
     public Prob(Map schedule, String sol){
-        super(new HashMap((HashMap<Course, Slot>) schedule));
+        super(new HashMap((HashMap<Class, Slot>) schedule));
         switch(sol) {
             case "Yes": this.state = State.SOLVED;
             break;
@@ -38,10 +38,10 @@ public class Prob extends Fact{
             default: this.state = State.UNSOLVED;
         }
         // Might want to move this into OTreeModel
-        Iterator<Map.Entry<Course, Slot>> itor = schedule.entrySet().iterator();
+        Iterator<Map.Entry<Class, Slot>> itor = schedule.entrySet().iterator();
         while(itor.hasNext()){
-            Map.Entry<Course, Slot> entry = itor.next();
-            Course course = entry.getKey();
+            Map.Entry<Class, Slot> entry = itor.next();
+            Class course = entry.getKey();
             Slot slot = entry.getValue();
             if(course.getIdentifier().matches("[\\s]*(CPSC)[\\s]+(5)+\\d+[\\s]+(LEC)[\\s]+\\d+[\\s]*")){
                 this.slots500.add(slot);

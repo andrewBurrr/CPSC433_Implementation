@@ -1,8 +1,8 @@
 package Structures;
 
-public class Lecture extends Course {
+public class Course extends Class {
 
-    public Lecture(String identifier) {
+    public Course(String identifier) {
         super(identifier);
     }
 }

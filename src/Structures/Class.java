@@ -2,11 +2,11 @@ package Structures;
 
 import java.util.Objects;
 
-public class Course {
+public class Class {
 
     private String identifier;
 
-    public Course(String identifier) {
+    public Class(String identifier) {
         this.identifier = identifier;
     }
 
@@ -19,8 +19,8 @@ public class Course {
 
     @Override
     public boolean equals(Object obj){
-        if(obj instanceof Course){
-            Course c = (Course) obj;
+        if(obj instanceof Class){
+            Class c = (Class) obj;
             return this.identifier.equals(c.identifier);
         }
         return false;

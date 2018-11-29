@@ -1,21 +1,24 @@
 package Structures;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class NotCompatible {
-    private final Map<Course, Course> courseCourse;
+    private final Class c1;
+    private final Class c2;
 
-    public NotCompatible(HashMap<Course, Course> CourseCourse) {
-        this.courseCourse = CourseCourse;
+    public NotCompatible(Class c1, Class c2) {
+        this.c1 = c1;
+        this.c2 = c2;
     }
 
     @Override
     public String toString() {
-        Course course1 = (Course) courseCourse.keySet().toArray()[0];
-        return String.format("%s, %s\n", course1.getIdentifier(),
-                courseCourse.get(course1).getIdentifier());
+        return String.format("%s, %s\n", c1.toString(), c2.toString());
     }
-
-    public Map<Course, Course> getCourse(){ return courseCourse;}
+    
+    public Class getClass(int n){
+        switch(n){
+            case 0: return c1;
+            case 1: return c2;
+            default: return null;
+        }
+    }
 }

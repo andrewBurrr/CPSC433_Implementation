@@ -4,15 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Pair {
-    private final Map<Course, Course> courseCourse;
+    private final Map<Class, Class> courseCourse;
 
-    public Pair(HashMap<Course, Course> CourseCourse) {
+    public Pair(HashMap<Class, Class> CourseCourse) {
         this.courseCourse = CourseCourse;
     }
 
     @Override
     public String toString() {
-        Course course1 = (Course) courseCourse.keySet().toArray()[0];
+        Class course1 = (Class) courseCourse.keySet().toArray()[0];
         return String.format("%s, %s\n", course1.getIdentifier(),
                     courseCourse.get(course1).getIdentifier());
     }

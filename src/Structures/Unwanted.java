@@ -1,15 +1,15 @@
 package Structures;
 
 public class Unwanted {
-    private final Course course;
+    private final Class course;
     private final Slot slot;
 
-    public Unwanted(Course course, Slot slot) {
+    public Unwanted(Class course, Slot slot) {
         this.course = course;
         this.slot = slot;
     }
 
-    public Course getCourse(){
+    public Class getCourse(){
         return course;
     }
     

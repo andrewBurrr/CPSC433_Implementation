@@ -1,9 +1,9 @@
 package Objects;
 
 import Structures.Assignment;
-import Structures.Course;
+import Structures.Class;
 import Structures.Lab;
-import Structures.Lecture;
+import Structures.Course;
 import Structures.Slot;
 
 import java.util.HashMap;
@@ -12,20 +12,20 @@ import java.util.Map;
 import java.util.Set;
 
 public class Fact {
-    private Map<Course, Slot> schedule;
+    private Map<Class, Slot> schedule;
     private int evaluation;
     private HashMap<Slot, Integer> numCourseSlot;
     private HashMap<Slot, Integer> numLabSlot;
 
      public Fact() {
-            this(new HashMap<Course,Slot>(), Integer.MAX_VALUE);
+            this(new HashMap<Class,Slot>(), Integer.MAX_VALUE);
      }
 
-     public Fact(HashMap<Course, Slot> schedule) {
+     public Fact(HashMap<Class, Slot> schedule) {
          this(schedule, Integer.MAX_VALUE);
      }
 
-     public Fact(HashMap<Course,Slot> schedule, int evaluation) {
+     public Fact(HashMap<Class,Slot> schedule, int evaluation) {
          this.schedule = schedule;
          this.evaluation = evaluation;
          this.numCourseSlot = new HashMap<>(schedule.size());
@@ -33,13 +33,13 @@ public class Fact {
          
          
          // Something to generate numCourseSlot and numLabSlot
-         Set<Map.Entry<Course, Slot>> map = schedule.entrySet(); //Convert map to set of entries <Course,Slot>
-         Iterator<Map.Entry<Course,Slot>> itor = map.iterator(); //COnvert set to an iterator
+         Set<Map.Entry<Class, Slot>> map = schedule.entrySet(); //Convert map to set of entries <Course,Slot>
+         Iterator<Map.Entry<Class,Slot>> itor = map.iterator(); //COnvert set to an iterator
          while(itor.hasNext()){ 
-             Map.Entry<Course,Slot> entry = itor.next(); // Get next entry
-             Course course = entry.getKey(); // Get the course from entry
+             Map.Entry<Class,Slot> entry = itor.next(); // Get next entry
+             Class course = entry.getKey(); // Get the course from entry
              Slot slot = entry.getValue(); // Get the slot from entry
-             if(course instanceof Lecture){ // If course is a lecture 
+             if(course instanceof Course){ // If course is a lecture 
                  // If slot already exits i slot get the Integer and increment else set to 1
                 this.numCourseSlot.put(slot, this.numCourseSlot.getOrDefault(slot,0)+1);
              } else if(course instanceof Lab){ // If course is a lab
@@ -58,9 +58,9 @@ public class Fact {
          this.numLabSlot = new HashMap(parent.getNumLabs());
          
          this.schedule.put(newAssign.getCourse(),newAssign.getSlot());
-         Course newCourse = newAssign.getCourse();
+         Class newCourse = newAssign.getCourse();
          Slot newSlot = newAssign.getSlot();
-         if(newCourse instanceof Lecture){ // If new course is a lecture
+         if(newCourse instanceof Course){ // If new course is a lecture
              // If slot already exits i slot get the Integer and increment else set to 1
             this.numCourseSlot.put(newSlot, this.numCourseSlot.getOrDefault(newSlot,0)+1);
          } else if(newCourse instanceof Lab) { // If new course is a lab
@@ -86,7 +86,7 @@ public class Fact {
      public void setEvaluation(int evaluation){
          this.evaluation = evaluation;
      }
-     public Map<Course, Slot> getScheduel(){
+     public Map<Class, Slot> getScheduel(){
          return schedule;
      }
      
@@ -101,7 +101,7 @@ public class Fact {
     @Override
     public String toString() {
         StringBuilder temp = new StringBuilder("Eval-value: " + evaluation + "\n");
-        for (Map.Entry<Course, Slot> entry : schedule.entrySet()) {
+        for (Map.Entry<Class, Slot> entry : schedule.entrySet()) {
             temp.append(String.format("%-26s:%s", entry.getKey(), entry.getValue()));
         }
         return temp.toString();

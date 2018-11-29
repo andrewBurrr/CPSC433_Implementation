@@ -1,7 +1,7 @@
 package Structures;
 
 public class Preference {
-    private final Course course;
+    private final Class course;
     private final Lab lab;
     private final Slot slot;
     private final int value;
@@ -10,7 +10,7 @@ public class Preference {
 //        this(input[0], input[1], input[2], input[3]);
 //    }
 
-    public Preference( Course course, Slot slot, String value) {
+    public Preference( Class course, Slot slot, String value) {
         this.course = course;
         this.lab = null;
         this.slot = slot;
@@ -33,7 +33,7 @@ public class Preference {
                     slot.getDay(), slot.getTime(), lab.getIdentifier(), value);
         }
     }
-    public Course getCourse(){ return course; }
+    public Class getCourse(){ return course; }
 
     public Slot getSlot(){ return slot; }
 

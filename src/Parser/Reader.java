@@ -40,7 +40,7 @@ public class Reader {
     private String name;
     private Set<Slot> courseSlots;
     private Set<Slot> labSlots;
-    private Set<Lecture> courses;
+    private Set<Course> courses;
     private Set<Lab> labs;
     private Set<NotCompatible> notCompatible;
     private Set<Unwanted> unwanted;
@@ -143,7 +143,7 @@ public class Reader {
         courses = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(coursePattern)) {
-                courses.add(new Lecture(fileRead.next().replaceAll("\\r","")));
+                courses.add(new Course(fileRead.next().replaceAll("\\r","")));
             } else if (fileRead.hasNext(SECTION)) {
                 break;
             } else if (!fileRead.nextLine().equals("")){
@@ -175,7 +175,7 @@ public class Reader {
         notCompatible = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext( notCompatiblePattern)) {
-                // notCompatible = [Course/Lab, Course/Lab]
+                // notCompatible = [Class/Lab, Class/Lab]
                 String[] notCompatibleList = fileRead.next().replaceAll("\\r","").split(",\\s*");
                 if ((notCompatibleList[1].contains("TUT")) || (notCompatibleList[1].contains("LAB"))){
                     // if it is [Lab, Lab]
@@ -183,19 +183,19 @@ public class Reader {
                         Lab lab1 = new Lab(notCompatibleList[0]);
                         Lab lab2 = new Lab(notCompatibleList[1]);
                         if ((labs.contains(lab1)) && (labs.contains(lab2))) {
-                            HashMap<Course, Course> labLab = new HashMap<Course, Course>();
+                            HashMap<Class, Class> labLab = new HashMap<Class, Class>();
                             labLab.put(lab1, lab2);
                             notCompatible.add(new NotCompatible(labLab));
                         } else{
                             throw new InvalidInputException("Error at least 1 lab could not be found");
                         }
                     } else {
-                        //[Course, Lab]
-                        Course course = new Course(notCompatibleList[0]);
+                        //[Class, Lab]
+                        Class course = new Class(notCompatibleList[0]);
                         Lab lab = new Lab(notCompatibleList[1]);
                         //If valid input
                         if ((courses.contains(course)) && (labs.contains(lab))){
-                            HashMap<Course, Course> courseLab = new HashMap<Course, Course>();
+                            HashMap<Class, Class> courseLab = new HashMap<Class, Class>();
                             courseLab.put(course, lab);
                             notCompatible.add(new NotCompatible(courseLab));
                         }else{
@@ -203,23 +203,23 @@ public class Reader {
                         }
                     }
                 } else if ((notCompatibleList[0].contains("TUT")) || (notCompatibleList[0].contains("LAB"))) {
-                    //[Lab, Course]
-                    Course course = new Course(notCompatibleList[1]);
+                    //[Lab, Class]
+                    Class course = new Class(notCompatibleList[1]);
                     Lab lab = new Lab(notCompatibleList[0]);
                     //If valid input
                     if ((courses.contains(course)) && (labs.contains(lab))){
-                        HashMap<Course, Course> courseLab = new HashMap<Course, Course>();
+                        HashMap<Class, Class> courseLab = new HashMap<Class, Class>();
                         courseLab.put(course, lab);
                         notCompatible.add(new NotCompatible(courseLab));
                     }else{
                         throw new InvalidInputException("Either Lab or Course could not be found");
                     }
                 } else{
-                    //[Course, Course]
-                    Course course1 = new Course(notCompatibleList[0]);
-                    Course course2 = new Course(notCompatibleList[1]);
+                    //[Class, Class]
+                    Class course1 = new Class(notCompatibleList[0]);
+                    Class course2 = new Class(notCompatibleList[1]);
                     if ((courses.contains(course1)) && (courses.contains(course2))) {
-                        HashMap<Course, Course> courseCourse = new HashMap<Course, Course>();
+                        HashMap<Class, Class> courseCourse = new HashMap<Class, Class>();
                         courseCourse.put(course1, course2);
                         notCompatible.add(new NotCompatible(courseCourse));
                     } else{
@@ -241,7 +241,7 @@ public class Reader {
         unwanted = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(unwantedPattern)) {
-                //unwantedList = [Course/Lab Indentifier, Slot Day, Slot Time]
+                //unwantedList = [Class/Lab Indentifier, Slot Day, Slot Time]
                 String [] unwantedList = fileRead.next().replaceAll("\\r","").split(",\\s*");
                 // if unwanted[0] contains "TUT" or "LAB" it is a Lab
                 if ((unwantedList[0].contains("TUT")) || (unwantedList[0].contains("LAB"))){
@@ -260,9 +260,9 @@ public class Reader {
                     } else{
                         throw new InvalidInputException("There is no Lab that matches the input");
                     }
-                } else { //otherwise it is a Course Identifier
-                    Course course = new Course(unwantedList[0]);
-                        //Search through the course to find the one that matches with Course Identifier
+                } else { //otherwise it is a Class Identifier
+                    Class course = new Class(unwantedList[0]);
+                        //Search through the course to find the one that matches with Class Identifier
                     if(courses.contains(course)){
                         for(Slot slot:courseSlots){
                             //Search through courseSlot to find the one that matches Day and Time
@@ -289,7 +289,7 @@ public class Reader {
         preferences = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(preferencePattern)) {
-                //preferenceList = [Day, Time, Course/Lab, Value]
+                //preferenceList = [Day, Time, Class/Lab, Value]
                 String [] preferenceList = fileRead.next().replaceAll("\\r","").split(",\\s*");
                 // If it is a Lab
                 if ((preferenceList[2].contains("TUT")) || (preferenceList[2].contains("LAB"))){
@@ -306,7 +306,7 @@ public class Reader {
                     }
                 }else{
                     //if it is a course
-                    Course course = new Course(preferenceList[2]);
+                    Class course = new Class(preferenceList[2]);
                     if (courses.contains(course)){
                         for (Slot slot:courseSlots){
                             //Check for valid input
@@ -333,7 +333,7 @@ public class Reader {
         pairs = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(pairPattern)) {
-                // pairList = [Course/Lab, Course/Lab]
+                // pairList = [Class/Lab, Class/Lab]
                 String[] pairList = fileRead.next().replaceAll("\\r","").split(",\\s*");
                 if ((pairList[1].contains("TUT")) || (pairList[1].contains("LAB"))){
                     //[Lab, Lab]
@@ -341,7 +341,7 @@ public class Reader {
                         Lab lab1 = new Lab(pairList[0]);
                         Lab lab2 = new Lab(pairList[1]);
                         if ((labs.contains(lab1)) && (labs.contains(lab2))){
-                            HashMap<Course, Course> labLab = new HashMap<>();
+                            HashMap<Class, Class> labLab = new HashMap<>();
                             labLab.put(lab1, lab2);
                             pairs.add(new Pair(labLab));
                         }
@@ -349,22 +349,22 @@ public class Reader {
                             throw new InvalidInputException("At least 1 lab could not be found in Labs");
                         }
                     } else {
-                        Course course = new Course(pairList[0]);
+                        Class course = new Class(pairList[0]);
                         Lab lab = new Lab(pairList[1]);
                         if ((labs.contains(course)) && (labs.contains(lab))){
-                            HashMap<Course, Course> courseLab = new HashMap<>();
-                            courseLab.put(new Course(pairList[0]), new Lab(pairList[1]));
+                            HashMap<Class, Class> courseLab = new HashMap<>();
+                            courseLab.put(new Class(pairList[0]), new Lab(pairList[1]));
                             pairs.add(new Pair(courseLab));
                         }else{
                             throw new InvalidInputException("Either Course or Lab could not be found");
                         }
                     }
                 } else {
-                    Course course1 = new Course(pairList[0]);
-                    Course course2 = new Course(pairList[1]);
+                    Class course1 = new Class(pairList[0]);
+                    Class course2 = new Class(pairList[1]);
                     if ((courses.contains(course1)) && (courses.contains(course2))){
-                        HashMap<Course, Course> courseCourse = new HashMap<>();
-                        courseCourse.put(new Course(pairList[0]), new Course(pairList[1]));
+                        HashMap<Class, Class> courseCourse = new HashMap<>();
+                        courseCourse.put(new Class(pairList[0]), new Class(pairList[1]));
                         pairs.add(new Pair(courseCourse));
                     }else{
                         throw new InvalidInputException("At least 1 Course could not be found");
@@ -385,7 +385,7 @@ public class Reader {
         partialAssignments = new LinkedHashSet<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(partialAssignmentPattern)) {
-                //partAssignList = [Course/Lab Indentifier, Slot Day, Slot Time]
+                //partAssignList = [Class/Lab Indentifier, Slot Day, Slot Time]
                 String [] partAssignList = fileRead.next().replaceAll("\\r","").split(",\\s*");
                 // if partAssignList[0] contains "TUT" or "LAB" it is a Lab
                 if ((partAssignList[0].contains("TUT")) || (partAssignList[0].contains("LAB"))){
@@ -403,8 +403,8 @@ public class Reader {
                     } else{
                         throw new InvalidInputException("There is no Lab that matches the input");
                     }
-                } else { //otherwise it is a Course Identifier
-                    Course course = new Course(partAssignList[0]);
+                } else { //otherwise it is a Class Identifier
+                    Class course = new Class(partAssignList[0]);
                     if(courses.contains(course)){
                         for(Slot slot:courseSlots){
                             //Search through courseSlot to find the one that matches Day and Time
@@ -430,12 +430,12 @@ public class Reader {
     public String getName() { return name; }
     public Set<Slot> getCourseSlots() { return courseSlots; }
     public Set<Slot> getLabSlots() { return labSlots; }
-    public Set<Lecture> getCourses() { return courses; }
+    public Set<Course> getCourses() { return courses; }
     public Set<Lab> getLabs() { return labs; }
     public Set<NotCompatible> getNotCompatible() { return notCompatible; }
     public Set<Unwanted> getUnwanted() { return unwanted; }
     public Set<Preference> getPreferences() { return preferences; }
     public Set<Pair> getPairs() { return pairs; }
     public Set<PartialAssignment> getPartialAssignments(){ return partialAssignments; }
-    public HashMap<Lecture, Set<Lab>> getCourseLabs(){ return null;}
+    public HashMap<Course, Set<Lab>> getCourseLabs(){ return null;}
 }

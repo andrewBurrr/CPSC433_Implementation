@@ -1,17 +1,17 @@
 package Structures;
 
 public class PartialAssignment {
-    private final Course course;
+    private final Class course;
     private final Slot slot;
 
 
-    public PartialAssignment( Course course, Slot slot ) {
+    public PartialAssignment( Class course, Slot slot ) {
         this.course = course;
         this.slot = slot;
     }
 
 
-    public Course getCourse(){
+    public Class getCourse(){
         return course;
     }
 

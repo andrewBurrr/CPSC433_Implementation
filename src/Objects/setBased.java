@@ -3,7 +3,7 @@ package Objects;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.Set;
-import Structures.Course;
+import Structures.Class;
 import Structures.Slot;
 
 
