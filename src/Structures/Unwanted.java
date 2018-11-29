@@ -1,26 +1,23 @@
 package Structures;
 
 public class Unwanted {
-    private final String identifier;
-    private final String day;
-    private final String time;
+    private final Course course;
+    private final Slot slot;
 
     public Unwanted(String[] input) {
         this(input[0], input[1], input[2]);
     }
 
-    public Unwanted(String identifier, String day, String time) {
-        this.identifier = identifier;
-        this.day = day;
-        this.time = time;
+    public Unwanted(String course, String day, String time) {
+        this.course = new Course(course);
+        this.slot = new Slot(day, time);
     }
 
     @Override
     public String toString() {
-        return String.format("%s, %s, %s\n", identifier, day, time);
+        return String.format("%s, %s", course, slot);
     }
 
-    public String getIdentifier() { return identifier; }
-    public String getDay() { return day; }
-    public String getTime() { return time; }
+    public Course getCourse() { return course; }
+    public Slot getSlot() {return slot; }
 }

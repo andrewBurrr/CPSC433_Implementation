@@ -10,6 +10,10 @@ public class Slot {
         this(input[0], input[1], input[2], input[3]);
     }
 
+    public Slot(String day, String time) {
+        this(day, time, null, null);
+    }
+
     public Slot( String day, String time, String max, String min ) {
         this.day = day;
         this.time = time;
@@ -18,8 +22,15 @@ public class Slot {
     }
 
     @Override
+    public boolean equals(Object object) {
+        if (object instanceof Slot) return this.day.equals(((Slot) object).getDay()) && this.time.equals(((Slot) object).getTime());
+        else return false;
+    }
+
+    @Override
     public String toString() {
-        return String.format("%s, %s, %s, %s\n", day, time, max, min);
+        if (max == null || min == null) return String.format("%s, %s", day, time);
+        else return String.format("%s, %s, %s, %s", day, time, max, min);
     }
 
     public String getDay() { return this.day; }

@@ -2,7 +2,6 @@ package Structures;
 
 public class Lecture extends Course {
 
-    public Lecture(String identifier) {
-        super(identifier);
-    }
+    // split into separate attributes
+    public Lecture(String course) { super(course); }
 }
