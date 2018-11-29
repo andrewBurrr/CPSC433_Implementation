@@ -7,7 +7,6 @@ import Structures.NotCompatible;
 import Structures.Unwanted;
 import Structures.Preference;
 import Structures.Pair;
-import Structures.PartialAssignment;
 // exceptions
 import Exceptions.InvalidInputException;
 import Structures.Course;

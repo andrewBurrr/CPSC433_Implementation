@@ -12,12 +12,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Random;
 
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class OTreeModel {
     private final Reader parser;
@@ -25,16 +28,23 @@ public class OTreeModel {
     private Prob root;
     private Set<NotCompatible> notCompatible;
     private HashMap<Course, Slot> usedCourses;
+    private final Course emptyCourse;
+    private final Slot emptySlot;
+    private int numExtraCourses;
     
     
     public OTreeModel() {
         this.parser = null;
         this.root = null;
+        this.emptyCourse = null;
+        this.emptySlot = null;
     }
     
     public OTreeModel(Reader parser){
         this.parser = parser;
-        
+        this.emptyCourse = new Course("","","","");
+        this.emptySlot = new Slot("","");
+        this.numExtraCourses = 0;
         // Get partial assignments
         HashMap<Course, Slot> partAssign = parser.getPartialAssignments();
         usedCourses = partAssign;
@@ -44,6 +54,7 @@ public class OTreeModel {
         // Check for CPSC 313
         Set<Lecture> courses = parser.getCourses();
         if(courses.contains(new Lecture("CPSC 313 LEC 01"))){
+            this.numExtraCourses ++;
             partAssign.put(new Lab("CPSC 813 TUT 01"), new Slot("TU","18:00", Integer.MAX_VALUE,0)); // Might over load slot if this slot exists
             Iterator<NotCompatible> itor = notCompatible.iterator();
             while(itor.hasNext()){
@@ -55,6 +66,7 @@ public class OTreeModel {
         } 
         // Check for CPSC 413
         if(courses.contains(new Lecture("CPSC 413 LEC 01"))){
+            this.numExtraCourses++;
             partAssign.put(new Lab("CPSC 913 TUT 01"), new Slot("TU","18:00", Integer.MAX_VALUE,0));  // Might over load slot if this slot exists
             Iterator<NotCompatible> itor = notCompatible.iterator();
             while(itor.hasNext()){
@@ -68,10 +80,10 @@ public class OTreeModel {
         Prob part = checkPartials(partAssign);
         if(part.isUnsolvable()){
             System.out.println("Error: Partial assignments are not valid");
+            System.exit(0);
         } else{
             root = part;
         }
-        System.out.println(root.toString());
     }
     
     /**
@@ -88,11 +100,11 @@ public class OTreeModel {
         // Check Not Compatible set against new assignment
         for(NotCompatible notComp:notCompatible){
             if(notComp.getClass(0).equals(newAsign.getCourse())){
-               if(schedule.get(notComp.getClass(1)).equals(newAsign.getSlot())){
-                   return "No";
-               } 
+                if(schedule.getOrDefault(notComp.getClass(1), emptySlot).equals(newAsign.getSlot())){
+                    return "No";
+                }
             } else if (notComp.getClass(1).equals(newAsign.getCourse())){
-                if(schedule.get(notComp.getClass(0)).equals(newAsign.getSlot())){
+                if(schedule.getOrDefault(notComp.getClass(0), emptySlot).equals(newAsign.getSlot())){
                     return "No";
                 }
             }
@@ -124,9 +136,10 @@ public class OTreeModel {
         // Check labs and courses are not at same time
         if(newCourse instanceof Lecture){
             Lecture newLecture = (Lecture) newCourse;
-            Set<Lab> labs = parser.getCourseLabs().get(newLecture);
+            // Get set of labs if it exists else get empty set
+            Set<Lab> labs = parser.getCourseLabs().getOrDefault(newLecture, new LinkedHashSet());
             for(Lab lab:labs){
-                if(schedule.get(lab).equals(newSlot)){
+                if(schedule.getOrDefault(lab, emptySlot).equals(newSlot)){
                     return "No";
                 }
             }
@@ -137,12 +150,15 @@ public class OTreeModel {
                 Map.Entry<Lecture, Set<Lab>> entry = map.next();
                 Lecture lecture = entry.getKey();
                 Set<Lab> labs = entry.getValue();
-                for(Lab lab:labs){
-                    if(lab.equals((Lab) newCourse)){
-                        if(schedule.get(lab).equals(schedule.get(lecture))){
-                            return "No";
+                if(labs!=null){
+                    for(Lab lab:labs){
+                        if(lab.equals((Lab) newCourse)){
+                            // In str1.equals(str2) str1 cannot be null but str2 can be, str.equals(null)=false
+                            if(schedule.getOrDefault(lab, emptySlot).equals(schedule.get(lecture))){
+                                return "No";
+                            }
+                            break outerloop;
                         }
-                        break outerloop;
                     }
                 }
             }
@@ -196,9 +212,9 @@ public class OTreeModel {
             // Check not compatible set
             for(NotCompatible notComp:notCompatible){
                 if(notComp.getClass(0).equals(course)){
-                    if(schedule.get(notComp.getClass(1)).equals(slot)){
-                        return new Prob(schedule, "No");
-                    }
+                        if(schedule.getOrDefault(notComp.getClass(1), emptySlot).equals(slot)){
+                            return new Prob(schedule, "No");
+                        }
                 }
             }
             
@@ -211,9 +227,14 @@ public class OTreeModel {
             // Check labs and courses are not at the same time 
             if(course instanceof Lecture){ // Check to see if lecture conflicts
                 Lecture newLecture = (Lecture) course;
-                Set<Lab> labs = parser.getCourseLabs().get(newLecture);
+                Set<Lab> labs = parser.getCourseLabs().getOrDefault(newLecture, new LinkedHashSet());
+                try {
+                    Thread.sleep(100);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(OTreeModel.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 for(Lab lab:labs){
-                    if(slot.equals(schedule.get(lab))){
+                    if(slot.equals(schedule.getOrDefault(lab, emptySlot))){
                         return new Prob(schedule, "No");
                     }
                 }
@@ -264,8 +285,8 @@ public class OTreeModel {
         }
         
         // Check if all labs and courses are scheduled 
-        int numCourseLab = parser.getCourses().size()+parser.getLabs().size();
-        if(schedule.size()+1==numCourseLab){
+        int numCourseLab = parser.getCourses().size()+parser.getLabs().size() + numExtraCourses;
+        if(schedule.size()==numCourseLab){
             part.setState("Yes");
             return part;
         } 
@@ -298,7 +319,7 @@ public class OTreeModel {
             leafs.add(root);
         } else{
             Random rand = new Random();
-            Course course = avaCourses.remove(rand.nextInt((avaCourses.size())));
+            Course course = avaCourses.remove(rand.nextInt((avaCourses.size())-1));
             if( course instanceof Lecture){
                 for(Slot slot: parser.getCourseSlots()){
                     HashMap<Course, Slot> schedule = new HashMap();
@@ -316,11 +337,15 @@ public class OTreeModel {
         }
         while(!leafs.isEmpty()){
             Prob leaf = leafs.poll();
+            System.out.printf("Unsolvable:%b\n",leaf.isUnsolvable());
+            System.out.printf("Solved:%b\n",leaf.isSolved());
             if(leaf.isSolved()){
                 return leaf; // Return solution
             } else if(!leaf.isUnsolvable()){ 
                 Random rand = new Random();
-                altern(leaf, avaCourses.remove(rand.nextInt(avaCourses.size()))).forEach((fact) -> {
+                LinkedList<Course> posCourses = new LinkedList(avaCourses);
+                posCourses.removeAll(leaf.getScheduel().entrySet());
+                altern(leaf, posCourses.remove(rand.nextInt(posCourses.size()))).forEach((fact) -> {
                     leafs.add(fact);
                 });
             } 

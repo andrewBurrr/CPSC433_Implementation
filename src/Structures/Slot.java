@@ -20,6 +20,13 @@ public class Slot {
         }
     }
 
+    public Slot(String day, String time){
+        this.day = day.trim();
+        this.time = time.trim();
+        this.max = Integer.MAX_VALUE;
+        this.min = 0;
+    }
+    
     public Slot( String day, String time, String max, String min ) {
         this.day = day.trim();
         this.time = time.trim();

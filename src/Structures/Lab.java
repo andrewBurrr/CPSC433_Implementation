@@ -14,9 +14,9 @@ public class Lab extends Course {
    }
    
    public Lab(String[] input){
-       super(input[0], input[1], input[2], input[3]);
+       super(input[0], input[1], input[input.length-2], input[input.length-1]);
        if(input.length ==6){
-           this.lecture = input[5].trim();
+           this.lecture = input[3].trim();
        } else {
            this.lecture = null;
        }
@@ -28,5 +28,11 @@ public class Lab extends Course {
    
    public String getLecture(){
        return lecture;
+   }
+   
+    @Override
+   public String toString(){
+       String s = super.toString();
+       return String.format("%s, LEC %s\n", s.replace("\n", ""), lecture);
    }
 }

@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 public class Main {
     public static void main(String[] args) {
         
-        String inputFile = "src/InputFiles/deptinst1.txt";
+        String inputFile = "src/InputFiles/shortExample.txt";
         Reader reader = new Reader(inputFile);
         OTreeModel otree = new OTreeModel(reader);
         try {
@@ -16,7 +16,9 @@ public class Main {
         } catch (InterruptedException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
         Prob f = otree.depthFirst();
+        System.out.println(f.toString());
     }
 }
 /**
