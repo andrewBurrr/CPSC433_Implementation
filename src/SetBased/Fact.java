@@ -5,6 +5,7 @@ import Structures.Course;
 import Structures.Lab;
 import Structures.Lecture;
 import Structures.Slot;
+import java.util.Arrays;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -101,8 +102,16 @@ public class Fact {
     @Override
     public String toString() {
         StringBuilder temp = new StringBuilder("Eval-value: " + evaluation + "\n");
+        String[] strArray = new String[schedule.size()];
+    
+        int i = 0;
         for (Map.Entry<Course, Slot> entry : schedule.entrySet()) {
-            temp.append(String.format("%-26s\t:%s\n", entry.getKey(), entry.getValue()));
+            strArray[i] = String.format("%-26s\t:%s\n",entry.getKey().toString(), entry.getValue().toString());
+            i++;
+        }
+        Arrays.sort(strArray);
+        for(String str: strArray) {
+             temp.append(String.format("%s",str));
         }
         return temp.toString();
     }
