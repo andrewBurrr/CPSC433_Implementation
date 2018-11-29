@@ -146,7 +146,6 @@ public class Reader {
             if (fileRead.hasNext(coursePattern)) {
                 Lecture temp = new Lecture(fileRead.next());
                 courses.add(temp);
-                courseLabs.put(temp, new LinkedHashSet());
             } else if (fileRead.hasNext(SECTION)) {
                 break;
             } else if(!fileRead.next().isEmpty()) {
@@ -165,7 +164,13 @@ public class Reader {
                 Lab tempLab = new Lab(fileRead.next());
                 labs.add(tempLab);
                 Lecture tempLec = new Lecture(tempLab.getName(), tempLab.getNumber(),"LEC", tempLab.getSection());
-                courseLabs.get(tempLec).add(tempLab);
+                if(courseLabs.containsKey(tempLec)){
+                    courseLabs.get(tempLec).add(tempLab);
+                } else {
+                    LinkedHashSet<Lab> temp = new LinkedHashSet();
+                    courseLabs.pi(tempLec, temp.add(tempLab));
+                }
+                
             } else if (fileRead.hasNext(SECTION)) {
                 break;
             } else if (!fileRead.next().isEmpty()) {
