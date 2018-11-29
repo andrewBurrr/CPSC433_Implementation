@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class Class {
 
-    private String identifier;
+    private final String identifier;
 
     public Class(String identifier) {
         this.identifier = identifier;
