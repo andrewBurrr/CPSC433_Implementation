@@ -38,13 +38,13 @@ public class Prob extends Fact{
             break;
             default: this.state = State.UNSOLVED;
         }
-        // Might want to move this into OTreeModel
+        
+        this.slots500 = new LinkedHashSet();
         Iterator<Map.Entry<Course, Slot>> itor = schedule.entrySet().iterator();
         while(itor.hasNext()){
             Map.Entry<Course, Slot> entry = itor.next();
             Course course = entry.getKey();
             Slot slot = entry.getValue();
-            this.slots500 = new LinkedHashSet();
             if(course.getNumber().matches("5\\d\\d")){
                 this.slots500.add(slot);
             }

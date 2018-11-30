@@ -172,7 +172,7 @@ public class OTreeModel {
         
         // Check to make sure all Lec 09 are after evening(variable [0,24])
         if(newCourse.getSection().equals("09")) {
-            if(Integer.parseInt(newSlot.getTime().substring(0,2))<evening){
+            if(Integer.parseInt(newSlot.getTime().split(":")[0])<evening) {
                 return "No";
             }
         }
@@ -303,10 +303,10 @@ public class OTreeModel {
         } else {
             slots = parser.getLabSlots();
         }
-        slots.forEach((slot) -> {
+        for(Slot slot:slots){
             Assignment newAsign = new Assignment(g,slot);
             alterns.add(new Prob(leaf, newAsign, getState(leaf,newAsign)));
-        });
+        }
         return alterns;
     }
     
