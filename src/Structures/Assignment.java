@@ -30,4 +30,9 @@ public class Assignment {
     public Slot getSlot(){
         return slot;
     }
+    
+    @Override
+    public String toString(){
+        return String.format("%-24s\t:%s", course.toString(), slot.toString());
+    }
 }

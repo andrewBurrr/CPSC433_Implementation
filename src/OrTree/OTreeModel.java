@@ -78,8 +78,6 @@ public class OTreeModel {
         }
         
         Prob part = checkPartials(partAssign);
-        System.out.println("\n\nBegin OTree\n");
-        System.out.println(part.toString());
         if(part.isUnsolvable()){
             System.out.println("Error: Partial assignments are not valid");
             System.exit(0);
@@ -188,10 +186,12 @@ public class OTreeModel {
         
         
         // Check if all labs and courses are scheduled 
-        int numCourseLab = parser.getCourses().size()+parser.getLabs().size();
-        if(schedule.size()==numCourseLab){
+        int numCourseLab = parser.getCourses().size() + parser.getLabs().size() + numExtraCourses;
+        if(schedule.size()+1==numCourseLab){
             return "Yes";
-        } 
+        } else if (schedule.size()+1>numCourseLab) {
+            return "No";
+        }
         return "?";
     }
     
@@ -344,8 +344,15 @@ public class OTreeModel {
             } else if(!leaf.isUnsolvable()){ 
                 Random rand = new Random();
                 LinkedList<Course> posCourses = new LinkedList(avaCourses);
-                posCourses.removeAll(leaf.getScheduel().entrySet());
-                altern(leaf, posCourses.remove(rand.nextInt(posCourses.size()))).forEach((fact) -> {
+                posCourses.removeAll(leaf.getScheduel().keySet());
+                Course newCourse;
+                if(posCourses.size()==1){
+                    newCourse = posCourses.get(0);
+                } else { 
+                    newCourse = posCourses.get(rand.nextInt(posCourses.size()-1));
+                }
+                
+                altern(leaf, newCourse).forEach((fact) -> {
                     leafs.add(fact);
                 });
             } 
@@ -354,9 +361,14 @@ public class OTreeModel {
     }
     
     public Prob guided(LinkedList<Assignment> guide){
-        guide.stream().filter((assign) -> (usedCourses.containsKey(assign.getCourse()))).forEachOrdered((assign) -> {
-            guide.remove(assign);
-        });
+        for(int i=0;i<guide.size();i++){
+            Assignment assign = guide.get(i);
+            if(usedCourses.containsKey(assign.getCourse())){
+                guide.remove(assign);
+                i--;
+            }
+        }
+        
         OrTreeControl2 control = new OrTreeControl2(guide.toArray(new Assignment[0]), usedCourses.size());
         PriorityQueue<Prob> leafs = new PriorityQueue(guide.size()*guide.size(), control);
         
@@ -384,9 +396,9 @@ public class OTreeModel {
             if(leaf.isSolved()){
                 return leaf;
             } else if(!leaf.isUnsolvable()){ // Leaf is in guide or not, altern
-                altern(leaf, guide.poll().getCourse()).forEach((fact) -> {
-                    leafs.add(fact);
-                });
+                for(Prob newLeaf:altern(leaf, guide.get(leaf.getScheduel().size()-usedCourses.size()).getCourse())){
+                    leafs.add(newLeaf);
+                }
             } 
         }
         return null; // shouldnt happen unless bad input
