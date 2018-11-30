@@ -335,8 +335,8 @@ public class OTreeModel {
                     leafs.add(checkPartials(schedule));
                 }
             }
-            
         }
+        
         while(!leafs.isEmpty()){
             Prob leaf = leafs.poll();
             if(leaf.isSolved()){
@@ -360,7 +360,25 @@ public class OTreeModel {
         OrTreeControl2 control = new OrTreeControl2(guide.toArray(new Assignment[0]), usedCourses.size());
         PriorityQueue<Prob> leafs = new PriorityQueue(guide.size()*guide.size(), control);
         
-        leafs.add(root);
+        if(root != null){
+            leafs.add(root);
+        } else {
+            Course course = guide.removeFirst().getCourse();
+            if( course instanceof Lecture){
+                for(Slot slot: parser.getCourseSlots()){
+                    HashMap<Course, Slot> schedule = new HashMap();
+                    schedule.put(course, slot);
+                    leafs.add(checkPartials(schedule));
+                }
+            } else {
+                for(Slot slot: parser.getLabSlots()){
+                    HashMap<Course, Slot> schedule = new HashMap();
+                    schedule.put(course, slot);
+                    leafs.add(checkPartials(schedule));
+                }
+            }
+        }
+        
         while(!leafs.isEmpty()){
             Prob leaf = leafs.poll();
             if(leaf.isSolved()){
