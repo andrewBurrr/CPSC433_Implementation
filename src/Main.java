@@ -1,6 +1,7 @@
 import OrTree.OTreeModel;
 import OrTree.Prob;
 import Parser.Reader;
+import SetBased.setBased;
 import SetBased.Fact;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -8,22 +9,24 @@ import java.util.logging.Logger;
 public class Main {
     public static void main(String[] args) {
         
-        String inputFile = "src/InputFiles/shortExample.txt";
+        String inputFile = "src/InputFiles/deptinst1.txt";
         Reader reader = new Reader(inputFile);
         OTreeModel otree = new OTreeModel(reader);
+        setBased SetBased = new setBased(reader, otree);
         try {
             Thread.sleep(100);
         } catch (InterruptedException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        Prob f = otree.depthFirst();
+//        Prob f = otree.depthFirst();
+        SetBased.run();
         System.out.println("\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        System.out.println(f.toString());
-        System.out.printf("Unwantd:%s\n",reader.getUnwanted().toString().replace("[","\n").replace("]","").replace(", ",""));
-        System.out.printf("Not-Compatible:%s\n",reader.getNotCompatible().toString().replace("[","\n").replace("]","").replace(", ",""));
-        System.out.printf("PartAssing:%s\n",reader.getPartialAssignments().toString().replace("{","\n").replace("}","").replace("=","\n\t=").replace(", ","\n"));
-        
+        System.out.println(SetBased.toString());
+//        System.out.printf("Unwantd:%s\n",reader.getUnwanted().toString().replace("[","\n").replace("]","").replace(", ",""));
+//        System.out.printf("Not-Compatible:%s\n",reader.getNotCompatible().toString().replace("[","\n").replace("]","").replace(", ",""));
+//        System.out.printf("PartAssing:%s\n",reader.getPartialAssignments().toString().replace("{","\n").replace("}","").replace("=","\n\t=").replace(", ","\n"));
+
     }
 }
 /**

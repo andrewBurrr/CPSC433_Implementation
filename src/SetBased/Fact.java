@@ -75,8 +75,8 @@ public class Fact {
      
 
      // needs
-     public void setSchedule() {
-         System.out.println("setSchedule is unfinished");
+     public void setSchedule(Map<Course, Slot> schedule) {
+         this.schedule = schedule;
      }
 
      public int getEvaluation() {
