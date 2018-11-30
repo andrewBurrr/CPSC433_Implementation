@@ -25,16 +25,19 @@ public class Main {
         error.delete();
         
         for(File test: listOfTest){
-            if(test.isFile()){
+            if(test.isFile() && !test.toString().contains("deptinst")){
                 String inputFile = test.toString();
                 try {
                     Reader reader = new Reader(inputFile);
+                    OTreeModel otree = new OTreeModel(reader);
+                    Prob f = otree.depthFirst();
                 } catch (Exception e){
                     try{
                         System.out.println("************Error***********");
                         FileWriter fileWriter = new FileWriter("errors.txt");
                         PrintWriter printWriter = new PrintWriter(fileWriter);
-                        printWriter.append("Test");
+                        System.out.println(e.getMessage());
+                        printWriter.append(e.getMessage());
                         printWriter.flush();
                         printWriter.close();
                     } catch (IOException ew){
