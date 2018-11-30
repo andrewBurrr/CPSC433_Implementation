@@ -120,7 +120,7 @@ public class Reader {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Course Slots: %s", fileRead.next()));
             }
         }
-        System.out.print(courseSlots.toString().replace("[", "").replace(", ", "").replace("]", ""));
+        System.out.print(courseSlots.toString().replace("[", "").replace(", ", "\n").replace("]", "")+"\n");
     }
 
     // note, regex does not confirm valid lab start time in this version
@@ -136,7 +136,7 @@ public class Reader {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Lab Slots: %s", fileRead.next()));
             }
         }
-        System.out.print(labSlots.toString().replace("[", "").replace(", ", "").replace("]", ""));
+        System.out.print(labSlots.toString().replace("[", "").replace(", ", "\n").replace("]", "")+"\n");
     }
 
     // compare regex against hard constraints
@@ -153,7 +153,7 @@ public class Reader {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Courses: %s", fileRead.next()));
             }
         }
-        System.out.print(courses.toString().replace("[", "").replace(", ", "").replace("]", ""));
+        System.out.print(courses.toString().replace("[", "").replace(", ", "\n").replace("]", "")+"\n");
     }
 
     // compare regex against hard constraints
@@ -179,7 +179,7 @@ public class Reader {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Labs: %s", fileRead.next()));
             }
         }
-        System.out.print(labs.toString().replace("[", "").replace(", ", "").replace("]", ""));
+        System.out.print(labs.toString().replace("[", "").replace(", ", "\n").replace("]", "")+"\n");
     }
 
     // needs completion: 3 regex's for switch
@@ -195,7 +195,7 @@ public class Reader {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Not Compatible: %s", fileRead.next()));
             }
         }
-        System.out.print(notCompatible.toString().replace("[", "").replace(", ", "").replace("]", ""));
+        System.out.print(notCompatible.toString().replace("\n, ", "\n").replace("[", "").replace("]", ""));
     }
 
     //needs completion: 2 regex's for switch
@@ -211,7 +211,7 @@ public class Reader {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Unwanted: %s", fileRead.next()));
             }
         }
-        System.out.print(unwanted.toString().replace("[", "").replace(", ", "").replace("]", ""));
+        System.out.print(unwanted.toString().replace("[", "").replace(", ", "\n").replace("]", ""));
     }
 
     // needs completion: 2 regex's for switch
@@ -227,7 +227,7 @@ public class Reader {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Preferences: %s", fileRead.next()));
             }
         }
-        System.out.print(preferences.toString().replace("[", "").replace(", ", "").replace("]", ""));
+        System.out.print(preferences.toString().replace("[", "").replace(", ", "\n").replace("]", ""));
     }
 
     // needs completion: 3 regex's for switch
@@ -243,7 +243,7 @@ public class Reader {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Pair: %s", fileRead.next()));
             }
         }
-        System.out.print(pairs.toString().replace("[", "").replace(", ", "").replace("]", ""));
+        System.out.print(pairs.toString().replace("[", "").replace(", ", "\n").replace("]", ""));
     }
 
     // needs completion: 2 regex's for switch
@@ -264,7 +264,7 @@ public class Reader {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Partial Assignments: %s", fileRead.next()));
             }
         }
-        System.out.print(partialAssignments.toString().replace("[", "").replace(", ", "").replace("]", ""));
+        System.out.print(partialAssignments.toString().replace("{", "").replace(", ", "\n").replace("}", "").replace("=","\n\t="));
     }
 
     public String getName() { return name; }

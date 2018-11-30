@@ -66,7 +66,7 @@ public class Slot {
         
     @Override
     public String toString() {
-        return String.format("%s, %s, %s, %s", day, time, max, min);
+        return String.format("%s %s %s %s", day, time, max, min);
     }
 
     public String getDay() { return this.day; }

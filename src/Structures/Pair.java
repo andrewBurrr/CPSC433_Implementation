@@ -28,6 +28,6 @@ public class Pair {
     
     @Override
     public String toString() {
-        return String.format("%s, %s\n", c1.toString(), c2.toString());
+        return String.format("%-24s\t:%s\n", c1.toString(), c2.toString());
     }
 }

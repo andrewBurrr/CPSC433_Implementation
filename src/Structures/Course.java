@@ -15,7 +15,7 @@ public class Course {
     }
     
     public Course(String input){
-        this(input.split("\\s*"));
+            this(input.trim().split("\\s+"));
     }
     
     public Course(String[] input){
@@ -24,7 +24,7 @@ public class Course {
     
     @Override
     public String toString() {
-        return String.format("%s, %s, %s, %s", name, number, type, section);
+        return String.format("%s %s %s %s", name, number, type, section);
     }
 
     public String getName() { return name; }

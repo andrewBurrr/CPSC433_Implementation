@@ -28,7 +28,7 @@ public class Lecture extends Course {
     }
     
     public Lecture(String input){
-        this(input.split(",*\\s+"));
+        this(input.trim().split("\\s+"));
     }
     
     public String[] getLabs(){

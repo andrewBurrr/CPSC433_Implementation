@@ -28,7 +28,7 @@ public class NotCompatible {
     
     @Override
     public String toString() {
-        return String.format("%s, %s\n", c1.toString(), c2.toString());
+        return String.format("%-26s\t:%s\n", c1.toString(), c2.toString());
     }
     
     public Course getClass(int n){

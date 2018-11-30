@@ -34,7 +34,7 @@ public class Lab extends Course {
    public String toString(){
        String s = super.toString();
        if(lecture!=null){
-        return String.format("%s, LEC %s", s, lecture);
+        return String.format("%s LEC %s", s, lecture);
        } else {
            return s;
        }
