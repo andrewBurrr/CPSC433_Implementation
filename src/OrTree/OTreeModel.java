@@ -73,11 +73,13 @@ public class OTreeModel {
                 NotCompatible noPair = itor.next();
                 if(noPair.getClass(0).equals(new Lecture("CPSC 413 LEC 01"))){
                     notCompatible.add(new NotCompatible(noPair.getClass(0), new Lab("CPSC 913 TUT 01")));
-                }
+                } 
             }
         }
         
         Prob part = checkPartials(partAssign);
+        System.out.println("\n\nBegin OTree\n");
+        System.out.println(part.toString());
         if(part.isUnsolvable()){
             System.out.println("Error: Partial assignments are not valid");
             System.exit(0);
@@ -120,14 +122,14 @@ public class OTreeModel {
         if(newCourse instanceof Lecture){
             HashMap<Slot, Integer> numCourse = parent.getNumCourses();
             if(numCourse.containsKey(newSlot)){
-                if(numCourse.get(newSlot)+1 >= newSlot.getMax()){
+                if(numCourse.get(newSlot)+1 > newSlot.getMax()){
                     return "No";
                 }
             }
         } else{        // Check labMax
            HashMap<Slot, Integer> numLab = parent.getNumLabs();
             if(numLab.containsKey(newSlot)){
-                if(numLab.get(newSlot)+1 >= newSlot.getMax()){
+                if(numLab.get(newSlot)+1 > newSlot.getMax()){
                     return "No";
                 }
             }
@@ -187,7 +189,7 @@ public class OTreeModel {
         
         // Check if all labs and courses are scheduled 
         int numCourseLab = parser.getCourses().size()+parser.getLabs().size();
-        if(schedule.size()+1==numCourseLab){
+        if(schedule.size()==numCourseLab){
             return "Yes";
         } 
         return "?";
@@ -315,7 +317,7 @@ public class OTreeModel {
         OrTreeControl1 control = new OrTreeControl1();
         PriorityQueue<Prob> leafs = new PriorityQueue(avaCourses.size()*avaCourses.size(), control);
         
-        if(root == null){
+        if(root != null){
             leafs.add(root);
         } else{
             Random rand = new Random();

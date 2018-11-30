@@ -61,7 +61,7 @@ public class Prob extends Fact{
             break;
             default: this.state = State.UNSOLVED;
         }
-        this.slots500 = leaf.slots500;
+        this.slots500 = new LinkedHashSet(leaf.slots500);
         if(assignment.getCourse().getNumber().matches("5\\d\\d")) {
             this.slots500.add(assignment.getSlot());
         }

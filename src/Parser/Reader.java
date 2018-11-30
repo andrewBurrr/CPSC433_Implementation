@@ -227,7 +227,7 @@ public class Reader {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Preferences: %s", fileRead.next()));
             }
         }
-        System.out.print(preferences.toString().replace("[", "").replace(", ", "\n").replace("]", ""));
+        System.out.print(preferences.toString().replace("[", "").replace(", ", "\n").replace("]", "\n"));
     }
 
     // needs completion: 3 regex's for switch

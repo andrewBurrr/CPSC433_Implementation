@@ -7,6 +7,7 @@ public class Slot {
     private final String time;
     private final int max;
     private final int min;
+    private final String id;
 
     public Slot(String[] input) {
         this.day = input[0].trim();
@@ -18,6 +19,7 @@ public class Slot {
             this.max = Integer.MAX_VALUE;
             this.min = 0;
         }
+        this.id = this.day + this.time;
     }
 
     public Slot(String day, String time){
@@ -25,6 +27,7 @@ public class Slot {
         this.time = time.trim();
         this.max = Integer.MAX_VALUE;
         this.min = 0;
+        this.id = this.day + this.time;
     }
     
     public Slot( String day, String time, String max, String min ) {
@@ -32,6 +35,7 @@ public class Slot {
         this.time = time.trim();
         this.max = Integer.parseInt(max.trim());
         this.min = Integer.parseInt(min.trim());
+        this.id = this.day + this.time;
     }
     
     public Slot( String day, String time, int max, int min ) {
@@ -39,28 +43,24 @@ public class Slot {
         this.time = time.trim();
         this.max = max;
         this.min = min;
+        this.id = this.day + this.time;
     }
-
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 47 * hash + Objects.hashCode(this.day);
-        hash = 47 * hash + Objects.hashCode(this.time);
-        hash = 47 * hash + this.max;
-        hash = 47 * hash + this.min;
-        return hash;
-    }
-
         
     @Override
     public boolean equals(Object obj){
         if(obj instanceof Slot){
-            Slot s = (Slot) obj;
-            if((this.day.equals(s.day))&&(this.time.equals(s.time))){
-                return true;
-            }
+            return this.id.equals(((Slot) obj).id);
+        } else if(obj instanceof String){
+            return this.id.equals(((String) obj).replace("\\s+", ""));
         }
         return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 43 * hash + Objects.hashCode(this.id);
+        return hash;
     }
         
         

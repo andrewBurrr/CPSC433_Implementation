@@ -29,7 +29,7 @@ public class Preference {
     
     @Override
     public String toString() {
-        return String.format("%-24s\t:%-24s\t:%s\n",
+        return String.format("%-24s\t:%-24s\t:%s",
                 slot.toString(), course.toString(), value);
     }
     public Course getCourse(){ return course; }
