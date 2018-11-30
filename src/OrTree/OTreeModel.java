@@ -53,7 +53,7 @@ public class OTreeModel {
         notCompatible = parser.getNotCompatible();
         // Check for CPSC 313
         Set<Lecture> courses = parser.getCourses();
-        if(courses.contains(new Lecture("CPSC 313 LEC 01"))){
+        if(courses.contains("CPSC 313 LEC 01")){
             this.numExtraCourses ++;
             partAssign.put(new Lab("CPSC 813 TUT 01"), new Slot("TU","18:00", Integer.MAX_VALUE,0)); // Might over load slot if this slot exists
             Iterator<NotCompatible> itor = notCompatible.iterator();
@@ -65,13 +65,13 @@ public class OTreeModel {
             }
         } 
         // Check for CPSC 413
-        if(courses.contains(new Lecture("CPSC 413 LEC 01"))){
+        if(courses.contains("CPSC 413 LEC 01")){
             this.numExtraCourses++;
             partAssign.put(new Lab("CPSC 913 TUT 01"), new Slot("TU","18:00", Integer.MAX_VALUE,0));  // Might over load slot if this slot exists
             Iterator<NotCompatible> itor = notCompatible.iterator();
             while(itor.hasNext()){
                 NotCompatible noPair = itor.next();
-                if(noPair.getClass(0).equals(new Lecture("CPSC 413 LEC 01"))){
+                if(noPair.getClass(0).equals("CPSC 413 LEC 01")){
                     notCompatible.add(new NotCompatible(noPair.getClass(0), new Lab("CPSC 913 TUT 01")));
                 } 
             }
