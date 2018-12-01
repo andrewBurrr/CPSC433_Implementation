@@ -26,6 +26,14 @@ public class Pair {
         }
     }
     
+    public Course getCourse(int i){
+        switch(i){
+            case(0): return c1;
+            case(1): return c2;
+            default: return null;
+        }
+    }
+    
     @Override
     public String toString() {
         return String.format("%-24s\t:%s", c1.toString(), c2.toString());

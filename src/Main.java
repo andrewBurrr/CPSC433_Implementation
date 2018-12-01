@@ -19,34 +19,40 @@ public class Main {
         error.delete();
         
         for(File test: listOfTest){
-            if(/*test.toString().contains("short") &&*/test.isFile() && !test.toString().contains("deptinst") && !test.toString().contains("/.") && !test.toString().contains("output")){
+            if(/*test.toString().contains("6") &&*/ test.isFile() && !test.toString().contains("deptinst") && !test.toString().contains("/.") && !test.toString().contains("output")){
                 String inputFile = test.toString();
                 try {
+                    System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+                    System.out.printf("Status: Reading File - %s\n",inputFile);
                     Reader reader = new Reader(inputFile, false);
                     OTreeModel otree;
                     try {
+                        System.out.println("Status: Initiating Or Tree Model");
                         otree = new OTreeModel(reader);
                     } catch(InvalidSchedulingException err){
-                        System.out.printf("%s: UNSOLVED\n%s\n\n",reader.getName(),err.getMessage());
+                        System.out.printf("Name: %s\nStatus: UNSOLVED\n%s\n\n",reader.getName(),err.getMessage());
                         String outputFile = String.format("%s_output.txt", inputFile.replace(".txt", ""));
                         try (PrintWriter writer = new PrintWriter(new FileWriter(outputFile))) {
                             writer.write("Status: UNSOLVED\n"+err.getMessage());
                         }
                         continue;
                     }
-                    SetBased setBased = new SetBased(reader, otree);
+                    System.out.println("Status: Initiating Set Based Model");
+                    System.out.println("Status: Reading Config");
+                    float[] weights = (new float[]{1,1,1,1});
+                    SetBased setBased = new SetBased(reader, otree, weights);
+                    System.out.println("Status: Begining Set Based Search");
                     Fact f = setBased.run();
                     
                     if (f == null){
-                        System.out.printf("%s: UNSOLVED\n\n",reader.getName());
+                        System.out.printf("\nName: %s\nStatus: UNSOLVED\nError: Infeasible Problem\n\n",reader.getName());
                         
                         String outputFile = String.format("%s_output.txt", inputFile.replace(".txt", ""));
                         try (PrintWriter writer = new PrintWriter(new FileWriter(outputFile))) {
                             writer.write("Status: UNSOLVED\n");
                         }
                     } else{
-                        System.out.printf("%s: SOLVED\n%s\n",reader.getName(),f.toString());
-                        
+                        System.out.printf("\nName: %s\nStatus: SOLVED\nSolution:\n%s\n",reader.getName(),f.toString());
                         String outputFile = String.format("%s_output.txt", inputFile.replace(".txt", ""));
                         try (PrintWriter writer = new PrintWriter(new FileWriter(outputFile))) {
                             writer.write("Status: SOLVED\n"+f.toString());

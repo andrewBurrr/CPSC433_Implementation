@@ -11,7 +11,8 @@ import java.util.*;
 
 public class SetBased{
     private ArrayList<Fact> facts;
-    private int threshold;
+    private float threshold;
+    private float difTol;
     private int maxPopulation;
     private Reader reader;
     private OTreeModel oTree;
@@ -20,12 +21,19 @@ public class SetBased{
     private int variance;
     private float firMoment;
     private float secMoment;
+    private final float wMinFill;
+    private final float wPref;
+    private final float wPair;
+    private final float wSecDiff;
+    private final float pen_CourseMin;
+    private final float pen_LabMin;
     
-    public SetBased(Reader reader, OTreeModel oTree){
+    public SetBased(Reader reader, OTreeModel oTree, float[] weights){
         //Initialize the SetBased environment
-         threshold = 0;
-         maxPopulation = 0;
-         facts = new ArrayList();
+         this.threshold = 1;
+         this.difTol = 1;
+         this.maxPopulation = 0;
+         this.facts = new ArrayList();
          this.reader = reader;
          this.oTree = oTree;
          this.courseLab = new LinkedHashSet(reader.getCourses());
@@ -34,6 +42,17 @@ public class SetBased{
          this.variance = Integer.MAX_VALUE;
          this.firMoment = 0;
          this.secMoment = 0;
+         this.wMinFill = weights[0];
+         this.wPref = weights[1];
+         this.wPair = weights[2];
+         this.wSecDiff = weights[3];
+         if(weights.length==6){
+             this.pen_CourseMin = weights[4];
+             this.pen_LabMin = weights[5];
+         } else {
+             this.pen_CourseMin = 1;
+             this.pen_LabMin = 1;
+         }
     }
     
     //TODO: Implement Mutation according to setBasedBreakDown, return a Fact newFact
@@ -44,7 +63,7 @@ public class SetBased{
         Fact mutFact = new Fact(facts.get(random.nextInt(facts.size()-1))); 
         Map<Course, Slot> mutSchedule = mutFact.getScheduel();
         
-        // Get a random course (lab or lecture) from scheduel
+        // Get a random lecture (lab or lecture) from scheduel
         Course mutCourse = mutSchedule.keySet().toArray(new Course[0])[random.nextInt(mutSchedule.size())];
         Slot newSlot;
         // Make sure new slot for mutCourse is of right type and is different
@@ -59,7 +78,7 @@ public class SetBased{
                 newSlot = reader.getCourseSlots().toArray(new Slot[0])[random.nextInt(reader.getLabSlots().size())];
             }
         }
-        // Remove course from scheduel 
+        // Remove lecture from lectures
         mutSchedule.remove(mutCourse);
         // Create arraylist for guide and create iterator to add non-changed assigns
         ArrayList<Assignment> guide = new ArrayList(mutSchedule.size());
@@ -126,8 +145,81 @@ public class SetBased{
     }
 
     //TODO: Implement Eval to calculate the soft constraint, take in a Fact, return an int
-    private int Eval(Fact solution){
-        return 0;
+    private float Eval(Fact sol){
+        return wMinFill*EvalMinFill(sol) + wPref*EvalPref(sol) + wPair*EvalPair(sol) + wSecDiff*EvalSecDiff(sol);
+    }
+    
+    private float EvalMinFill(Fact sol){
+        float pen = 0;
+        
+        Iterator<Map.Entry<Slot, Integer>> itor = sol.getNumCourses().entrySet().iterator();
+        while(itor.hasNext()) {
+            Map.Entry<Slot, Integer> entry = itor.next();
+            if(entry.getKey().getMin() > entry.getValue()){
+                pen += pen_CourseMin;
+            }
+        }
+        itor = sol.getNumLabs().entrySet().iterator();
+        while(itor.hasNext()) {
+            Map.Entry<Slot, Integer> entry = itor.next();
+            if(entry.getKey().getMin() > entry.getValue()){
+                pen += pen_LabMin;
+            }
+        }
+        
+        return pen;
+    }
+    
+    private float EvalPref(Fact sol) {
+        float pen = 0;
+        HashMap<Course, Slot> schedule = sol.getScheduel();
+        Iterator<Preference> itor = reader.getPreferences().iterator();
+        
+        while(itor.hasNext()) {
+            Preference pref = itor.next();
+            if(!pref.getSlot().equals(schedule.get(pref.getCourse()))) {
+                pen += pref.getValue();
+            }
+        }
+        
+        return pen;
+    }
+
+    private float EvalPair(Fact sol) {
+        float pen = 0;
+        HashMap<Course, Slot> schedule = sol.getScheduel();
+        Iterator<Pair> itor = reader.getPairs().iterator();
+        
+        while(itor.hasNext()) {
+            Pair pair = itor.next();
+            if(!schedule.get(pair.getCourse(0)).equals(schedule.get(pair.getCourse(1)))) {
+                pen += 1;
+            }
+        }
+        
+        return pen;
+    }
+
+    private float EvalSecDiff(Fact sol) {
+        float pen = 0;
+        
+        ArrayList<Course> lectures = new ArrayList(reader.getCourses());
+        HashMap<Course, Slot> schedule = sol.getScheduel();
+        lectures.sort(new CourseSorterAlpaNum());
+        
+        Course lecture;
+        while(!lectures.isEmpty()){
+            lecture = lectures.remove(0);
+            int i = 0;
+            while(lectures.get(i).getName().equals(lecture.getName()) &&
+                    lectures.get(i).getNumber().equals(lecture.getNumber() ) ){
+                if(schedule.get(lecture).equals(schedule.get(lectures.get(i)))) {
+                    pen += 1;
+                }
+            }
+        }
+        
+        return pen;
     }
 
     //TODO: Calculate the Variance of the current facts, return a float
@@ -164,7 +256,8 @@ public class SetBased{
 
     //This is the main function in SetBased
     public Fact run()  {
-        System.out.println("Populating initial solution space");
+        float lastEval = 0;
+        System.out.println("Status: Creating Initial Solution Set");
         for(int i = 0; i < maxInitSols;i++){
             Fact fact = (Fact) oTree.depthFirst();
             if(fact != null) {
@@ -178,7 +271,7 @@ public class SetBased{
             return null;
         }
         
-        System.out.println("Begining evolution");
+        System.out.println("Status: Begining evolution");
         getVariance();
         Random rand = new Random();
         
@@ -187,9 +280,12 @@ public class SetBased{
             //If facts are too big, kill them off with Tod()
             Fact newFacts[] = new Fact[2];
             if (facts.size() > maxPopulation) {
-                System.out.println("Killing of the weak");
+                System.out.println("Status: Killing of the weak");
                 Tod();
                 getVariance();
+                if(variance-lastEval < difTol){
+                    break;
+                }
             } else {
                 if(rand.nextBoolean()) {
                     Fact newFact = Mutation();
