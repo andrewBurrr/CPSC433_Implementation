@@ -48,7 +48,7 @@ public class Reader {
     private Set<Lecture> courses;
     private Set<Lab> labs;
     private Set<NotCompatible> notCompatible;
-    private Set<Unwanted> unwanted;
+    private HashMap<Course, Slot> unwanted;
     private Set<Preference> preferences;
     private Set<Pair> pairs;
     private HashMap<Course, Slot> partialAssignments;
@@ -201,17 +201,22 @@ public class Reader {
     //needs completion: 2 regex's for switch
     private void readUnwanted(Scanner fileRead) throws InvalidInputException {
         Pattern unwantedPattern = Pattern.compile("((" + COURSE + "," + DAY_COURSE + ")|(" + LAB + "," + DAY_LAB +"))," + TIME);
-        unwanted = new LinkedHashSet<>();
+        unwanted = new HashMap<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(unwantedPattern)) {
-                unwanted.add(new Unwanted(fileRead.next().trim().split(",")));
+                String[] line = fileRead.next().trim().split(",");
+                if(line[0].matches(".*(TUT|LAB).*")){
+                    unwanted.put(new Lab(line[0]), new Slot(Arrays.copyOfRange(line, 1, 3)));
+                } else {
+                    unwanted.put(new Lecture(line[0]), new Slot(Arrays.copyOfRange(line, 1, 3)));
+                }
             } else if (fileRead.hasNext(SECTION)) {
                 break;
             } else if (!fileRead.next().trim().isEmpty()) {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Unwanted: %s", fileRead.next()));
             }
         }
-        System.out.print(unwanted.toString().replace("[", "").replace(", ", "\n").replace("]", ""));
+        System.out.print(unwanted.toString().replace("[", "").replace(", ", "\n").replace("]", "\n"));
     }
 
     // needs completion: 2 regex's for switch
@@ -273,7 +278,7 @@ public class Reader {
     public Set<Lecture> getCourses() { return courses; }
     public Set<Lab> getLabs() { return labs; }
     public Set<NotCompatible> getNotCompatible() { return notCompatible; }
-    public Set<Unwanted> getUnwanted() { return unwanted; }
+    public HashMap<Course, Slot> getUnwanted() { return unwanted; }
     public Set<Preference> getPreferences() { return preferences; }
     public Set<Pair> getPairs() { return pairs; }
     public HashMap<Course, Slot> getPartialAssignments(){ return partialAssignments; }

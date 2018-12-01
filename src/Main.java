@@ -4,11 +4,14 @@ import Parser.Reader;
 import SetBased.Fact;
 import Structures.Assignment;
 import Structures.Course;
+import Structures.Lecture;
 import Structures.Slot;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
@@ -25,23 +28,39 @@ public class Main {
         error.delete();
         
         for(File test: listOfTest){
-            if(test.isFile() && !test.toString().contains("deptinst")){
+            if(test.isFile() && !test.toString().contains("deptinst") && !test.toString().contains("/.")){
                 String inputFile = test.toString();
                 try {
+                    System.out.println("\n\n************ New Test **************");
+                    System.out.println(inputFile);
                     Reader reader = new Reader(inputFile);
+                    System.out.println("\n~~~~~~~~~~~~~~~ OrTree ~~~~~~~~~~~~~~~~~");
                     OTreeModel otree = new OTreeModel(reader);
                     Prob f = otree.depthFirst();
+                    System.out.println("\n~~~~~~~~~~~~~~~ Output ~~~~~~~~~~~~~~~~~");
+                    if (f == null){
+                        System.out.println("Error: No solution found");
+                    } else{
+                       System.out.println(f.toString());
+                    }
                 } catch (Exception e){
                     try{
                         System.out.println("************Error***********");
                         FileWriter fileWriter = new FileWriter("errors.txt");
                         PrintWriter printWriter = new PrintWriter(fileWriter);
-                        System.out.println(e.getMessage());
+                        e.printStackTrace();
+                        printWriter.append(e.toString());
+                        printWriter.flush();
                         printWriter.append(e.getMessage());
                         printWriter.flush();
+                     //   printWriter.append(Arrays.toString(e.getStackTrace()));
+                        printWriter.flush();
                         printWriter.close();
+                        Thread.sleep(10);
                     } catch (IOException ew){
 
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
             } 
