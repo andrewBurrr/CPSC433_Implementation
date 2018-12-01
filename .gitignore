@@ -10,5 +10,5 @@ nbproject/
 /build/
 /src/Structures/Test.java
 /dist/
-*.txt
-!*deptinst**.html
+*output.txt
+!*deptinst*
