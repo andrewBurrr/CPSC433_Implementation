@@ -216,7 +216,7 @@ public class Reader {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Unwanted: %s", fileRead.next()));
             }
         }
-        System.out.print(unwanted.toString().replace("[", "").replace(", ", "\n").replace("]", "\n"));
+        System.out.print(unwanted.toString().replace("{", "").replace("=", "\n\t=").replace("}", "\n").replace(",","\n"));
     }
 
     // needs completion: 2 regex's for switch

@@ -53,9 +53,7 @@ public class OTreeModel {
         notCompatible = parser.getNotCompatible();
         // Check for CPSC 313
         Set<Lecture> courses = parser.getCourses();
-        System.out.println(courses.toString());
         Lecture test = new Lecture("CPSC 313 LEC 01");
-        System.out.println(test.toString());
         if(courses.contains(test)){
             this.numExtraCourses ++;
             partAssign.put(new Lab("CPSC 813 TUT 01"), new Slot("TU","18:00", Integer.MAX_VALUE,0)); // Might over load slot if this slot exists

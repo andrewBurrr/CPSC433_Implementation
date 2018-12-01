@@ -41,8 +41,16 @@ public class Main {
                     System.out.println("\n~~~~~~~~~~~~~~~ Output ~~~~~~~~~~~~~~~~~");
                     if (f == null){
                         System.out.println("Error: No solution found");
+                        String outputFile = String.format("%s_output.txt", inputFile.replace(".txt", ""));
+                        PrintWriter writer = new PrintWriter(new FileWriter(outputFile));
+                        writer.write("No solution found.");
+                       writer.close();
                     } else{
                        System.out.println(f.toString());
+                       String outputFile = String.format("%s_output.txt", inputFile.replace(".txt", ""));
+                       PrintWriter writer = new PrintWriter(new FileWriter(outputFile));
+                       writer.write(f.toString());
+                       writer.close();
                     }
                 } catch (Exception e){
                     try{
