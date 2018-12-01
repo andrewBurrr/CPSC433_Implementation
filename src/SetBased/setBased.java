@@ -86,7 +86,12 @@ public class setBased{
 
     //TODO: Implement Tod
     private void Tod(){
-        int killPercent;
+        int killPercent = 30;
+        int numberKilled = (killPercent * Facts.size()) / 100;
+        for(int i = 0; i < numberKilled; i++){
+            Facts.remove(Facts.size()-1);
+        }
+
     }
 
     //TODO: Implement Eval to calculate the soft constraint, take in a Fact, return an int
@@ -109,6 +114,7 @@ public class setBased{
             Facts.add(Mutation());
             Collections.sort(Facts);
         }
+
 //            while (true) {
 //                //If Facts is empty we run depthFirst
 //                //If Facts are too big, kill them off with Tod()
