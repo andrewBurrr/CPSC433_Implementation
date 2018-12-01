@@ -12,3 +12,4 @@ nbproject/
 /src/Structures/Test.java
 /dist/
 /InputFiles//*.txt
+!config.txt
