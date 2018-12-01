@@ -1,5 +1,6 @@
 package OrTree;
 
+import Exceptions.InvalidSchedulingException;
 import Parser.Reader;
 import Structures.Assignment;
 import Structures.Course;
@@ -40,7 +41,7 @@ public class OTreeModel {
         this.emptySlot = null;
     }
     
-    public OTreeModel(Reader parser){
+    public OTreeModel(Reader parser) throws InvalidSchedulingException{
         this.parser = parser;
         this.emptyCourse = new Course("","","","");
         this.emptySlot = new Slot("","");
@@ -53,34 +54,44 @@ public class OTreeModel {
         notCompatible = parser.getNotCompatible();
         // Check for CPSC 313
         Set<Lecture> courses = parser.getCourses();
-        if(courses.contains("CPSC 313 LEC 01")){
-            this.numExtraCourses ++;
-            partAssign.put(new Lab("CPSC 813 TUT 01"), new Slot("TU","18:00", Integer.MAX_VALUE,0)); // Might over load slot if this slot exists
-            Iterator<NotCompatible> itor = notCompatible.iterator();
-            while(itor.hasNext()){
-                NotCompatible noPair = itor.next();
-                if(noPair.getClass(0).equals(new Lecture("CPSC 313 LEC 01"))){
-                    notCompatible.add(new NotCompatible(noPair.getClass(0), new Lab("CPSC 813 TUT 01")));
+        Lecture test = new Lecture("CPSC 313 LEC 01");
+        if(courses.contains(test)){
+            Slot slot = new Slot("TU","18:00", Integer.MAX_VALUE,0);
+            if(parser.getLabSlots().contains(slot)){
+                this.numExtraCourses ++;
+                partAssign.put(new Lab("CPSC 813 TUT 01"), new Slot("TU","18:00", Integer.MAX_VALUE,0)); // Might over load slot if this slot exists
+                Iterator<NotCompatible> itor = notCompatible.iterator();
+                while(itor.hasNext()){
+                    NotCompatible noPair = itor.next();
+                    if(noPair.getClass(0).equals(new Lecture("CPSC 313 LEC 01"))){
+                        notCompatible.add(new NotCompatible(noPair.getClass(0), new Lab("CPSC 813 TUT 01")));
+                    }
                 }
+            } else {
+                throw new InvalidSchedulingException("Error: Slot TU, 18:00 does not exist for assignment of CPSC 813");
             }
         } 
         // Check for CPSC 413
-        if(courses.contains("CPSC 413 LEC 01")){
-            this.numExtraCourses++;
-            partAssign.put(new Lab("CPSC 913 TUT 01"), new Slot("TU","18:00", Integer.MAX_VALUE,0));  // Might over load slot if this slot exists
-            Iterator<NotCompatible> itor = notCompatible.iterator();
-            while(itor.hasNext()){
-                NotCompatible noPair = itor.next();
-                if(noPair.getClass(0).equals("CPSC 413 LEC 01")){
-                    notCompatible.add(new NotCompatible(noPair.getClass(0), new Lab("CPSC 913 TUT 01")));
-                } 
+        if(courses.contains(new Lecture("CPSC 413 LEC 01"))){
+            Slot slot = new Slot("TU","18:00", Integer.MAX_VALUE,0);
+            if(parser.getLabSlots().contains(slot)){
+                this.numExtraCourses++;
+                partAssign.put(new Lab("CPSC 913 TUT 01"), new Slot("TU","18:00", Integer.MAX_VALUE,0));  // Might over load slot if this slot exists
+                Iterator<NotCompatible> itor = notCompatible.iterator();
+                while(itor.hasNext()){
+                    NotCompatible noPair = itor.next();
+                    if(noPair.getClass(0).equals("CPSC 413 LEC 01")){
+                        notCompatible.add(new NotCompatible(noPair.getClass(0), new Lab("CPSC 913 TUT 01")));
+                    } 
+                }
+            } else {
+                throw new InvalidSchedulingException("Error: Slot TU, 18:00 does not exist for assignment of CPSC 913");
             }
         }
         
         Prob part = checkPartials(partAssign);
         if(part.isUnsolvable()){
-            System.out.println("Error: Partial assignments are not valid");
-            System.exit(0);
+            throw new InvalidSchedulingException("Error: Partial Assignments are not solvable.");
         } else{
             root = part;
         }
@@ -98,6 +109,7 @@ public class OTreeModel {
         HashMap<Course, Slot> schedule = (HashMap<Course, Slot>) parent.getScheduel();
         
         // Check Not Compatible set against new assignment
+        // ********* Can be optimized *********
         for(NotCompatible notComp:notCompatible){
             if(notComp.getClass(0).equals(newAsign.getCourse())){
                 if(schedule.getOrDefault(notComp.getClass(1), emptySlot).equals(newAsign.getSlot())){
@@ -111,29 +123,28 @@ public class OTreeModel {
         }
         
         // Check Unwanted
-        Set<Unwanted> unwanted = parser.getUnwanted();
-        if(unwanted.contains(new Unwanted(newCourse, newSlot))){ // Redefine equals for Unwanted
+        // ********* Can be optimized *********
+        HashMap<Course, Set<Slot>> unwanted = parser.getUnwanted();
+       // System.out.println(unwanted.toString());
+        if(unwanted.getOrDefault(newCourse, new LinkedHashSet()).contains(newSlot)){
             return "No";
         }
         
         // Check courseMax
         if(newCourse instanceof Lecture){
             HashMap<Slot, Integer> numCourse = parent.getNumCourses();
-            if(numCourse.containsKey(newSlot)){
-                if(numCourse.get(newSlot)+1 > newSlot.getMax()){
-                    return "No";
-                }
+            if(numCourse.getOrDefault(newSlot, 0)+1 > newSlot.getMax()){
+                return "No";
             }
         } else{        // Check labMax
            HashMap<Slot, Integer> numLab = parent.getNumLabs();
-            if(numLab.containsKey(newSlot)){
-                if(numLab.get(newSlot)+1 > newSlot.getMax()){
-                    return "No";
-                }
+            if(numLab.getOrDefault(newSlot, 0)+1 > newSlot.getMax()){
+                return "No";
             }
         }
 
         // Check labs and courses are not at same time
+        // ********* Can be optimized *********
         if(newCourse instanceof Lecture){
             Lecture newLecture = (Lecture) newCourse;
             // Get set of labs if it exists else get empty set
@@ -143,25 +154,13 @@ public class OTreeModel {
                     return "No";
                 }
             }
-        } else{ // Check to see if lab conflicts with lecture 
-            Iterator<Map.Entry<Lecture, Set<Lab>>> map = parser.getCourseLabs().entrySet().iterator();
-            outerloop:
-            while(map.hasNext()){
-                Map.Entry<Lecture, Set<Lab>> entry = map.next();
-                Lecture lecture = entry.getKey();
-                Set<Lab> labs = entry.getValue();
-                if(labs!=null){
-                    for(Lab lab:labs){
-                        if(lab.equals((Lab) newCourse)){
-                            // In str1.equals(str2) str1 cannot be null but str2 can be, str.equals(null)=false
-                            if(schedule.getOrDefault(lab, emptySlot).equals(schedule.get(lecture))){
-                                return "No";
-                            }
-                            break outerloop;
-                        }
-                    }
-                }
+        } else { // Check to see if lab conflicts with lecture 
+            Lab newLab = (Lab) newCourse;
+            String format = String.format("%s %s LEC %s", newLab.getName(),newLab.getNumber(),newLab.getLecture());
+            if(newSlot.equals(schedule.getOrDefault(new Lecture(format), emptySlot))){
+                return "No";
             }
+            
         }
         
         // Check additional constraints
@@ -170,8 +169,8 @@ public class OTreeModel {
             return "No";
         }
         
-        // Check to make sure all Lec 09 are after evening(variable [0,24])
-        if(newCourse.getSection().equals("09")) {
+        // Check to make sure all Lec 9 are after evening(variable [0,24])
+        if(newCourse.getSection().matches("9\\d")) {
             if(Integer.parseInt(newSlot.getTime().split(":")[0])<evening) {
                 return "No";
             }
@@ -221,8 +220,8 @@ public class OTreeModel {
             }
             
             // Check Unwanted
-            Set<Unwanted> unwanted = parser.getUnwanted();
-            if(unwanted.contains(new Unwanted(course, slot))){
+            HashMap<Course, Set<Slot>> unwanted = parser.getUnwanted();
+            if(unwanted.getOrDefault(course, new LinkedHashSet()).contains(slot)){
                 return new Prob(schedule, "No");
             }
             
@@ -249,7 +248,7 @@ public class OTreeModel {
                 }
             }
             // Check to make sure all Lec 09 are after evening(variable [0,24])
-            if(course.getSection().equals("09")){
+            if(course.getSection().matches("9\\d")){
                 if(Integer.parseInt(slot.getTime().substring(0,2))<evening){
                     return new Prob(schedule, "No");
                 }

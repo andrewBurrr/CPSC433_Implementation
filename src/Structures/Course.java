@@ -36,15 +36,15 @@ public class Course {
         if( obj instanceof Course){
             return this.id.equals(((Course) obj).id);
         } else if(obj instanceof String){
-            return this.id.equals(((String) obj).replace("\\+", ""));
+            return this.id.equals(((String) obj).replace(" ", ""));
         }
         return false;
     }
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 79 * hash + Objects.hashCode(this.id);
+        int hash = 5;
+        hash = 37 * hash + Objects.hashCode(this.id);
         return hash;
     }
 

@@ -34,7 +34,7 @@ public class Unwanted {
     
     @Override
     public String toString() {
-        return String.format("%-26s\t:%s\n", course.toString(),
+        return String.format("%-26s\t:%s", course.toString(),
                 slot.toString());
     }
 }

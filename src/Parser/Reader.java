@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 
 
@@ -48,15 +49,16 @@ public class Reader {
     private Set<Lecture> courses;
     private Set<Lab> labs;
     private Set<NotCompatible> notCompatible;
-    private Set<Unwanted> unwanted;
+    private HashMap<Course, Set<Slot>> unwanted;
     private Set<Preference> preferences;
     private Set<Pair> pairs;
     private HashMap<Course, Slot> partialAssignments;
     private HashMap<Lecture, Set<Lab>> courseLabs;
+    private boolean out;
 
 
-    public Reader(String fileName) {
-
+    public Reader(String fileName, boolean out) {
+        this.out = out;
         courseLabs = new HashMap();
         
         Scanner fileRead;
@@ -68,7 +70,7 @@ public class Reader {
 
             while (fileRead.hasNext()) {
                 temp = fileRead.nextLine().trim();
-                System.out.println(temp);
+                if(out){System.out.println(temp);}
                 switch (temp) {
                     case "Name:": readName(fileRead); break;
                     case "Course slots:": readCourseSlots(fileRead); break;
@@ -102,7 +104,7 @@ public class Reader {
         } else {
             throw new InvalidInputException("Name could not be found");
         }
-        System.out.println(name);
+        if(out){ System.out.println(name); }
     }
 
     // note, regex does not confirm valid course start time in this version
@@ -120,7 +122,7 @@ public class Reader {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Course Slots: %s", fileRead.next()));
             }
         }
-        System.out.print(courseSlots.toString().replace("[", "").replace(", ", "\n").replace("]", "")+"\n");
+        if(out){ System.out.print(courseSlots.toString().replace("[", "").replace(", ", "\n").replace("]", "")+"\n"); }
     }
 
     // note, regex does not confirm valid lab start time in this version
@@ -136,7 +138,7 @@ public class Reader {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Lab Slots: %s", fileRead.next()));
             }
         }
-        System.out.print(labSlots.toString().replace("[", "").replace(", ", "\n").replace("]", "")+"\n");
+        if(out){ System.out.print(labSlots.toString().replace("[", "").replace(", ", "\n").replace("]", "")+"\n"); }
     }
 
     // compare regex against hard constraints
@@ -153,7 +155,7 @@ public class Reader {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Courses: %s", fileRead.next()));
             }
         }
-        System.out.print(courses.toString().replace("[", "").replace(", ", "\n").replace("]", "")+"\n");
+        if(out){ System.out.print(courses.toString().replace("[", "").replace(", ", "\n").replace("]", "")+"\n"); }
     }
 
     // compare regex against hard constraints
@@ -179,7 +181,7 @@ public class Reader {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Labs: %s", fileRead.next()));
             }
         }
-        System.out.print(labs.toString().replace("[", "").replace(", ", "\n").replace("]", "")+"\n");
+        if(out){ System.out.print(labs.toString().replace("[", "").replace(", ", "\n").replace("]", "")+"\n"); }
     }
 
     // needs completion: 3 regex's for switch
@@ -195,23 +197,34 @@ public class Reader {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Not Compatible: %s", fileRead.next()));
             }
         }
-        System.out.print(notCompatible.toString().replace("\n, ", "\n").replace("[", "").replace("]", ""));
+        if(out){ System.out.print(notCompatible.toString().replace("\n, ", "\n").replace("[", "").replace("]", "")); }
     }
 
     //needs completion: 2 regex's for switch
     private void readUnwanted(Scanner fileRead) throws InvalidInputException {
         Pattern unwantedPattern = Pattern.compile("((" + COURSE + "," + DAY_COURSE + ")|(" + LAB + "," + DAY_LAB +"))," + TIME);
-        unwanted = new LinkedHashSet<>();
+        unwanted = new HashMap<>();
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(unwantedPattern)) {
-                unwanted.add(new Unwanted(fileRead.next().trim().split(",")));
+                String[] line = fileRead.next().trim().split(",");
+                if(line[0].matches(".*(TUT|LAB).*")){
+                    Lab newLab = new Lab(line[0]);
+                    Set<Slot> slotSet = unwanted.getOrDefault(newLab, new LinkedHashSet());
+                    slotSet.add(new Slot(Arrays.copyOfRange(line, 1, 3)));
+                    unwanted.put(newLab, slotSet);
+                } else {
+                    Lecture newLec = new Lecture(line[0]);
+                    Set<Slot> slotSet = unwanted.getOrDefault(newLec, new LinkedHashSet());
+                    slotSet.add(new Slot(Arrays.copyOfRange(line, 1, 3)));
+                    unwanted.put(newLec, slotSet);
+                }
             } else if (fileRead.hasNext(SECTION)) {
                 break;
             } else if (!fileRead.next().trim().isEmpty()) {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Unwanted: %s", fileRead.next()));
             }
         }
-        System.out.print(unwanted.toString().replace("[", "").replace(", ", "\n").replace("]", ""));
+        if(out){ System.out.print(unwanted.toString().replace("{", "").replace("=", "\n\t=").replace("}", "\n").replace(",","\n")); }
     }
 
     // needs completion: 2 regex's for switch
@@ -227,7 +240,7 @@ public class Reader {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Preferences: %s", fileRead.next()));
             }
         }
-        System.out.print(preferences.toString().replace("[", "").replace(", ", "\n").replace("]", "\n"));
+        if(out){ System.out.print(preferences.toString().replace("[", "").replace(", ", "\n").replace("]", "\n")); }
     }
 
     // needs completion: 3 regex's for switch
@@ -243,7 +256,7 @@ public class Reader {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Pair: %s", fileRead.next()));
             }
         }
-        System.out.print(pairs.toString().replace("[", "").replace(", ", "\n").replace("]", ""));
+        if(out){ System.out.print(pairs.toString().replace("[", "").replace(", ", "\n").replace("]", "")); }
     }
 
     // needs completion: 2 regex's for switch
@@ -264,7 +277,7 @@ public class Reader {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Partial Assignments: %s", fileRead.next()));
             }
         }
-        System.out.print(partialAssignments.toString().replace("{", "").replace(", ", "\n").replace("}", "").replace("=","\n\t="));
+        if(out){ System.out.print(partialAssignments.toString().replace("{", "").replace(", ", "\n").replace("}", "").replace("=","\n\t=")); }
     }
 
     public String getName() { return name; }
@@ -273,7 +286,7 @@ public class Reader {
     public Set<Lecture> getCourses() { return courses; }
     public Set<Lab> getLabs() { return labs; }
     public Set<NotCompatible> getNotCompatible() { return notCompatible; }
-    public Set<Unwanted> getUnwanted() { return unwanted; }
+    public HashMap<Course, Set<Slot>> getUnwanted() { return unwanted; }
     public Set<Preference> getPreferences() { return preferences; }
     public Set<Pair> getPairs() { return pairs; }
     public HashMap<Course, Slot> getPartialAssignments(){ return partialAssignments; }
