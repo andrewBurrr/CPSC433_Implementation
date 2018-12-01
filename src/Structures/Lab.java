@@ -1,5 +1,7 @@
 package Structures;
 
+import java.util.Objects;
+
 public class Lab extends Course {
     private final String lecture;
     
