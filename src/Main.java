@@ -1,7 +1,8 @@
 import Exceptions.InvalidSchedulingException;
 import OrTree.OTreeModel;
-import OrTree.Prob;
 import Parser.Reader;
+import SetBased.Fact;
+import SetBased.SetBased;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -33,7 +34,8 @@ public class Main {
                         }
                         continue;
                     }
-                    Prob f = otree.depthFirst();
+                    SetBased setBased = new SetBased(reader, otree);
+                    Fact f = setBased.run();
                     
                     if (f == null){
                         System.out.printf("%s: UNSOLVED\n\n",reader.getName());

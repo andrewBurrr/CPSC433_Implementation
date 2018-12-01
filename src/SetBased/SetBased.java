@@ -9,7 +9,7 @@ import Structures.Course;
 import java.util.*;
 
 
-public class setBased{
+public class SetBased{
     private ArrayList<Fact> facts;
     private int threshold;
     private int maxPopulation;
@@ -21,11 +21,11 @@ public class setBased{
     private float firMoment;
     private float secMoment;
     
-    public setBased(Reader reader, OTreeModel oTree){
-        //Initialize the setBased environment
+    public SetBased(Reader reader, OTreeModel oTree){
+        //Initialize the SetBased environment
          threshold = 0;
          maxPopulation = 0;
-         facts = new ArrayList<>();
+         facts = new ArrayList();
          this.reader = reader;
          this.oTree = oTree;
          this.courseLab = new LinkedHashSet(reader.getCourses());
@@ -162,17 +162,20 @@ public class setBased{
         return variance;
     }
 
-    //This is the main function in setBased
+    //This is the main function in SetBased
     public Fact run()  {
         System.out.println("Populating initial solution space");
         for(int i = 0; i < maxInitSols;i++){
             Fact fact = (Fact) oTree.depthFirst();
             if(fact != null) {
                 fact.setEvaluation(Eval(fact));
+                if(!facts.contains(fact)) {
+                    facts.add(fact);
+                }
             }
-            if(!facts.contains(fact)) {
-                facts.add(fact);
-            }
+        }
+        if(facts.isEmpty()) {
+            return null;
         }
         
         System.out.println("Begining evolution");
@@ -240,10 +243,10 @@ public class setBased{
 //                        }
 //                    }
 //                }
-//                //Calculate the variance of our current facts, if variance < threshold quit the setBased
+//                //Calculate the variance of our current facts, if variance < threshold quit the SetBased
 //                float currentVariance = getVariance(facts);
 //                if (currentVariance <= threshold) {
-//                    System.out.println("The best solutions are found, terminating the setBased");
+//                    System.out.println("The best solutions are found, terminating the SetBased");
 //                    break;
 //                }
 //            }
