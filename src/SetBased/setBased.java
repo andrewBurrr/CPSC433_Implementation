@@ -33,7 +33,6 @@ public class setBased {
         // Get a random course to be replace
         Object courseToBeReplaced = mutationCoursesArray.get(random.nextInt(mutationCoursesArray.size()));
 
-        // get a new Course/Lab from courseLab
         // actual mutation
         System.out.println("Mutating");
         //If courseToBeReplace is instance of Lab
@@ -52,7 +51,7 @@ public class setBased {
             if(numLab.containsKey(newSlot)){
                 numLab.replace(newSlot, numLab.get(newSlot) + 1);
             }else{
-                //Else initilize the map <newSLot, 1>
+                //Else initialize the map <newSLot, 1>
                 numLab.put(newSlot, 1);
             }
             //Or instance of Lecture
@@ -66,15 +65,15 @@ public class setBased {
             numCourses.replace(mutationSchedule.get(courseToBeReplaced), numCourses.get(mutationSchedule.get(courseToBeReplaced)) - 1);
             //We assign the course to a new slot
             mutationSchedule.replace((Lecture) courseToBeReplaced, newSlot);
-            //We increment the number of course in that slot
+            //We increment the number of course in that slot if it exist
             if(numCourses.containsKey(newSlot)){
                 numCourses.replace(newSlot, numCourses.get(newSlot) + 1);
             }else{
+                //Otherwise add map<newSLot, 1>
                 numCourses.put(newSlot, 1);
             }
         }
         mutationFact.setSchedule(mutationSchedule);
-
         return mutationFact;
 
     }
@@ -103,7 +102,6 @@ public class setBased {
             //Run OTree.depthFirst()
             System.out.println("running depthFirst");
             Facts.add(oTree.depthFirst());
-            System.out.println(Facts.size());
         }
         if(Facts.get(0) != null){
             Facts.add(Mutation());
