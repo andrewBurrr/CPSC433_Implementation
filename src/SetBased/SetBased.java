@@ -281,7 +281,7 @@ public class SetBased{
             //If facts are too big, kill them off with Tod()
             Fact newFacts[] = new Fact[2];
             if (facts.size() > maxPopulation) {
-                System.out.println("Status: Killing of the weak");
+                System.out.println("Status: Killing off the weak");
                 Tod();
                 getVariance();
                 if(variance-lastEval < difTol){
