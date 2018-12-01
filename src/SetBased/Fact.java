@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public class Fact implements Cloneable{
+public class Fact implements Comparable <Fact>{
     private Map<Course, Slot> schedule;
     private int evaluation;
     private HashMap<Slot, Integer> numCourseSlot;
@@ -122,5 +122,11 @@ public class Fact implements Cloneable{
              temp.append(String.format("%s",str));
         }
         return temp.toString();
+    }
+
+
+    @Override
+    public int compareTo(Fact o) {
+         return this.getEvaluation() - o.getEvaluation();
     }
 }

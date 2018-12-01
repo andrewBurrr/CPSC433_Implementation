@@ -2,18 +2,15 @@ package SetBased;
 
 import Exceptions.InvalidInputException;
 import OrTree.OTreeModel;
-import Structures.Lab;
-import Structures.Lecture;
-import Structures.Slot;
+import Structures.*;
 import Parser.Reader;
 import OrTree.Prob;
-import Structures.Course;
 import com.sun.prism.shape.ShapeRep;
 
 import java.util.*;
 
 
-public class setBased {
+public class setBased{
     private List<Fact> Facts;
     private int threshold;
     private int maxPopulation;
@@ -73,7 +70,12 @@ public class setBased {
                 numCourses.put(newSlot, 1);
             }
         }
-        mutationFact.setSchedule(mutationSchedule);
+        LinkedList <Assignment> Prob = new LinkedList<Assignment>();
+        for(Course course:mutationSchedule.keySet()){
+            Assignment newAssignment = new Assignment(course, mutationSchedule.get(course));
+            Prob.add(newAssignment);
+        }
+        mutationFact.setSchedule(oTree.guided(Prob).getScheduel());
         return mutationFact;
 
     }
@@ -105,7 +107,7 @@ public class setBased {
         }
         if(Facts.get(0) != null){
             Facts.add(Mutation());
-
+            Collections.sort(Facts);
         }
 //            while (true) {
 //                //If Facts is empty we run depthFirst
@@ -171,4 +173,5 @@ public class setBased {
             return statement;
         }
     }
+
 }
