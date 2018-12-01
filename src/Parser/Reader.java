@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 
 
@@ -48,7 +49,7 @@ public class Reader {
     private Set<Lecture> courses;
     private Set<Lab> labs;
     private Set<NotCompatible> notCompatible;
-    private HashMap<Course, Slot> unwanted;
+    private HashMap<Course, Set<Slot>> unwanted;
     private Set<Preference> preferences;
     private Set<Pair> pairs;
     private HashMap<Course, Slot> partialAssignments;
@@ -207,9 +208,15 @@ public class Reader {
             if (fileRead.hasNext(unwantedPattern)) {
                 String[] line = fileRead.next().trim().split(",");
                 if(line[0].matches(".*(TUT|LAB).*")){
-                    unwanted.put(new Lab(line[0]), new Slot(Arrays.copyOfRange(line, 1, 3)));
+                    Lab newLab = new Lab(line[0]);
+                    Set<Slot> slotSet = unwanted.getOrDefault(newLab, new LinkedHashSet());
+                    slotSet.add(new Slot(Arrays.copyOfRange(line, 1, 3)));
+                    unwanted.put(newLab, slotSet);
                 } else {
-                    unwanted.put(new Lecture(line[0]), new Slot(Arrays.copyOfRange(line, 1, 3)));
+                    Lecture newLec = new Lecture(line[0]);
+                    Set<Slot> slotSet = unwanted.getOrDefault(newLec, new LinkedHashSet());
+                    slotSet.add(new Slot(Arrays.copyOfRange(line, 1, 3)));
+                    unwanted.put(newLec, slotSet);
                 }
             } else if (fileRead.hasNext(SECTION)) {
                 break;
@@ -279,7 +286,7 @@ public class Reader {
     public Set<Lecture> getCourses() { return courses; }
     public Set<Lab> getLabs() { return labs; }
     public Set<NotCompatible> getNotCompatible() { return notCompatible; }
-    public HashMap<Course, Slot> getUnwanted() { return unwanted; }
+    public HashMap<Course, Set<Slot>> getUnwanted() { return unwanted; }
     public Set<Preference> getPreferences() { return preferences; }
     public Set<Pair> getPairs() { return pairs; }
     public HashMap<Course, Slot> getPartialAssignments(){ return partialAssignments; }

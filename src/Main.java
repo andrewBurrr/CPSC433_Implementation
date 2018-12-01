@@ -29,7 +29,7 @@ public class Main {
         error.delete();
         
         for(File test: listOfTest){
-            if(test.isFile() && !test.toString().contains("deptinst") && !test.toString().contains("/.") && !test.toString().contains("output")){
+            if(/*test.toString().contains("12") &&*/test.isFile() && !test.toString().contains("deptinst") && !test.toString().contains("/.") && !test.toString().contains("output")){
                 String inputFile = test.toString();
                 try {
                     Reader reader = new Reader(inputFile, false);

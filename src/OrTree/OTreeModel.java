@@ -114,8 +114,9 @@ public class OTreeModel {
         
         // Check Unwanted
         // ********* Can be optimized *********
-        HashMap<Course, Slot> unwanted = parser.getUnwanted();
-        if(unwanted.getOrDefault(newCourse, emptySlot).equals(newSlot)){
+        HashMap<Course, Set<Slot>> unwanted = parser.getUnwanted();
+       // System.out.println(unwanted.toString());
+        if(unwanted.getOrDefault(newCourse, new LinkedHashSet()).contains(newSlot)){
             return "No";
         }
         
@@ -227,8 +228,8 @@ public class OTreeModel {
             }
             
             // Check Unwanted
-            HashMap<Course, Slot> unwanted = parser.getUnwanted();
-            if(unwanted.getOrDefault(course, emptySlot).equals(slot)){
+            HashMap<Course, Set<Slot>> unwanted = parser.getUnwanted();
+            if(unwanted.getOrDefault(course, new LinkedHashSet()).contains(slot)){
                 return new Prob(schedule, "No");
             }
             
