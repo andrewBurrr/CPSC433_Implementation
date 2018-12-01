@@ -1,5 +1,6 @@
 package OrTree;
 
+import Exceptions.InvalidSchedulingException;
 import Parser.Reader;
 import Structures.Assignment;
 import Structures.Course;
@@ -40,7 +41,7 @@ public class OTreeModel {
         this.emptySlot = null;
     }
     
-    public OTreeModel(Reader parser){
+    public OTreeModel(Reader parser) throws InvalidSchedulingException{
         this.parser = parser;
         this.emptyCourse = new Course("","","","");
         this.emptySlot = new Slot("","");
@@ -55,33 +56,42 @@ public class OTreeModel {
         Set<Lecture> courses = parser.getCourses();
         Lecture test = new Lecture("CPSC 313 LEC 01");
         if(courses.contains(test)){
-            this.numExtraCourses ++;
-            partAssign.put(new Lab("CPSC 813 TUT 01"), new Slot("TU","18:00", Integer.MAX_VALUE,0)); // Might over load slot if this slot exists
-            Iterator<NotCompatible> itor = notCompatible.iterator();
-            while(itor.hasNext()){
-                NotCompatible noPair = itor.next();
-                if(noPair.getClass(0).equals(new Lecture("CPSC 313 LEC 01"))){
-                    notCompatible.add(new NotCompatible(noPair.getClass(0), new Lab("CPSC 813 TUT 01")));
+            Slot slot = new Slot("TU","18:00", Integer.MAX_VALUE,0);
+            if(parser.getLabSlots().contains(slot)){
+                this.numExtraCourses ++;
+                partAssign.put(new Lab("CPSC 813 TUT 01"), new Slot("TU","18:00", Integer.MAX_VALUE,0)); // Might over load slot if this slot exists
+                Iterator<NotCompatible> itor = notCompatible.iterator();
+                while(itor.hasNext()){
+                    NotCompatible noPair = itor.next();
+                    if(noPair.getClass(0).equals(new Lecture("CPSC 313 LEC 01"))){
+                        notCompatible.add(new NotCompatible(noPair.getClass(0), new Lab("CPSC 813 TUT 01")));
+                    }
                 }
+            } else {
+                throw new InvalidSchedulingException("Error: Slot TU, 18:00 does not exist for assignment of CPSC 813");
             }
         } 
         // Check for CPSC 413
         if(courses.contains(new Lecture("CPSC 413 LEC 01"))){
-            this.numExtraCourses++;
-            partAssign.put(new Lab("CPSC 913 TUT 01"), new Slot("TU","18:00", Integer.MAX_VALUE,0));  // Might over load slot if this slot exists
-            Iterator<NotCompatible> itor = notCompatible.iterator();
-            while(itor.hasNext()){
-                NotCompatible noPair = itor.next();
-                if(noPair.getClass(0).equals("CPSC 413 LEC 01")){
-                    notCompatible.add(new NotCompatible(noPair.getClass(0), new Lab("CPSC 913 TUT 01")));
-                } 
+            Slot slot = new Slot("TU","18:00", Integer.MAX_VALUE,0);
+            if(parser.getLabSlots().contains(slot)){
+                this.numExtraCourses++;
+                partAssign.put(new Lab("CPSC 913 TUT 01"), new Slot("TU","18:00", Integer.MAX_VALUE,0));  // Might over load slot if this slot exists
+                Iterator<NotCompatible> itor = notCompatible.iterator();
+                while(itor.hasNext()){
+                    NotCompatible noPair = itor.next();
+                    if(noPair.getClass(0).equals("CPSC 413 LEC 01")){
+                        notCompatible.add(new NotCompatible(noPair.getClass(0), new Lab("CPSC 913 TUT 01")));
+                    } 
+                }
+            } else {
+                throw new InvalidSchedulingException("Error: Slot TU, 18:00 does not exist for assignment of CPSC 913");
             }
         }
         
         Prob part = checkPartials(partAssign);
         if(part.isUnsolvable()){
-            System.out.println("Error: Partial assignments are not valid");
-            System.exit(0);
+            throw new InvalidSchedulingException("Error: Partial Assignments are not solvable.");
         } else{
             root = part;
         }
@@ -151,24 +161,6 @@ public class OTreeModel {
                 return "No";
             }
             
-//            Iterator<Map.Entry<Lecture, Set<Lab>>> map = parser.getCourseLabs().entrySet().iterator();
-//            outerloop:
-//            while(map.hasNext()){
-//                Map.Entry<Lecture, Set<Lab>> entry = map.next();
-//                Lecture lecture = entry.getKey();
-//                Set<Lab> labs = entry.getValue();
-//                if(labs!=null){
-//                    for(Lab lab:labs){
-//                        if(lab.equals((Lab) newCourse)){
-//                            // In str1.equals(str2) str1 cannot be null but str2 can be, str.equals(null)=false
-//                            if(schedule.getOrDefault(lab, emptySlot).equals(schedule.get(lecture))){
-//                                return "No";
-//                            }
-//                            break outerloop;
-//                        }
-//                    }
-//                }
-//            }
         }
         
         // Check additional constraints

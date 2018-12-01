@@ -1,3 +1,4 @@
+import Exceptions.InvalidSchedulingException;
 import OrTree.OTreeModel;
 import OrTree.Prob;
 import Parser.Reader;
@@ -33,7 +34,17 @@ public class Main {
                 String inputFile = test.toString();
                 try {
                     Reader reader = new Reader(inputFile, false);
-                    OTreeModel otree = new OTreeModel(reader);
+                    OTreeModel otree;
+                    try {
+                        otree = new OTreeModel(reader);
+                    } catch(InvalidSchedulingException err){
+                        System.out.printf("%s: UNSOLVED\n%s\n\n",reader.getName(),err.getMessage());
+                        String outputFile = String.format("%s_output.txt", inputFile.replace(".txt", ""));
+                        PrintWriter writer = new PrintWriter(new FileWriter(outputFile));
+                        writer.write("Status: UNSOLVED\n"+err.getMessage());
+                        writer.close();
+                        continue;
+                    }
                     Prob f = otree.depthFirst();
                     if (f == null){
                         System.out.printf("%s: UNSOLVED\n\n",reader.getName());
