@@ -359,7 +359,7 @@ public class OTreeModel {
         return null; // Should never happen unless bad input
     }
     
-    public Prob guided(LinkedList<Assignment> guide){
+    public Prob guided(ArrayList<Assignment> guide){
         for(int i=0;i<guide.size();i++){
             Assignment assign = guide.get(i);
             if(usedCourses.containsKey(assign.getCourse())){
@@ -374,7 +374,7 @@ public class OTreeModel {
         if(root != null){
             leafs.add(root);
         } else {
-            Course course = guide.removeFirst().getCourse();
+            Course course = guide.remove(0).getCourse();
             if( course instanceof Lecture){
                 for(Slot slot: parser.getCourseSlots()){
                     HashMap<Course, Slot> schedule = new HashMap();

@@ -7,6 +7,7 @@ import Structures.Lecture;
 import Structures.Slot;
 import Parser.Reader;
 import OrTree.Prob;
+import Structures.Assignment;
 import Structures.Course;
 import com.sun.prism.shape.ShapeRep;
 
@@ -20,39 +21,87 @@ public class setBased {
     private Reader reader;
     private OTreeModel oTree;
     private Set<Course> courseLab;
+    
     //TODO: Implement Mutation according to setBasedBreakDown, return a Fact newFact
     private Fact Mutation(){
         Random random = new Random();
-
+        
         //Create a Deep Copy of a random Fact, then getSChedule()
-        Fact mutationFact = new Fact(Facts.get(random.nextInt(Facts.size())));
-        Map<Course, Slot> mutationSchedule = mutationFact.getScheduel();
-
-        // get courses in schedule as an Array
-        ArrayList mutationCoursesArray = new ArrayList(mutationFact.getScheduel().keySet());
-        // Get a random course to be replace
-        Object courseToBeReplaced = mutationCoursesArray.get(random.nextInt(mutationCoursesArray.size()));
-
-        // get a new Course/Lab from courseLab
-        // actual mutation
-        System.out.println("Mutating");
-        //If courseToBeReplace is instance of Lab
-        if(courseToBeReplaced instanceof Lab){
-            List<Slot> labSlot = new ArrayList<>(reader.getCourseSlots());
-            mutationSchedule.replace((Lab) courseToBeReplaced, labSlot.get(random.nextInt(labSlot.size())));
-            mutationFact.setSchedule(mutationSchedule);
-            //Or instance of Lecture
-        } else if(courseToBeReplaced instanceof Lecture){
-            List<Slot> courseSlot = new ArrayList<>(reader.getCourseSlots());
-            mutationSchedule.replace((Lecture) courseToBeReplaced, courseSlot.get(random.nextInt(courseSlot.size())));
-            mutationFact.setSchedule(mutationSchedule);
+        Fact mutFact = new Fact(Facts.get(random.nextInt(Facts.size()-1))); 
+        Map<Course, Slot> mutSchedule = mutFact.getScheduel();
+        
+        // Get a random course (lab or lecture) from scheduel
+        Course mutCourse = mutSchedule.keySet().toArray(new Course[0])[random.nextInt(mutSchedule.size())];
+        Slot newSlot;
+        // Make sure new slot for mutCourse is of right type and is different
+        if(mutCourse instanceof Lecture){ // Lecture
+            newSlot = reader.getCourseSlots().toArray(new Slot[0])[random.nextInt(reader.getCourseSlots().size())];
+            while(newSlot.equals(mutSchedule.get(mutCourse))){
+                newSlot = reader.getCourseSlots().toArray(new Slot[0])[random.nextInt(reader.getCourseSlots().size())];
+            }
+        } else { // Lab
+            newSlot = reader.getCourseSlots().toArray(new Slot[0])[random.nextInt(reader.getLabSlots().size())];
+            while(newSlot.equals(mutSchedule.get(mutCourse))){
+                newSlot = reader.getCourseSlots().toArray(new Slot[0])[random.nextInt(reader.getLabSlots().size())];
+            }
         }
-        return mutationFact;
+        // Remove course from scheduel 
+        mutSchedule.remove(mutCourse);
+        // Create arraylist for guide and create iterator to add non-changed assigns
+        ArrayList<Assignment> guide = new ArrayList(mutSchedule.size());
+        guide.add(new Assignment(mutCourse, newSlot));
+        Iterator<Map.Entry<Course, Slot>> itor = mutSchedule.entrySet().iterator();
+        
+        while(itor.hasNext()) {
+            Map.Entry<Course, Slot> entry = itor.next();
+            guide.add(new Assignment(entry.getKey(), entry.getValue()));
+        }
+        
+        Fact newFact = (Fact) oTree.guided(guide);
+        if(newFact != null){
+            newFact.setEvaluation(Eval(newFact));
+        }
+
+        return newFact;
 
     }
+    
     //TODO: Implement Combination according to setBasedBreakDown, return two random new Fact
     private Fact[] Combination(){
-        return new Fact[2];
+        Random rand = new Random();
+        
+        HashMap<Course, Slot> p1Map = new HashMap(Facts.get(rand.nextInt(Facts.size()-1)).getScheduel());
+        HashMap<Course, Slot> p2Map = new HashMap(Facts.get(rand.nextInt(Facts.size()-1)).getScheduel());
+        while(p2Map.equals(p1Map)){
+            p2Map = new HashMap(Facts.get(rand.nextInt(Facts.size()-1)).getScheduel());
+        }
+        
+        ArrayList<Assignment> guide1 = new ArrayList(p1Map.size());
+        ArrayList<Assignment> guide2 = new ArrayList(p1Map.size());
+        
+        Iterator<Map.Entry<Course, Slot>> itor = p1Map.entrySet().iterator();
+        while(itor.hasNext()) {
+            Map.Entry<Course, Slot> entry = itor.next();
+            if(rand.nextBoolean()){
+                guide1.add(new Assignment(entry.getKey(), entry.getValue()));
+                guide2.add(new Assignment(entry.getKey(), p2Map.get(entry.getKey())));
+            } else {
+                guide2.add(new Assignment(entry.getKey(), entry.getValue()));
+                guide1.add(new Assignment(entry.getKey(), p2Map.get(entry.getKey())));
+            }
+        }
+        
+        Fact[] newFacts = new Fact[2];
+        
+        Fact newFact1 = (Fact) oTree.guided(guide1);
+        newFact1.setEvaluation(Eval(newFact1));
+        Fact newFact2 = (Fact) oTree.guided(guide2);
+        newFact2.setEvaluation(Eval(newFact2));
+        
+        newFacts[0] = newFact1;
+        newFacts[1] = newFact2;
+        
+        return newFacts;
     }
 
     //TODO: Implement Tod

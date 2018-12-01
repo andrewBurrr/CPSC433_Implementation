@@ -2,10 +2,14 @@ import Exceptions.InvalidSchedulingException;
 import OrTree.OTreeModel;
 import OrTree.Prob;
 import Parser.Reader;
+import Structures.Course;
+import Structures.Slot;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,7 +22,7 @@ public class Main {
         error.delete();
         
         for(File test: listOfTest){
-            if(/*test.toString().contains("12") &&*/test.isFile() && !test.toString().contains("deptinst") && !test.toString().contains("/.") && !test.toString().contains("output")){
+            if(/*test.toString().contains("short") &&*/test.isFile() && !test.toString().contains("deptinst") && !test.toString().contains("/.") && !test.toString().contains("output")){
                 String inputFile = test.toString();
                 try {
                     Reader reader = new Reader(inputFile, false);
@@ -34,6 +38,7 @@ public class Main {
                         continue;
                     }
                     Prob f = otree.depthFirst();
+                    
                     if (f == null){
                         System.out.printf("%s: UNSOLVED\n\n",reader.getName());
                         
@@ -51,7 +56,6 @@ public class Main {
                     }
                 } catch (Exception e){
                     try{
- //                       System.out.println("************Error***********");
                         FileWriter fileWriter = new FileWriter("errors.txt");
                         try (PrintWriter printWriter = new PrintWriter(fileWriter)) {
                             e.printStackTrace();
