@@ -24,9 +24,8 @@ public class setBased {
     private Fact Mutation(){
         Random random = new Random();
 
-        // to get a random schedule (fact) from set of (schedules) facts.
-        Fact fact = Facts.get(random.nextInt(Facts.size()));
-        Fact mutationFact = new Fact(fact);
+        //Create a Deep Copy of a random Fact, then getSChedule()
+        Fact mutationFact = new Fact(Facts.get(random.nextInt(Facts.size())));
         Map<Course, Slot> mutationSchedule = mutationFact.getScheduel();
 
         // get courses in schedule as an Array
@@ -37,10 +36,12 @@ public class setBased {
         // get a new Course/Lab from courseLab
         // actual mutation
         System.out.println("Mutating");
+        //If courseToBeReplace is instance of Lab
         if(courseToBeReplaced instanceof Lab){
             List<Slot> labSlot = new ArrayList<>(reader.getCourseSlots());
             mutationSchedule.replace((Lab) courseToBeReplaced, labSlot.get(random.nextInt(labSlot.size())));
             mutationFact.setSchedule(mutationSchedule);
+            //Or instance of Lecture
         } else if(courseToBeReplaced instanceof Lecture){
             List<Slot> courseSlot = new ArrayList<>(reader.getCourseSlots());
             mutationSchedule.replace((Lecture) courseToBeReplaced, courseSlot.get(random.nextInt(courseSlot.size())));
