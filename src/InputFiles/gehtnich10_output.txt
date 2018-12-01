@@ -1,2 +1,0 @@
-Status: UNSOLVED
-Error: Slot TU, 18:00 does not exist for assignment of CPSC 913
