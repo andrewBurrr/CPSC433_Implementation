@@ -24,19 +24,25 @@ public class Main {
         
         
         File[] listOfInput;
+        float[][] weights;
         // Config 
-        if(false){
-            try {
-                Scanner fileReader = new Scanner(new File("config.txt"));
-                listOfInput = null;// Read config 
-                
-            } catch (FileNotFoundException ex) {
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else { // All files in InputFiles folder
+//        try {
+//            Scanner fileReader = new Scanner(new File("config.txt"));
+//            int numInputs = Integer.parseInt(fileReader.next());
+//            listOfInput = new File[numInputs];
+//            weights = new float[numInputs][6];
+//            int i =0;
+//            while(fileReader.hasNext()){
+//                String[] line = fileReader.next().split(":");
+//                listOfInput[i] = new File(line[0]);
+//                weights[i] = new float[6];
+//            }
+//
+//        } catch (FileNotFoundException ex) {
+//            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             File folder = new File("src/InputFiles/");
             listOfInput= folder.listFiles();
-        }
+//        }
         
         File error = new File("errors.txt");
         error.delete();
