@@ -2,14 +2,10 @@ import Exceptions.InvalidSchedulingException;
 import OrTree.OTreeModel;
 import OrTree.Prob;
 import Parser.Reader;
-import Structures.Course;
-import Structures.Slot;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 

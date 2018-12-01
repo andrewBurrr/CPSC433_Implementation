@@ -10,9 +10,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
-public class Fact implements Cloneable{
+public class Fact implements Comparable <Fact>{
     private Map<Course, Slot> schedule;
     private int evaluation;
     private HashMap<Slot, Integer> numCourseSlot;
@@ -122,5 +123,25 @@ public class Fact implements Cloneable{
              temp.append(String.format("%s",str));
         }
         return temp.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Fact){
+        return this.getScheduel().equals(((Fact) obj).getScheduel());
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 5;
+        hash = 71 * hash + Objects.hashCode(this.schedule);
+        return hash;
+    }
+    
+    @Override
+    public int compareTo(Fact o) {
+         return this.getEvaluation() - o.getEvaluation();
     }
 }
