@@ -1,3 +1,4 @@
+Status: SOLVED
 Eval-value: 0
 CPSC 101 LEC 01           	:MO 9:00 6 2
 CPSC 102 LEC 01           	:MO 9:00 6 2

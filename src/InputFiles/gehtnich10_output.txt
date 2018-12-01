@@ -1,3 +1,4 @@
+Status: SOLVED
 Eval-value: 0
 CPSC 413 LEC 01           	:TU 17:00 2 1
 CPSC 434 LEC 01           	:MO 8:00 1 1

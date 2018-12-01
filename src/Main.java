@@ -32,29 +32,27 @@ public class Main {
             if(test.isFile() && !test.toString().contains("deptinst") && !test.toString().contains("/.") && !test.toString().contains("output")){
                 String inputFile = test.toString();
                 try {
-                    System.out.println("\n\n************ New Test **************");
-                    System.out.println(inputFile);
-                    Reader reader = new Reader(inputFile);
-                    System.out.println("\n~~~~~~~~~~~~~~~ OrTree ~~~~~~~~~~~~~~~~~");
+                    Reader reader = new Reader(inputFile, false);
                     OTreeModel otree = new OTreeModel(reader);
                     Prob f = otree.depthFirst();
-                    System.out.println("\n~~~~~~~~~~~~~~~ Output ~~~~~~~~~~~~~~~~~");
                     if (f == null){
-                        System.out.println("Error: No solution found");
+                        System.out.printf("%s: UNSOLVED\n\n",reader.getName());
+                        
                         String outputFile = String.format("%s_output.txt", inputFile.replace(".txt", ""));
                         PrintWriter writer = new PrintWriter(new FileWriter(outputFile));
-                        writer.write("No solution found.");
+                        writer.write("Status: UNSOLVED\n");
                        writer.close();
                     } else{
-                       System.out.println(f.toString());
-                       String outputFile = String.format("%s_output.txt", inputFile.replace(".txt", ""));
-                       PrintWriter writer = new PrintWriter(new FileWriter(outputFile));
-                       writer.write(f.toString());
-                       writer.close();
+                        System.out.printf("%s: SOLVED\n%s\n",reader.getName(),f.toString());
+                        
+                        String outputFile = String.format("%s_output.txt", inputFile.replace(".txt", ""));
+                        PrintWriter writer = new PrintWriter(new FileWriter(outputFile));
+                        writer.write("Status: SOLVED\n"+f.toString());
+                        writer.close();
                     }
                 } catch (Exception e){
                     try{
-                        System.out.println("************Error***********");
+ //                       System.out.println("************Error***********");
                         FileWriter fileWriter = new FileWriter("errors.txt");
                         PrintWriter printWriter = new PrintWriter(fileWriter);
                         e.printStackTrace();
