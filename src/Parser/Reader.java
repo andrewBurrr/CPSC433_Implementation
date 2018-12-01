@@ -4,7 +4,6 @@ import Structures.Slot;
 import Structures.Lecture;
 import Structures.Lab;
 import Structures.NotCompatible;
-import Structures.Unwanted;
 import Structures.Preference;
 import Structures.Pair;
 // exceptions
@@ -19,7 +18,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 
 
 
@@ -266,10 +264,22 @@ public class Reader {
         while (fileRead.hasNext()) {
             if (fileRead.hasNext(partialAssignmentPattern)) {
                 String[] line = fileRead.next().trim().split(",");
-                if(line[0].matches(".*(TUT|LAB).*")) {
-                    partialAssignments.put(new Lab(line[0]), new Slot(Arrays.copyOfRange(line, 1, 3)));
+                String cStr = line[0];
+                String sStr = line[1].trim() + line[2].trim();
+                if(cStr.matches(".*(TUT|LAB).*")) {
+                    for(Slot slot:labSlots) {
+                        if(slot.equals(sStr)) {
+                            partialAssignments.put(new Lab(cStr), slot);
+                            break;
+                        }
+                    }
                 } else {
-                    partialAssignments.put(new Lecture(line[0]), new Slot(Arrays.copyOfRange(line, 1, 3)));
+                    for(Slot slot:courseSlots) {
+                        if(slot.equals(sStr)) {
+                            partialAssignments.put(new Lecture(cStr), slot);
+                            break;
+                        }
+                    }
                 }
             } else if (fileRead.hasNext(SECTION)) {
                 break;
@@ -277,7 +287,7 @@ public class Reader {
                 throw new InvalidInputException(String.format("Failed To Parse Line In Partial Assignments: %s", fileRead.next()));
             }
         }
-        if(out){ System.out.print(partialAssignments.toString().replace("{", "").replace(", ", "\n").replace("}", "").replace("=","\n\t=")); }
+        if(out){ System.out.print(partialAssignments.toString().replace("{", "").replace(", ", "\n").replace("}", "\n\n").replace("=","\n\t=")); }
     }
 
     public String getName() { return name; }

@@ -14,8 +14,8 @@ import java.util.Objects;
 import java.util.Set;
 
 public class Fact implements Comparable <Fact>{
-    private Map<Course, Slot> schedule;
-    private int evaluation;
+    private HashMap<Course, Slot> schedule;
+    private float evaluation;
     private HashMap<Slot, Integer> numCourseSlot;
     private HashMap<Slot, Integer> numLabSlot;
 
@@ -34,7 +34,7 @@ public class Fact implements Comparable <Fact>{
          this.numLabSlot = new HashMap<>(another.numLabSlot);
      }
 
-     public Fact(HashMap<Course,Slot> schedule, int evaluation) {
+     public Fact(HashMap<Course,Slot> schedule, float evaluation) {
          this.schedule = schedule;
          this.evaluation = evaluation;
          this.numCourseSlot = new HashMap<>(schedule.size());
@@ -84,19 +84,19 @@ public class Fact implements Comparable <Fact>{
 
      // needs
      public void setSchedule(Map<Course, Slot> schedule) {
-         this.schedule = schedule;
+         this.schedule = (HashMap<Course, Slot>) schedule;
      }
 
-     public int getEvaluation() {
+     public float getEvaluation() {
          // call sum from other eval functions defined in assignment description
          return evaluation;
      }
 
 
-     public void setEvaluation(int evaluation){
+     public void setEvaluation(float evaluation){
          this.evaluation = evaluation;
      }
-     public Map<Course, Slot> getScheduel(){
+     public HashMap<Course, Slot> getScheduel(){
          return schedule;
      }
      
@@ -142,6 +142,6 @@ public class Fact implements Comparable <Fact>{
     
     @Override
     public int compareTo(Fact o) {
-         return this.getEvaluation() - o.getEvaluation();
+         return (int) (this.getEvaluation() - o.getEvaluation());
     }
 }

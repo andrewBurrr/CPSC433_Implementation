@@ -8,7 +8,6 @@ import Structures.Lab;
 import Structures.Lecture;
 import Structures.NotCompatible;
 import Structures.Slot;
-import Structures.Unwanted;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -54,39 +53,55 @@ public class OTreeModel {
         notCompatible = parser.getNotCompatible();
         // Check for CPSC 313
         Set<Lecture> courses = parser.getCourses();
-        Lecture test = new Lecture("CPSC 313 LEC 01");
-        if(courses.contains(test)){
-            Slot slot = new Slot("TU","18:00", Integer.MAX_VALUE,0);
-            if(parser.getLabSlots().contains(slot)){
-                this.numExtraCourses ++;
-                partAssign.put(new Lab("CPSC 813 TUT 01"), new Slot("TU","18:00", Integer.MAX_VALUE,0)); // Might over load slot if this slot exists
-                Iterator<NotCompatible> itor = notCompatible.iterator();
-                while(itor.hasNext()){
-                    NotCompatible noPair = itor.next();
-                    if(noPair.getClass(0).equals(new Lecture("CPSC 313 LEC 01"))){
-                        notCompatible.add(new NotCompatible(noPair.getClass(0), new Lab("CPSC 813 TUT 01")));
+        outIf1:
+        if(courses.contains(new Lecture("CPSC 313 LEC 01"))){
+            for(Slot slot: parser.getLabSlots()){
+                if(slot.equals("TU18:00")){
+                    this.numExtraCourses++;
+                    Lab cpscQuiz = new Lab("CPSC 813 TUT 01");
+                    partAssign.put(cpscQuiz, slot);
+                    Iterator<NotCompatible> itor = notCompatible.iterator();
+                    while(itor.hasNext()){
+                        NotCompatible noPair = itor.next();
+                        // If the first noPair is CPSC 413 LEC 01 create new with second and quiz
+                        if(noPair.getClass(0).getName().equals("CPSC") && noPair.getClass(0).getNumber().equals("313")) {
+                            notCompatible.add(new NotCompatible(noPair.getClass(1), cpscQuiz));
+                        } 
+                        // If the second noPair is CPSC 413 LEC 01 create new with first and quiz
+                        else if(noPair.getClass(1).getName().equals("CPSC") && noPair.getClass(1).getNumber().equals("313")) {
+                            notCompatible.add(new NotCompatible(noPair.getClass(0) , cpscQuiz));
+                        }
                     }
+                    break outIf1;
                 }
-            } else {
-                throw new InvalidSchedulingException("Error: Slot TU, 18:00 does not exist for assignment of CPSC 813");
             }
-        } 
+            throw new InvalidSchedulingException("Error: Slot TU, 18:00 does not exist for assignment of CPSC 813");
+        }
+        
         // Check for CPSC 413
+        outIf2:
         if(courses.contains(new Lecture("CPSC 413 LEC 01"))){
-            Slot slot = new Slot("TU","18:00", Integer.MAX_VALUE,0);
-            if(parser.getLabSlots().contains(slot)){
-                this.numExtraCourses++;
-                partAssign.put(new Lab("CPSC 913 TUT 01"), new Slot("TU","18:00", Integer.MAX_VALUE,0));  // Might over load slot if this slot exists
-                Iterator<NotCompatible> itor = notCompatible.iterator();
-                while(itor.hasNext()){
-                    NotCompatible noPair = itor.next();
-                    if(noPair.getClass(0).equals("CPSC 413 LEC 01")){
-                        notCompatible.add(new NotCompatible(noPair.getClass(0), new Lab("CPSC 913 TUT 01")));
-                    } 
+            for(Slot slot: parser.getLabSlots()){
+                if(slot.equals("TU18:00")){
+                    this.numExtraCourses++;
+                    Lab cpscQuiz = new Lab("CPSC 913 TUT 01");
+                    partAssign.put(cpscQuiz, slot);
+                    Iterator<NotCompatible> itor = notCompatible.iterator();
+                    while(itor.hasNext()){
+                        NotCompatible noPair = itor.next();
+                        // If the first noPair is CPSC 413 LEC 01 create new with second and quiz
+                        if(noPair.getClass(0).getName().equals("CPSC") && noPair.getClass(0).getNumber().equals("413")){
+                            notCompatible.add(new NotCompatible(noPair.getClass(1), cpscQuiz));
+                        } 
+                        // If the second noPair is CPSC 413 LEC 01 create new with first and quiz
+                        else if(noPair.getClass(1).getName().equals("CPSC") && noPair.getClass(1).getNumber().equals("413")) {
+                            notCompatible.add(new NotCompatible(noPair.getClass(0) , cpscQuiz));
+                        }
+                    }
+                    break outIf2;
                 }
-            } else {
-                throw new InvalidSchedulingException("Error: Slot TU, 18:00 does not exist for assignment of CPSC 913");
             }
+            throw new InvalidSchedulingException("Error: Slot TU, 18:00 does not exist for assignment of CPSC 913");
         }
         
         Prob part = checkPartials(partAssign);
@@ -123,7 +138,6 @@ public class OTreeModel {
         }
         
         // Check Unwanted
-        // ********* Can be optimized *********
         HashMap<Course, Set<Slot>> unwanted = parser.getUnwanted();
        // System.out.println(unwanted.toString());
         if(unwanted.getOrDefault(newCourse, new LinkedHashSet()).contains(newSlot)){
@@ -144,7 +158,6 @@ public class OTreeModel {
         }
 
         // Check labs and courses are not at same time
-        // ********* Can be optimized *********
         if(newCourse instanceof Lecture){
             Lecture newLecture = (Lecture) newCourse;
             // Get set of labs if it exists else get empty set
