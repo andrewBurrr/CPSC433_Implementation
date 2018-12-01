@@ -1,4 +1,5 @@
 *.class
+*.class
 *.html
 *.xml
 out/
@@ -9,3 +10,5 @@ nbproject/
 /build/
 /src/Structures/Test.java
 /dist/
+*.txt
+!*deptinst**.html
