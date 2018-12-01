@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 public class Main {
     public static void main(String[] args) {
         
-        String inputFile = "src/InputFiles/deptinst1.txt";
+        String inputFile = "src/InputFiles/shortExample.txt";
         Reader reader = new Reader(inputFile);
         OTreeModel otree = new OTreeModel(reader);
         setBased SetBased = new setBased(reader, otree);
@@ -21,8 +21,8 @@ public class Main {
         
 //        Prob f = otree.depthFirst();
         SetBased.run();
-        System.out.println("\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        System.out.println(SetBased.toString());
+//        System.out.println("\n\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+//        System.out.println(SetBased.toString());
 //        System.out.printf("Unwantd:%s\n",reader.getUnwanted().toString().replace("[","\n").replace("]","").replace(", ",""));
 //        System.out.printf("Not-Compatible:%s\n",reader.getNotCompatible().toString().replace("[","\n").replace("]","").replace(", ",""));
 //        System.out.printf("PartAssing:%s\n",reader.getPartialAssignments().toString().replace("{","\n").replace("}","").replace("=","\n\t=").replace(", ","\n"));

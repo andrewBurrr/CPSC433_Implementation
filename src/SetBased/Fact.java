@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-public class Fact {
+public class Fact implements Cloneable{
     private Map<Course, Slot> schedule;
     private int evaluation;
     private HashMap<Slot, Integer> numCourseSlot;
@@ -24,6 +24,13 @@ public class Fact {
 
      public Fact(HashMap<Course, Slot> schedule) {
          this(schedule, Integer.MAX_VALUE);
+     }
+
+     public Fact(Fact another){
+         this.schedule = new HashMap<>(another.schedule);
+         this.evaluation = new Integer(another.evaluation);
+         this.numCourseSlot = new HashMap<>(another.numCourseSlot);
+         this.numLabSlot = new HashMap<>(another.numLabSlot);
      }
 
      public Fact(HashMap<Course,Slot> schedule, int evaluation) {
@@ -83,6 +90,7 @@ public class Fact {
          // call sum from other eval functions defined in assignment description
          return evaluation;
      }
+
 
      public void setEvaluation(int evaluation){
          this.evaluation = evaluation;

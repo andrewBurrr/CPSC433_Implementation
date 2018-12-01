@@ -3,6 +3,7 @@ package SetBased;
 import Exceptions.InvalidInputException;
 import OrTree.OTreeModel;
 import Structures.Lab;
+import Structures.Lecture;
 import Structures.Slot;
 import Parser.Reader;
 import OrTree.Prob;
@@ -22,40 +23,29 @@ public class setBased {
     //TODO: Implement Mutation according to setBasedBreakDown, return a Fact newFact
     private Fact Mutation(){
         Random random = new Random();
-        Fact mutationFact = null;
 
         // to get a random schedule (fact) from set of (schedules) facts.
-        mutationFact = Facts.get(random.nextInt(Facts.size()));
+        Fact fact = Facts.get(random.nextInt(Facts.size()));
+        Fact mutationFact = new Fact(fact);
         Map<Course, Slot> mutationSchedule = mutationFact.getScheduel();
 
         // get courses in schedule as an Array
-        Object [] mutationCoursesArray = mutationFact.getScheduel().keySet().toArray();
+        ArrayList mutationCoursesArray = new ArrayList(mutationFact.getScheduel().keySet());
         // Get a random course to be replace
-        Object courseToBeReplaced = mutationCoursesArray[random.nextInt(mutationCoursesArray.length)];
+        Object courseToBeReplaced = mutationCoursesArray.get(random.nextInt(mutationCoursesArray.size()));
 
         // get a new Course/Lab from courseLab
-        Object[] courseLabArray = courseLab.toArray();
-        Object newCourse = courseLabArray[random.nextInt(courseLabArray.length)];
         // actual mutation
-        while(true){
-            //break only if the new Course/Lab does not equals to the old Course/Lab or mutationFact does not contains new Course/Lab
-            if ((newCourse.equals(courseToBeReplaced)) || (mutationSchedule.containsKey(newCourse))){
-                newCourse = courseLabArray[random.nextInt(courseLabArray.length)];
-                System.out.println(mutationSchedule.containsKey(newCourse));
-            } else{
-                break;
-            }
-        }
         System.out.println("Mutating");
-        Slot slot = mutationSchedule.get(courseToBeReplaced);
-        mutationSchedule.remove(courseToBeReplaced);
-        if(newCourse instanceof Lab){
-            mutationSchedule.put((Course)newCourse, slot);
-        } else if(newCourse instanceof Course){
-            mutationSchedule.put((Lab) newCourse, slot);
+        if(courseToBeReplaced instanceof Lab){
+            List<Slot> labSlot = new ArrayList<>(reader.getCourseSlots());
+            mutationSchedule.replace((Lab) courseToBeReplaced, labSlot.get(random.nextInt(labSlot.size())));
+            mutationFact.setSchedule(mutationSchedule);
+        } else if(courseToBeReplaced instanceof Lecture){
+            List<Slot> courseSlot = new ArrayList<>(reader.getCourseSlots());
+            mutationSchedule.replace((Lecture) courseToBeReplaced, courseSlot.get(random.nextInt(courseSlot.size())));
+            mutationFact.setSchedule(mutationSchedule);
         }
-        mutationFact.setSchedule(mutationSchedule);
-
         return mutationFact;
 
     }
@@ -85,9 +75,8 @@ public class setBased {
             System.out.println("running depthFirst");
             Facts.add(oTree.depthFirst());
         }
-        if (courseLab.size() != Facts.get(0).getScheduel().size()){
-            Facts.add(Mutation());
-        }
+        Facts.add(Mutation());
+
 //            while (true) {
 //                //If Facts is empty we run depthFirst
 //                //If Facts are too big, kill them off with Tod()
