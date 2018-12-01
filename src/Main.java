@@ -24,7 +24,7 @@ public class Main {
         
         
         File[] listOfInput;
-        float[][] weights;
+        float[][] weightsArr;
         // Config 
 //        try {
 //            Scanner fileReader = new Scanner(new File("config.txt"));
