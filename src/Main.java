@@ -29,7 +29,7 @@ public class Main {
         error.delete();
         
         for(File test: listOfTest){
-            if(test.isFile() && !test.toString().contains("deptinst") && !test.toString().contains("/.")){
+            if(test.isFile() && !test.toString().contains("deptinst") && !test.toString().contains("/.") && !test.toString().contains("output")){
                 String inputFile = test.toString();
                 try {
                     System.out.println("\n\n************ New Test **************");
