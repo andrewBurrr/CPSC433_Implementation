@@ -1,6 +1,7 @@
 *.class
 *.html
 *.xml
+*.txt
 out/
 .idea/
 *iml
@@ -9,3 +10,4 @@ nbproject/
 /build/
 /src/Structures/Test.java
 /dist/
+/InputFiles//*.txt

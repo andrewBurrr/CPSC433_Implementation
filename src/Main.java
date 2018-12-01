@@ -11,12 +11,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -37,19 +32,23 @@ public class Main {
                     Reader reader = new Reader(inputFile);
                     System.out.println("\n~~~~~~~~~~~~~~~ OrTree ~~~~~~~~~~~~~~~~~");
                     OTreeModel otree = new OTreeModel(reader);
-                    Prob f = otree.depthFirst();
+//                    Prob f = otree.depthFirst();
+                    System.out.println("\n~~~~~~~~~~~~~~~ SetBase ~~~~~~~~~~~~~");
+                    setBased SetBase = new setBased(reader, otree);
+                    SetBase.run();
+                    List<Fact> Facts = SetBase.getFacts();
                     System.out.println("\n~~~~~~~~~~~~~~~ Output ~~~~~~~~~~~~~~~~~");
-                    if (f == null){
+                    if (Facts == null){
                         System.out.println("Error: No solution found");
                         String outputFile = String.format("%s_output.txt", inputFile.replace(".txt", ""));
                         PrintWriter writer = new PrintWriter(new FileWriter(outputFile));
                         writer.write("No solution found.");
                        writer.close();
                     } else{
-                       System.out.println(f.toString());
+                       System.out.println(Facts.toString());
                        String outputFile = String.format("%s_output.txt", inputFile.replace(".txt", ""));
                        PrintWriter writer = new PrintWriter(new FileWriter(outputFile));
-                       writer.write(f.toString());
+                       writer.write(Facts.toString());
                        writer.close();
                     }
                 } catch (Exception e){

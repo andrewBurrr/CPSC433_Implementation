@@ -38,15 +38,43 @@ public class setBased {
         System.out.println("Mutating");
         //If courseToBeReplace is instance of Lab
         if(courseToBeReplaced instanceof Lab){
+            //Getting a random newSlot to mutate
             List<Slot> labSlot = new ArrayList<>(reader.getCourseSlots());
-            mutationSchedule.replace((Lab) courseToBeReplaced, labSlot.get(random.nextInt(labSlot.size())));
-            mutationFact.setSchedule(mutationSchedule);
+            Slot newSlot = labSlot.get(random.nextInt(labSlot.size()));
+            //Getting the numLab and decrement the number of Lab assigned to the Slot
+            HashMap <Slot, Integer> numLab = mutationFact.getNumLabs();
+            //When we take out the lab from the current Slot, we decrement the numLab at that Slot by 1
+            numLab.replace(mutationSchedule.get(courseToBeReplaced), numLab.get(mutationSchedule.get(courseToBeReplaced)) - 1);
+            //We assign the Lab to a new Slot
+            mutationSchedule.replace((Lab) courseToBeReplaced, newSlot);
+            //Increment the Slot that have just been assigned a new Lab by 1
+            //If previously the numLab contains the newSlot, increment by 1
+            if(numLab.containsKey(newSlot)){
+                numLab.replace(newSlot, numLab.get(newSlot) + 1);
+            }else{
+                //Else initilize the map <newSLot, 1>
+                numLab.put(newSlot, 1);
+            }
             //Or instance of Lecture
         } else if(courseToBeReplaced instanceof Lecture){
+            //Getting a random newSlot to mutate
             List<Slot> courseSlot = new ArrayList<>(reader.getCourseSlots());
-            mutationSchedule.replace((Lecture) courseToBeReplaced, courseSlot.get(random.nextInt(courseSlot.size())));
-            mutationFact.setSchedule(mutationSchedule);
+            Slot newSlot = courseSlot.get(random.nextInt(courseSlot.size()));
+            //Getting the numCourses
+            HashMap<Slot, Integer> numCourses = mutationFact.getNumCourses();
+            //When we take out the course from the current Slot, we decrement by 1
+            numCourses.replace(mutationSchedule.get(courseToBeReplaced), numCourses.get(mutationSchedule.get(courseToBeReplaced)) - 1);
+            //We assign the course to a new slot
+            mutationSchedule.replace((Lecture) courseToBeReplaced, newSlot);
+            //We increment the number of course in that slot
+            if(numCourses.containsKey(newSlot)){
+                numCourses.replace(newSlot, numCourses.get(newSlot) + 1);
+            }else{
+                numCourses.put(newSlot, 1);
+            }
         }
+        mutationFact.setSchedule(mutationSchedule);
+
         return mutationFact;
 
     }
@@ -75,9 +103,12 @@ public class setBased {
             //Run OTree.depthFirst()
             System.out.println("running depthFirst");
             Facts.add(oTree.depthFirst());
+            System.out.println(Facts.size());
         }
-        Facts.add(Mutation());
+        if(Facts.get(0) != null){
+            Facts.add(Mutation());
 
+        }
 //            while (true) {
 //                //If Facts is empty we run depthFirst
 //                //If Facts are too big, kill them off with Tod()
@@ -119,12 +150,14 @@ public class setBased {
          threshold = 0;
          maxPopulation = 0;
          Facts = new ArrayList<Fact>();
-        this.reader = reader;
-        this.oTree = oTree;
-        this.courseLab = new LinkedHashSet(reader.getCourses());
-        this.courseLab.addAll(reader.getLabs());
+         this.reader = reader;
+         this.oTree = oTree;
+         this.courseLab = new LinkedHashSet(reader.getCourses());
+         this.courseLab.addAll(reader.getLabs());
 
     }
+
+    public List<Fact> getFacts(){return Facts;}
 
     @Override
     //TODO: Implement toString to properly display the result after we finish searching, return a String of all

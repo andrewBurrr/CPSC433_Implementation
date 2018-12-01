@@ -28,7 +28,7 @@ public class Fact implements Cloneable{
 
      public Fact(Fact another){
          this.schedule = new HashMap<>(another.schedule);
-         this.evaluation = new Integer(another.evaluation);
+         this.evaluation = another.evaluation;
          this.numCourseSlot = new HashMap<>(another.numCourseSlot);
          this.numLabSlot = new HashMap<>(another.numLabSlot);
      }
