@@ -12,13 +12,27 @@ import java.util.logging.Logger;
 
 public class Main {
     public static void main(String[] args) {
-        File folder = new File("src/InputFiles/");
-        File[] listOfTest = folder.listFiles();
+        float wMin = 1;
+        float wPref = 1;
+        float wPair = 1;
+        float wSecD = 1;
+        float p_CMin = 1;
+        float p_LMin = 1;
+        
+        
+        File[] listOfInput;
+        // Config 
+        if(false){
+            
+        } else { // All files in InputFiles folder
+            File folder = new File("src/InputFiles/");
+            listOfInput= folder.listFiles();
+        }
         
         File error = new File("errors.txt");
         error.delete();
         
-        for(File test: listOfTest){
+        for(File test: listOfInput){
             if(/*test.toString().contains("6") &&*/ test.isFile() && !test.toString().contains("deptinst") && !test.toString().contains("/.") && !test.toString().contains("output")){
                 String inputFile = test.toString();
                 try {
@@ -39,7 +53,7 @@ public class Main {
                     }
                     System.out.println("Status: Initiating Set Based Model");
                     System.out.println("Status: Reading Config");
-                    float[] weights = (new float[]{1,1,1,1});
+                    float[] weights = (new float[]{wMin,wPref,wPair,wSecD,p_CMin,p_LMin});
                     SetBased setBased = new SetBased(reader, otree, weights);
                     System.out.println("Status: Begining Set Based Search");
                     Fact f = setBased.run();
