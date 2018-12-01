@@ -208,14 +208,15 @@ public class SetBased{
         lectures.sort(new CourseSorterAlpaNum());
         
         Course lecture;
-        while(!lectures.isEmpty()){
+        while(lectures.size()>1){
             lecture = lectures.remove(0);
             int i = 0;
-            while(lectures.get(i).getName().equals(lecture.getName()) &&
-                    lectures.get(i).getNumber().equals(lecture.getNumber() ) ){
+            while(i<lectures.size() && lectures.get(i).getName().equals(lecture.getName()) &&
+                    lectures.get(i).getNumber().equals(lecture.getNumber() )){
                 if(schedule.get(lecture).equals(schedule.get(lectures.get(i)))) {
                     pen += 1;
                 }
+                i++;
             }
         }
         
@@ -286,6 +287,7 @@ public class SetBased{
                 if(variance-lastEval < difTol){
                     break;
                 }
+                lastEval = variance;
             } else {
                 if(rand.nextBoolean()) {
                     Fact newFact = Mutation();
