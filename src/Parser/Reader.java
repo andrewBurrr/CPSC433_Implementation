@@ -63,7 +63,6 @@ public class Reader {
         String temp;
 
         try {
-
             fileRead = new Scanner(new File(fileName)).useDelimiter("\\n");
 
             while (fileRead.hasNext()) {

@@ -48,6 +48,7 @@ public class Main {
             while(config.hasNext()){
                 listOfInput.add(config.nextLine());
             }
+            config.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
