@@ -107,6 +107,18 @@ public class Main {
         
         try {
             Reader reader = new Reader(inputFile, false);
+            System.out.printf("Number of Course Slots: %d\n",reader.getCourseSlots().size());
+            System.out.printf("Number of Lab Slots: %d\n",reader.getLabSlots().size());
+            System.out.printf("Number of Courses: %d\n",reader.getCourses().size());
+            System.out.printf("Number of Lab: %d\n",reader.getLabs().size());
+            try (PrintWriter outWriter = new PrintWriter(new FileWriter(log),true)) {
+                outWriter.printf("Number of Course Slots: %d\n",reader.getCourseSlots().size());
+                outWriter.printf("Number of Lab Slots: %d\n",reader.getLabSlots().size());
+                outWriter.printf("Number of Courses: %d\n",reader.getCourses().size());
+                outWriter.printf("Number of Lab: %d\n",reader.getLabs().size());
+                outWriter.flush();
+                outWriter.close();
+            }
             File file = new File(inputFile);
             OTreeModel otree;
 

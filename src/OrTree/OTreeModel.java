@@ -361,6 +361,14 @@ public class OTreeModel {
         while(!leafs.isEmpty()){
             Prob leaf = leafs.poll();
             if(leaf.isSolved()){
+                System.out.println("Status: Or Tree - Solution Found");
+                System.out.println(leaf.toString());
+                try (PrintWriter writer = new PrintWriter(new FileWriter(inputName.replace(".","_log."),true))) {
+                    writer.println("Status: Or Tree - Solution Found");
+                    writer.append(leaf.toString()+"\n");
+                } catch (IOException ex) {
+                    Logger.getLogger(OTreeModel.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 return leaf; // Return solution
             } else if(!leaf.isUnsolvable()){ 
                 Random rand = new Random();
