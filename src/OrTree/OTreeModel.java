@@ -127,7 +127,6 @@ public class OTreeModel {
         HashMap<Course, Slot> schedule = (HashMap<Course, Slot>) parent.getScheduel();
         
         // Check Not Compatible set against new assignment
-        // ********* Can be optimized *********
         for(NotCompatible notComp:notCompatible){
             if(notComp.getClass(0).equals(newAsign.getCourse())){
                 if(schedule.getOrDefault(notComp.getClass(1), emptySlot).equals(newAsign.getSlot())){
