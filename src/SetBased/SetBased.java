@@ -45,7 +45,7 @@ public class SetBased{
         this.oTree = oTree;
         this.courseLab = new LinkedHashSet(reader.getCourses());
         this.courseLab.addAll(reader.getLabs());
-        this.maxInitSols = 50;
+        this.maxInitSols = 10;
         this.variance = Integer.MAX_VALUE;
         this.firMoment = 0;
         this.secMoment = 0;
