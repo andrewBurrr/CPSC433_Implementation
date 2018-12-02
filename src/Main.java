@@ -9,6 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -17,32 +18,47 @@ import java.util.logging.Logger;
 
 public class Main {
     public static void main(String[] args) {
-        // Weights to be changed according to config file or
+        boolean useConfig = true;
+        if(args.length == 1){
+            useConfig = args[0].equals("y");
+        }
+        
+        // Weights to be changed according to configReader file or
         float wMin = 1;
         float wPref = 1;
         float wPair = 1;
         float wSecD = 1;
         float p_CMin = 1;
         float p_LMin = 1;
-
-
         List<String> listOfInput = new LinkedList<>();
+        
         // Config
-        try {
-            Scanner config = new Scanner(new File("config.txt")).useDelimiter("\\n");
-            while(config.hasNext()){
-                listOfInput.add("src/InputFiles/"+config.nextLine());
+        File config = new File("config.txt");
+        if(config.exists() && config.length()>0 && useConfig){ // If config is present and not empty 
+            try (Scanner configReader = new Scanner(config).useDelimiter("\\n")) {
+                while(configReader.hasNext()){
+                    listOfInput.add("src/InputFiles/"+configReader.nextLine());
+                }
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
-            config.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        } else {
+            File folder = new File("src/InputFiles/Tests");
+            File[] listOfFiles = folder.listFiles();
+            for(File test: listOfFiles){
+                if(/*test.toString().contains("6") &&*/ test.isFile()
+                        && !test.toString().contains("/.") 
+                        && !test.toString().contains("output")){
+                    listOfInput.add(test.toString() + " 1 1 1 1 1 1");
+                }
+            }
         }
+
         File error = new File("errors.txt");
         error.delete();
-
+        
         // Iterate over inputs, maybe combine this with the weights with non enhanced loop
         for(String line: listOfInput){
-//            if(/*test.toString().contains("6") &&*/ test.isFile() && !test.toString().contains("deptinst") && !test.toString().contains("/.") && !test.toString().contains("output")){
             if(!line.equals("")){
                 String [] stringSplit = line.split(" ");
                 String inputFile = stringSplit[0];
@@ -52,70 +68,77 @@ public class Main {
                 wSecD = Float.parseFloat(stringSplit[4]);
                 p_CMin = Float.parseFloat(stringSplit[5]);
                 p_LMin = Float.parseFloat(stringSplit[6]);
+                float[] weights = (new float[]{wMin,wPref,wPair,wSecD,p_CMin,p_LMin});
                 
-                
-                try {
-                    System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
-                    System.out.printf("Status: Reading File - %s\n",inputFile);
-                    System.out.printf("Weights:\n"+"\tminFilled:%f\n" + "\t:pref%f\n" 
-                            + "\tpair:%f\n" + "\tsecdiff: %f\n"  + "\tpen_CourseMin:%f\n"
-                            + "\tpen_LabMin:%f\n",wMin,wPref,wPair,wSecD,p_CMin,p_LMin);
-                    Reader reader = new Reader(inputFile, false);
-                    File file = new File(inputFile);
-                    OTreeModel otree;
+                solveProb(inputFile, weights);
+            }
+        }
+        
+        
+    }
+    
+    public static void solveProb(String inputFile, float[] weights){
+        System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+        System.out.printf("Status: Reading File - %s\n",inputFile);
+        System.out.printf("Weights:\n"+"\tminFilled:%2.2f\n" + "\tpref:%2.2f\n" 
+                + "\tpair:%2.2f\n" + "\tsecdiff:%2.2f\n"  + "\tpen_CourseMin:%2.2f\n"
+                + "\tpen_LabMin:%2.2f\n",weights[0],weights[1],weights[2],weights[3],weights[4],weights[5]);
+        try {
+            Reader reader = new Reader(inputFile, false);
+            File file = new File(inputFile);
+            OTreeModel otree;
 
-                    try { // Try intializing OTree
-                        System.out.println("Status: Initiating Or Tree Model");
-                        otree = new OTreeModel(reader);
-                    } catch(InvalidSchedulingException err){ // Catch Error in initialization and continue
-                        System.out.printf("Name: %s\nStatus: UNSOLVED\n%s\n\n",reader.getName(),err.getMessage());
-                        String outputFile = String.format("%s_output.txt", inputFile.replace(".txt", ""));
-                        try (PrintWriter writer = new PrintWriter(new FileWriter(outputFile))) {
-                            writer.write("Status: UNSOLVED\n"+err.getMessage());
-                        }
-                        continue;
-                    }
-                    System.out.println("Status: Initiating Set Based Model");
-                    System.out.println("Status: Reading Config");
-                    // Set weights for setbased
-                    float[] weights = (new float[]{wMin,wPref,wPair,wSecD,p_CMin,p_LMin});
-                    SetBased setBased = new SetBased(reader, otree, weights);
-                    System.out.println("Status: Begining Set Based Search");
-                    Fact f = setBased.run();
-
-                    if (f == null){
-                        System.out.printf("\nName: %s\nStatus: UNSOLVED\nError: Infeasible Problem\n\n",reader.getName());
-
-                        String outputFile = String.format("%s_output.txt", inputFile.replace(".txt", ""));
-                        try (PrintWriter writer = new PrintWriter(new FileWriter(outputFile))) {
-                            writer.write("Status: UNSOLVED\n");
-                        }
-                    } else{
-                        System.out.printf("\nName: %s\nStatus: SOLVED\nSolution:\n%s\n",reader.getName(),f.toString());
-                        String outputFile = String.format("%s_output.txt", inputFile.replace(".txt", ""));
-                        try (PrintWriter writer = new PrintWriter(new FileWriter(outputFile))) {
-                            writer.write("Status: SOLVED\n"+f.toString());
-                        }
-                    }
-                } catch (Exception e){
-                    try{
-                        FileWriter fileWriter = new FileWriter("errors.txt");
-                        try (PrintWriter printWriter = new PrintWriter(fileWriter)) {
-                            e.printStackTrace();
-                            printWriter.append(e.toString());
-                            printWriter.flush();
-                            printWriter.append(e.getMessage());
-                            printWriter.flush();
-                            //   printWriter.append(Arrays.toString(e.getStackTrace()));
-                            printWriter.flush();
-                        }
-                        Thread.sleep(10);
-                    } catch (IOException ew){
-
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-                    }
+            try { // Try intializing OTree
+                System.out.println("Status: Initiating Or Tree Model");
+                otree = new OTreeModel(reader);
+            } catch(InvalidSchedulingException err){ // Catch Error in initialization and continue
+                System.out.printf("Name: %s\nStatus: UNSOLVED\n%s\n\n",reader.getName(),err.getMessage());
+                String outputFile = String.format("%s_output.txt", inputFile.replace(".txt", ""));
+                try (PrintWriter writer = new PrintWriter(new FileWriter(outputFile))) {
+                    writer.write("Status: UNSOLVED\n"+err.getMessage());
                 }
+                return; // If Otree was not initialized then move to next input
+            }
+
+            System.out.println("Status: Initiating Set Based Model");
+            System.out.println("Status: Reading Config");
+            // Set weights for setbased
+            SetBased setBased = new SetBased(reader, otree, weights);
+            System.out.println("Status: Begining Set Based Search");
+            Fact f = setBased.run();
+
+            // If f is null then there no solution was found
+            if (f == null){
+                System.out.printf("\nName: %s\nStatus: UNSOLVED\nError: Infeasible Problem\n\n",reader.getName());
+
+                String outputFile = String.format("%s_output.txt", inputFile.replace(".txt", ""));
+                try (PrintWriter writer = new PrintWriter(new FileWriter(outputFile))) {
+                    writer.write("Status: UNSOLVED\n");
+                }
+            } else{ // Solution found, print it out and write it to file
+                System.out.printf("\nName: %s\nStatus: SOLVED\nSolution:\n%s\n",reader.getName(),f.toString());
+                String outputFile = String.format("%s_output.txt", inputFile.replace(".txt", ""));
+                try (PrintWriter writer = new PrintWriter(new FileWriter(outputFile))) {
+                    writer.write("Status: SOLVED\n"+f.toString());
+                }
+            }
+        } catch (Exception e){ // If any other error occurs catch it and write to file
+            try{
+                System.out.printf("Error in:%s\nOutput saved to errors.txt",inputFile);
+                FileWriter fileWriter = new FileWriter("errors.txt",true);
+                try (PrintWriter printWriter = new PrintWriter(fileWriter)) {
+                    printWriter.append("Error in: "+inputFile+"\n");
+                    printWriter.append("Message: " +  e.toString()+"\n");
+                    printWriter.append("\nStack Trace:\n");
+                    printWriter.append(Arrays.toString(e.getStackTrace()).replace(", ", "\n").replace("[","").replace("] ","\n\n"));
+                    printWriter.flush();
+                    printWriter.close();
+                } 
+                Thread.sleep(10); // So print isnt polluted
+            } catch (IOException ew){
+
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

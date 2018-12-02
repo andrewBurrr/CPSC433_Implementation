@@ -292,7 +292,7 @@ public class SetBased{
                 lastEval = variance;
             } else {
                 if(rand.nextBoolean()) {
-                    System.out.println("Status: Mutating a pop");
+                    //System.out.println("Status: Mutating a pop");
                     Fact newFact = Mutation();
                     if(newFact != null) {
                         newFact.setEvaluation(Eval(newFact));
@@ -301,7 +301,7 @@ public class SetBased{
                         newFacts[0] = newFact;
                     }
                 } else {
-                    System.out.println("Status: Combining two pops");
+                   // System.out.println("Status: Combining two pops");
                     int i =0;
                     for(Fact f: Combination()){
                         if(f != null){
