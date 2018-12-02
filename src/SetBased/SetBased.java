@@ -297,6 +297,7 @@ public class SetBased{
                     if(newFact != null) {
                         newFact.setEvaluation(Eval(newFact));
                         facts.add(newFact);
+                        Collections.sort(facts);
                         newFacts[0] = newFact;
                     }
                 } else {
@@ -306,6 +307,7 @@ public class SetBased{
                         if(f != null){
                             f.setEvaluation(Eval(f));
                             facts.add(f);
+                            Collections.sort(facts);
                             newFacts[i] = f;
                             i++;
                         }

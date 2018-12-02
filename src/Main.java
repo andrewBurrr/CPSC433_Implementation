@@ -27,22 +27,7 @@ public class Main {
 
 
         List<String> listOfInput = new LinkedList<>();
-        float[][] weightsArr;
         // Config
-//        try {
-//            Scanner fileReader = new Scanner(new File("config.txt"));
-//            int numInputs = Integer.parseInt(fileReader.next());
-//            listOfInput = new File[numInputs];
-//            weights = new float[numInputs][6];
-//            int i =0;
-//            while(fileReader.hasNext()){
-//                String[] line = fileReader.next().split(":");
-//                listOfInput[i] = new File(line[0]);
-//                weights[i] = new float[6];
-//            }
-//
-//        } catch (FileNotFoundException ex) {
-//            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);.
         try {
             Scanner config = new Scanner(new File("config.txt")).useDelimiter("\\n");
             while(config.hasNext()){
@@ -52,7 +37,6 @@ public class Main {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-//        }
         File error = new File("errors.txt");
         error.delete();
 
@@ -68,21 +52,15 @@ public class Main {
                 wSecD = Float.parseFloat(stringSplit[4]);
                 p_CMin = Float.parseFloat(stringSplit[5]);
                 p_LMin = Float.parseFloat(stringSplit[6]);
-                System.out.println(wMin);
-                System.out.println(wPref);
-                System.out.println(wPair);
-                System.out.println(wSecD);
-                System.out.println(p_CMin);
-                System.out.println(p_LMin);
+                
+                
                 try {
                     System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
                     System.out.printf("Status: Reading File - %s\n",inputFile);
+                    System.out.printf("Weights:\n"+"\tminFilled:%f\n" + "\t:pref%f\n" 
+                            + "\tpair:%f\n" + "\tsecdiff: %f\n"  + "\tpen_CourseMin:%f\n"
+                            + "\tpen_LabMin:%f\n",wMin,wPref,wPair,wSecD,p_CMin,p_LMin);
                     Reader reader = new Reader(inputFile, false);
-                    System.out.printf("Course Slots:%d\n",reader.getCourseSlots().size());
-                    System.out.printf("Lab Slots:%d\n",reader.getLabSlots().size());
-                    System.out.printf("Courses:%d\n",reader.getCourses().size());
-                    System.out.printf("Labs:%d\n",reader.getLabs().size());
-                   // System.exit(0);
                     File file = new File(inputFile);
                     OTreeModel otree;
 
