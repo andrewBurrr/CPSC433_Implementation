@@ -193,7 +193,7 @@ public class OTreeModel {
         }
         
         // Check 500-level classes dont conflict
-        if(newCourse.getNumber().matches("5\\d\\d")){
+        if(newCourse.getNumber().matches("5\\d\\d") && newCourse.getType().equals("LEC")){
             if(parent.get500Slots().contains(newSlot)){
                 return "No";
             }
