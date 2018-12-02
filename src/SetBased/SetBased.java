@@ -45,7 +45,7 @@ public class SetBased{
         }
         this.threshold = 1;
          this.difTol = 1;
-         this.maxPopulation = 10;
+         this.maxPopulation = 1000000;
          this.facts = new ArrayList();
          this.reader = reader;
          this.oTree = oTree;
@@ -306,6 +306,7 @@ public class SetBased{
                     System.out.println("Mutating");
                     Fact newFact = Mutation();
                     if(newFact != null) {
+                        newFact.setEvaluation(Eval(newFact));
                         facts.add(newFact);
                         Collections.sort(facts);
                         if(facts.get(0).equals(newFact)){
@@ -320,13 +321,14 @@ public class SetBased{
                     int i =0;
                     for(Fact f: Combination()){
                         if(f != null){
+                            f.setEvaluation(Eval(f));
                             facts.add(f);
+                            Collections.sort(facts);
                             newFacts[i] = f;
                             if(facts.get(0).equals(f)){
                                 LOGGER.log(Level.FINE,
                                         "New Best Solution created from Mutation: {0}", f.getEvaluation());
                             }
-
                             i++;
                         }
                     }
