@@ -279,6 +279,7 @@ public class SetBased{
                 fact.setEvaluation(Eval(fact));
                 if(!facts.contains(fact)) {
                     facts.add(fact);
+                    System.out.println("Status: Set Based - Added Initial Solution");
                     try (PrintWriter writer = new PrintWriter(new FileWriter(fileName.replace(".","_log."),true))) {
                         writer.println("Status: Set Based - Added Initial Solution");
                     } catch (IOException ex) {
