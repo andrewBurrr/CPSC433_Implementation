@@ -55,6 +55,9 @@ public class OTreeModel {
         Set<Lecture> courses = parser.getCourses();
         if(courses.contains(new Lecture("CPSC 313 LEC 01"))){
             Set<NotCompatible> toAdd = new LinkedHashSet();
+            if(!parser.getLabSlots().contains(new Slot("TU", "18:00"))){
+                throw new InvalidSchedulingException("Error: Slot TU, 18:00 does not exist for assignment of CPSC 813");
+            }
             for(Slot slot: parser.getLabSlots()){
                 if(slot.equals("TU18:00")){
                     this.numExtraCourses++;
@@ -65,15 +68,13 @@ public class OTreeModel {
                         NotCompatible noPair = itor.next();
                         // If the first noPair is CPSC 413 LEC 01 create new with second and quiz
                         if(noPair.getClass(0).getName().equals("CPSC") && noPair.getClass(0).getNumber().equals("313")) {
-                            notCompatible.add(new NotCompatible(noPair.getClass(1), cpscQuiz));
+                            toAdd.add(new NotCompatible(noPair.getClass(1), cpscQuiz));
                         } 
                         // If the second noPair is CPSC 413 LEC 01 create new with first and quiz
                         else if(noPair.getClass(1).getName().equals("CPSC") && noPair.getClass(1).getNumber().equals("313")) {
-                            notCompatible.add(new NotCompatible(noPair.getClass(0) , cpscQuiz));
+                            toAdd.add(new NotCompatible(noPair.getClass(0) , cpscQuiz));
                         }
                     }
-                } else {
-                    throw new InvalidSchedulingException("Error: Slot TU, 18:00 does not exist for assignment of CPSC 813");
                 }
             }
             notCompatible.addAll(toAdd);
@@ -82,6 +83,9 @@ public class OTreeModel {
         // Check for CPSC 413
         if(courses.contains(new Lecture("CPSC 413 LEC 01"))){
             Set<NotCompatible> toAdd = new LinkedHashSet();
+            if(!parser.getLabSlots().contains(new Slot("TU", "18:00"))){
+                throw new InvalidSchedulingException("Error: Slot TU, 18:00 does not exist for assignment of CPSC 913");
+            }
             for(Slot slot: parser.getLabSlots()){
                 if(slot.equals("TU18:00")){
                     this.numExtraCourses++;
@@ -99,8 +103,6 @@ public class OTreeModel {
                             toAdd.add(new NotCompatible(noPair.getClass(0) , cpscQuiz));
                         }
                     }
-                } else {
-                    throw new InvalidSchedulingException("Error: Slot TU, 18:00 does not exist for assignment of CPSC 913");
                 }
             }
             notCompatible.addAll(toAdd);
