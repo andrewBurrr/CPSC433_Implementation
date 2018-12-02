@@ -5,8 +5,13 @@ import Structures.*;
 import Parser.Reader;
 import Structures.Assignment;
 import Structures.Course;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class SetBased{
@@ -27,32 +32,34 @@ public class SetBased{
     private final float wSecDiff;
     private final float pen_CourseMin;
     private final float pen_LabMin;
+    private String fileName;
     
-    public SetBased(Reader reader, OTreeModel oTree, float[] weights){
+    public SetBased(Reader reader, OTreeModel oTree, float[] weights, String fileName){
         //Initialize the SetBased environment
-         this.threshold = 1;
-         this.difTol = 1;
-         this.maxPopulation = 50;
-         this.facts = new ArrayList();
-         this.reader = reader;
-         this.oTree = oTree;
-         this.courseLab = new LinkedHashSet(reader.getCourses());
-         this.courseLab.addAll(reader.getLabs());
-         this.maxInitSols = 50;
-         this.variance = Integer.MAX_VALUE;
-         this.firMoment = 0;
-         this.secMoment = 0;
-         this.wMinFill = weights[0];
-         this.wPref = weights[1];
-         this.wPair = weights[2];
-         this.wSecDiff = weights[3];
-         if(weights.length==6){
-             this.pen_CourseMin = weights[4];
-             this.pen_LabMin = weights[5];
-         } else {
-             this.pen_CourseMin = 1;
-             this.pen_LabMin = 1;
-         }
+        this.fileName = fileName;
+        this.threshold = 1;
+        this.difTol = 1;
+        this.maxPopulation = 50;
+        this.facts = new ArrayList();
+        this.reader = reader;
+        this.oTree = oTree;
+        this.courseLab = new LinkedHashSet(reader.getCourses());
+        this.courseLab.addAll(reader.getLabs());
+        this.maxInitSols = 50;
+        this.variance = Integer.MAX_VALUE;
+        this.firMoment = 0;
+        this.secMoment = 0;
+        this.wMinFill = weights[0];
+        this.wPref = weights[1];
+        this.wPair = weights[2];
+        this.wSecDiff = weights[3];
+        if(weights.length==6){
+            this.pen_CourseMin = weights[4];
+            this.pen_LabMin = weights[5];
+        } else {
+            this.pen_CourseMin = 1;
+            this.pen_LabMin = 1;
+        }
     }
     
     //TODO: Implement Mutation according to setBasedBreakDown, return a Fact newFact
@@ -260,13 +267,23 @@ public class SetBased{
     //This is the main function in SetBased
     public Fact run()  {
         float lastEval = 0;
-        System.out.println("Status: Creating Initial Solution Set");
+        System.out.println("Status: Set Based - Creating Initial Solution Set");
+        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName.replace(".","_log."),true))) {
+            writer.println("Status: Set Based - Creating Initial Solution Set");
+        } catch (IOException ex) {
+            Logger.getLogger(SetBased.class.getName()).log(Level.SEVERE, null, ex);
+        }
         for(int i = 0; i < maxInitSols;i++){
             Fact fact = (Fact) oTree.depthFirst();
             if(fact != null) {
                 fact.setEvaluation(Eval(fact));
                 if(!facts.contains(fact)) {
                     facts.add(fact);
+                    try (PrintWriter writer = new PrintWriter(new FileWriter(fileName.replace(".","_log."),true))) {
+                        writer.println("Status: Set Based - Added Initial Solution");
+                    } catch (IOException ex) {
+                        Logger.getLogger(SetBased.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         }
@@ -274,7 +291,12 @@ public class SetBased{
             return null;
         }
         
-        System.out.println("Status: Begining evolution");
+        System.out.println("Status: Set Based - Begining evolution");
+        try (PrintWriter writer = new PrintWriter(new FileWriter(fileName.replace(".","_log."),true))) {
+                    writer.println("Status: Set Based - Begining evolution");
+                } catch (IOException ex) {
+            Logger.getLogger(SetBased.class.getName()).log(Level.SEVERE, null, ex);
+        }
         getVariance();
         Random rand = new Random();
         
@@ -283,9 +305,18 @@ public class SetBased{
             //If facts are too big, kill them off with Tod()
             Fact newFacts[] = new Fact[2];
             if (facts.size() > maxPopulation) {
-                System.out.println("Status: Killing off the weak");
+                System.out.println("Status: Set Based - Killing off the weak");
                 Tod();
                 getVariance();
+                try (PrintWriter writer = new PrintWriter(new FileWriter(fileName.replace(".","_log."),true))) {
+                    writer.println("Status: Set Based - Killing off the weak");
+                    writer.append("Facts:\n"+facts.toString() + "\n  ");
+                    writer.append("Best Evaluation:" + facts.get(0).getEvaluation()+"\n");
+                    writer.flush();
+                    writer.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(SetBased.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 if(variance-lastEval < difTol){
                     break;
                 }

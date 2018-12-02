@@ -1,2 +1,1 @@
-Tests/shortExample.txt 1 1 1 1 1 1
-Tests/parallelpen.txt 1 1 1 1 1 1
+deptinst1.txt 1 1 1 1 1 1

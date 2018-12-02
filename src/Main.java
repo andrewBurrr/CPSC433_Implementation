@@ -35,22 +35,29 @@ public class Main {
         // Config
         File config = new File("config.txt");
         if(config.exists() && config.length()>0 && useConfig){ // If config is present and not empty 
+            System.out.println("Status: Reading Config");
             try (Scanner configReader = new Scanner(config).useDelimiter("\\n")) {
                 while(configReader.hasNext()){
-                    listOfInput.add("src/InputFiles/"+configReader.nextLine());
+                    listOfInput.add("InputFiles/"+configReader.nextLine());
                 }
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
         } else {
-            File folder = new File("src/InputFiles/Tests");
-            File[] listOfFiles = folder.listFiles();
-            for(File test: listOfFiles){
-                if(/*test.toString().contains("6") &&*/ test.isFile()
-                        && !test.toString().contains("/.") 
-                        && !test.toString().contains("output")){
-                    listOfInput.add(test.toString() + " 1 1 1 1 1 1");
+            try { 
+                File folder = new File("InputFiles/Tests");
+                File[] listOfFiles = folder.listFiles();
+                for(File test: listOfFiles){
+                    if(/*test.toString().contains("6") &&*/ test.isFile()
+                            && !test.toString().contains("/.") 
+                            && !test.toString().contains("output")
+                            && !test.toString().contains("log")){
+                        listOfInput.add(test.toString() + " 1 1 1 1 1 1");
+                    }
                 }
+            } catch (Exception e) {
+                System.out.println(e.toString());
+                System.exit(0);
             }
         }
 
@@ -78,11 +85,26 @@ public class Main {
     }
     
     public static void solveProb(String inputFile, float[] weights){
+        String log = inputFile.replace(".", "_log.");
+        String output = inputFile.replace(".", "_output.");
         System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
         System.out.printf("Status: Reading File - %s\n",inputFile);
         System.out.printf("Weights:\n"+"\tminFilled:%2.2f\n" + "\tpref:%2.2f\n" 
                 + "\tpair:%2.2f\n" + "\tsecdiff:%2.2f\n"  + "\tpen_CourseMin:%2.2f\n"
                 + "\tpen_LabMin:%2.2f\n",weights[0],weights[1],weights[2],weights[3],weights[4],weights[5]);
+        
+        try {
+            try (PrintWriter outWriter = new PrintWriter(new FileWriter(log))) {
+                outWriter.printf("Status: Reading File - %s\n",inputFile);
+                outWriter.printf("Weights:\n"+"\tminFilled:%2.2f\n" + "\tpref:%2.2f\n"
+                        + "\tpair:%2.2f\n" + "\tsecdiff:%2.2f\n"  + "\tpen_CourseMin:%2.2f\n"
+                        + "\tpen_LabMin:%2.2f\n",weights[0],weights[1],weights[2],weights[3],weights[4],weights[5]);
+                outWriter.flush();
+            }
+        } catch (IOException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         try {
             Reader reader = new Reader(inputFile, false);
             File file = new File(inputFile);
@@ -90,42 +112,46 @@ public class Main {
 
             try { // Try intializing OTree
                 System.out.println("Status: Initiating Or Tree Model");
-                otree = new OTreeModel(reader);
+                try (PrintWriter outWriter = new PrintWriter(new FileWriter(log,true))) {
+                    outWriter.println("Status: Initiating Or Tree Model");
+                }
+                otree = new OTreeModel(reader, inputFile);
             } catch(InvalidSchedulingException err){ // Catch Error in initialization and continue
                 System.out.printf("Name: %s\nStatus: UNSOLVED\n%s\n\n",reader.getName(),err.getMessage());
-                String outputFile = String.format("%s_output.txt", inputFile.replace(".txt", ""));
-                try (PrintWriter writer = new PrintWriter(new FileWriter(outputFile))) {
+                try (PrintWriter writer = new PrintWriter(new FileWriter(output))) {
                     writer.write("Status: UNSOLVED\n"+err.getMessage());
                 }
                 return; // If Otree was not initialized then move to next input
             }
 
             System.out.println("Status: Initiating Set Based Model");
-            System.out.println("Status: Reading Config");
-            // Set weights for setbased
-            SetBased setBased = new SetBased(reader, otree, weights);
+            try (PrintWriter outWriter = new PrintWriter(new FileWriter(log,true))) {
+                outWriter.println("Status: Initiating Set Based Model");
+            }
+            SetBased setBased = new SetBased(reader, otree, weights, inputFile);
             System.out.println("Status: Begining Set Based Search");
+            try (PrintWriter outWriter = new PrintWriter(new FileWriter(log,true))) {
+                outWriter.println("Status: Begining Set Based Search");
+            }
             Fact f = setBased.run();
 
             // If f is null then there no solution was found
             if (f == null){
                 System.out.printf("\nName: %s\nStatus: UNSOLVED\nError: Infeasible Problem\n\n",reader.getName());
-
-                String outputFile = String.format("%s_output.txt", inputFile.replace(".txt", ""));
-                try (PrintWriter writer = new PrintWriter(new FileWriter(outputFile))) {
-                    writer.write("Status: UNSOLVED\n");
+                try (PrintWriter writer = new PrintWriter(new FileWriter(output))) {
+                    writer.write("Status: UNSOLVED\nError: Infeasible Problem\n\n");
                 }
             } else{ // Solution found, print it out and write it to file
                 System.out.printf("\nName: %s\nStatus: SOLVED\nSolution:\n%s\n",reader.getName(),f.toString());
-                String outputFile = String.format("%s_output.txt", inputFile.replace(".txt", ""));
-                try (PrintWriter writer = new PrintWriter(new FileWriter(outputFile))) {
+                try (PrintWriter writer = new PrintWriter(new FileWriter(output))) {
                     writer.write("Status: SOLVED\n"+f.toString());
                 }
             }
+            
         } catch (Exception e){ // If any other error occurs catch it and write to file
             try{
-                System.out.printf("Error in:%s\nOutput saved to errors.txt",inputFile);
-                FileWriter fileWriter = new FileWriter("errors.txt",true);
+                System.out.printf("Error in:%s\nOutput saved to %s_log.txt",inputFile, inputFile);
+                FileWriter fileWriter = new FileWriter(log,true);
                 try (PrintWriter printWriter = new PrintWriter(fileWriter)) {
                     printWriter.append("Error in: "+inputFile+"\n");
                     printWriter.append("Message: " +  e.toString()+"\n");

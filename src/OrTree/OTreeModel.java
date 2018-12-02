@@ -2,12 +2,16 @@ package OrTree;
 
 import Exceptions.InvalidSchedulingException;
 import Parser.Reader;
+import SetBased.SetBased;
 import Structures.Assignment;
 import Structures.Course;
 import Structures.Lab;
 import Structures.Lecture;
 import Structures.NotCompatible;
 import Structures.Slot;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,17 +35,12 @@ public class OTreeModel {
     private final Course emptyCourse;
     private final Slot emptySlot;
     private int numExtraCourses;
+    private String inputName;
     
     
-    public OTreeModel() {
-        this.parser = null;
-        this.root = null;
-        this.emptyCourse = null;
-        this.emptySlot = null;
-    }
-    
-    public OTreeModel(Reader parser) throws InvalidSchedulingException{
+    public OTreeModel(Reader parser, String inputName) throws InvalidSchedulingException{
         this.parser = parser;
+        this.inputName = inputName;
         this.emptyCourse = new Course("","","","");
         this.emptySlot = new Slot("","");
         this.numExtraCourses = 0;
@@ -353,6 +352,13 @@ public class OTreeModel {
             }
         }
         
+        try (PrintWriter writer = new PrintWriter(new FileWriter(inputName.replace(".","_log."),true))) {
+            writer.println("Status: Or Tree - Established Root");
+            writer.append(root.toString()+"\n");
+        } catch (IOException ex) {
+            Logger.getLogger(OTreeModel.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         while(!leafs.isEmpty()){
             Prob leaf = leafs.poll();
             if(leaf.isSolved()){
@@ -371,6 +377,13 @@ public class OTreeModel {
                 altern(leaf, newCourse).forEach((fact) -> {
                     leafs.add(fact);
                 });
+            } else {
+                try (PrintWriter writer = new PrintWriter(new FileWriter(inputName.replace(".","_log."),true))) {
+                    writer.println("Status: Or Tree - Removing Leaf");
+                    writer.printf("Status: Or Tree - Set of leaves: %d\n",leafs.size());
+                } catch (IOException ex) {
+                    Logger.getLogger(OTreeModel.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         return null; // Should never happen unless bad input
