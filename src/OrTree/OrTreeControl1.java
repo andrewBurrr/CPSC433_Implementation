@@ -28,10 +28,6 @@ public class OrTreeControl1 implements Comparator<Prob>{
         // 3rd priority deep problems
         val1 += o1.getScheduel().size();
         val2 += o2.getScheduel().size();
-        // Add some random value 
-        Random rand = new Random();
-        val1 += rand.nextInt(max/8)-1;
-        val2 += rand.nextInt(max/8)-1;
         
         return val1-val2;
     }
