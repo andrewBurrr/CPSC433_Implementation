@@ -44,9 +44,9 @@ public class Main {
 //        } catch (FileNotFoundException ex) {
 //            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);.
         try {
-            Scanner config = new Scanner(new File("src/config.txt")).useDelimiter("\\n");
+            Scanner config = new Scanner(new File("config.txt")).useDelimiter("\\n");
             while(config.hasNext()){
-                listOfInput.add(config.nextLine());
+                listOfInput.add("src/InputFiles/"+config.nextLine());
             }
             config.close();
         } catch (FileNotFoundException e) {
@@ -78,6 +78,11 @@ public class Main {
                     System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
                     System.out.printf("Status: Reading File - %s\n",inputFile);
                     Reader reader = new Reader(inputFile, false);
+                    System.out.printf("Course Slots:%d\n",reader.getCourseSlots().size());
+                    System.out.printf("Lab Slots:%d\n",reader.getLabSlots().size());
+                    System.out.printf("Courses:%d\n",reader.getCourses().size());
+                    System.out.printf("Labs:%d\n",reader.getLabs().size());
+                   // System.exit(0);
                     File file = new File(inputFile);
                     OTreeModel otree;
 

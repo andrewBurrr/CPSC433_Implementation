@@ -371,7 +371,7 @@ public class OTreeModel {
                 altern(leaf, newCourse).forEach((fact) -> {
                     leafs.add(fact);
                 });
-            } 
+            }
         }
         return null; // Should never happen unless bad input
     }

@@ -1,0 +1,1 @@
+shortExample.txt 1 1 1 1 1 1

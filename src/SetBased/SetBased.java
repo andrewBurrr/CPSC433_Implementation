@@ -32,7 +32,7 @@ public class SetBased{
         //Initialize the SetBased environment
          this.threshold = 1;
          this.difTol = 1;
-         this.maxPopulation = 0;
+         this.maxPopulation = 50;
          this.facts = new ArrayList();
          this.reader = reader;
          this.oTree = oTree;
@@ -229,8 +229,10 @@ public class SetBased{
         firMoment = firMoment*(facts.size()-newFacts.length);
         secMoment = secMoment*(facts.size()-newFacts.length);
         for(Fact f:newFacts){
-            firMoment += f.getEvaluation();
-            secMoment += f.getEvaluation()*f.getEvaluation();
+            if(f!=null){
+                firMoment += f.getEvaluation();
+                secMoment += f.getEvaluation()*f.getEvaluation();
+            }
         }
         firMoment = firMoment/facts.size();
         secMoment = secMoment/facts.size();
@@ -290,15 +292,19 @@ public class SetBased{
                 lastEval = variance;
             } else {
                 if(rand.nextBoolean()) {
+                    System.out.println("Status: Mutating a pop");
                     Fact newFact = Mutation();
                     if(newFact != null) {
+                        newFact.setEvaluation(Eval(newFact));
                         facts.add(newFact);
                         newFacts[0] = newFact;
                     }
                 } else {
+                    System.out.println("Status: Combining two pops");
                     int i =0;
                     for(Fact f: Combination()){
                         if(f != null){
+                            f.setEvaluation(Eval(f));
                             facts.add(f);
                             newFacts[i] = f;
                             i++;
