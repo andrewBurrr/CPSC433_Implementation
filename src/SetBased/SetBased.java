@@ -6,7 +6,12 @@ import Parser.Reader;
 import Structures.Assignment;
 import Structures.Course;
 
+import java.io.IOException;
 import java.util.*;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class SetBased{
@@ -27,12 +32,20 @@ public class SetBased{
     private final float wSecDiff;
     private final float pen_CourseMin;
     private final float pen_LabMin;
-    
+    private static final Logger LOGGER = Logger.getLogger( SetBased.class.getName() );;
+
     public SetBased(Reader reader, OTreeModel oTree, float[] weights){
-        //Initialize the SetBased environment
-         this.threshold = 1;
+        //Initialize the SetBased environment\
+        try {
+            Handler handle = new FileHandler("SetBased.log");
+            LOGGER.addHandler(handle);
+            LOGGER.setLevel(Level.FINEST);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        this.threshold = 1;
          this.difTol = 1;
-         this.maxPopulation = 0;
+         this.maxPopulation = 10;
          this.facts = new ArrayList();
          this.reader = reader;
          this.oTree = oTree;
@@ -290,17 +303,30 @@ public class SetBased{
                 lastEval = variance;
             } else {
                 if(rand.nextBoolean()) {
+                    System.out.println("Mutating");
                     Fact newFact = Mutation();
                     if(newFact != null) {
                         facts.add(newFact);
+                        Collections.sort(facts);
+                        if(facts.get(0).equals(newFact)){
+                            LOGGER.log(Level.FINE,
+                                    "New Best Solution created from Mutation: {0}", newFact.getEvaluation());
+                        }
                         newFacts[0] = newFact;
+
                     }
                 } else {
+                    System.out.println("Combination");
                     int i =0;
                     for(Fact f: Combination()){
                         if(f != null){
                             facts.add(f);
                             newFacts[i] = f;
+                            if(facts.get(0).equals(f)){
+                                LOGGER.log(Level.FINE,
+                                        "New Best Solution created from Mutation: {0}", f.getEvaluation());
+                            }
+
                             i++;
                         }
                     }

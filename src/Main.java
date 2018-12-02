@@ -46,11 +46,11 @@ public class Main {
         try {
             Scanner config = new Scanner(new File("src/config.txt")).useDelimiter("\\n");
             while(config.hasNext()){
-                listOfInput.add(config.nextLine());
+                listOfInput.add(config.next());
             }
             config.close();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, e);
         }
 //        }
         File error = new File("errors.txt");
@@ -61,19 +61,7 @@ public class Main {
 //            if(/*test.toString().contains("6") &&*/ test.isFile() && !test.toString().contains("deptinst") && !test.toString().contains("/.") && !test.toString().contains("output")){
             if(!line.equals("")){
                 String [] stringSplit = line.split(" ");
-                String inputFile = stringSplit[0];
-                wMin = Float.parseFloat(stringSplit[1]);
-                wPref = Float.parseFloat(stringSplit[2]);
-                wPair = Float.parseFloat(stringSplit[3]);
-                wSecD = Float.parseFloat(stringSplit[4]);
-                p_CMin = Float.parseFloat(stringSplit[5]);
-                p_LMin = Float.parseFloat(stringSplit[6]);
-                System.out.println(wMin);
-                System.out.println(wPref);
-                System.out.println(wPair);
-                System.out.println(wSecD);
-                System.out.println(p_CMin);
-                System.out.println(p_LMin);
+                String inputFile = line.split(" ")[0];
                 try {
                     System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
                     System.out.printf("Status: Reading File - %s\n",inputFile);
