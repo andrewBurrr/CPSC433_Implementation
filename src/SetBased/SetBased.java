@@ -282,6 +282,9 @@ public class SetBased{
                     System.out.println("Status: Set Based - Added Initial Solution");
                     try (PrintWriter writer = new PrintWriter(new FileWriter(fileName.replace(".","_log."),true))) {
                         writer.println("Status: Set Based - Added Initial Solution");
+                        writer.append(fact.toString());
+                        writer.flush();
+                        writer.close();
                     } catch (IOException ex) {
                         Logger.getLogger(SetBased.class.getName()).log(Level.SEVERE, null, ex);
                     }
