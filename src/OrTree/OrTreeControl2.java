@@ -42,7 +42,7 @@ public class OrTreeControl2 implements Comparator<Prob>{
         val1 += o1.getScheduel().size()/2;
         val2 += o2.getScheduel().size()/2;
         
-        return val1-val2;
+        return val2-val1;
     }
     
 }
