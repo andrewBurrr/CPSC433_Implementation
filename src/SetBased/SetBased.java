@@ -290,10 +290,9 @@ public class SetBased{
                         Logger.getLogger(SetBased.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
+            } else {
+                return null;
             }
-        }
-        if(facts.isEmpty()) {
-            return null;
         }
         
         System.out.println("Status: Set Based - Begining evolution");
@@ -304,8 +303,7 @@ public class SetBased{
         }
         getVariance();
         Random rand = new Random();
-        
-        while(variance>threshold){
+        while(variance>threshold || facts.size()<(maxPopulation*0.5)){
             // If facts is empty we run depthFirst
             //If facts are too big, kill them off with Tod()
             Fact newFacts[] = new Fact[2];
@@ -354,45 +352,6 @@ public class SetBased{
 
         }
         return facts.remove(0);
-        
-//        if(facts.get(0) != null){
-//            facts.add(Mutation());
-//            Collections.sort(facts);
-//        }
-//            while (true) {
-//                //If facts is empty we run depthFirst
-//                //If facts are too big, kill them off with Tod()
-//                if (facts.size() > maxPopulation) {
-//                    Tod();
-//                } else {
-//                    //Randomly choose between Mutation and Combination in search control
-//                    if (new Random().nextInt(1) == 1) {
-//                        //Mutation return a newFact
-//                        Fact newFact = Mutation(reader);
-//                        //Calculate the soft constraint of the newFact
-//                        newFact.setEvaluation(Eval(newFact));
-//                        //Add to our current set of solution
-//                        //TODO: Only add to facts if newFact.evaluation < currentBestSolution/some other values
-//                        facts.add(newFact);
-//                    } else {
-//                        //Combination return an array of newFact
-//                        Fact[] newFact = Combination();
-//                        //A loop to calculate the soft constraint for newFact[i]
-//                        for (int i = 0; i < newFact.length; i++) {
-//                            newFact[i].setEvaluation(Eval(newFact[i]));
-//                            //TODO: Only add to facts if newFact.evaluation < currentBestSolution/some other values
-//                            facts.add(newFact[i]);
-//                        }
-//                    }
-//                }
-//                //Calculate the variance of our current facts, if variance < threshold quit the SetBased
-//                float currentVariance = getVariance(facts);
-//                if (currentVariance <= threshold) {
-//                    System.out.println("The best solutions are found, terminating the SetBased");
-//                    break;
-//                }
-//            }
-//        }
     }
     
     public List<Fact> getFacts(){return facts;}

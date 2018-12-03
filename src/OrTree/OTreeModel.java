@@ -177,6 +177,9 @@ public class OTreeModel {
                 addOrder.add(lab);
             }
         }
+        
+        System.out.println(addOrder.toString().replace(",", "\n"));
+        System.out.println(rankingLec.toString().replace(",", "\n"));
     }
     
     /**
