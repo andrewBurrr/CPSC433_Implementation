@@ -74,18 +74,18 @@ public class SetBased{
         Map<Course, Slot> mutSchedule = mutFact.getScheduel();
         
         // Get a random lecture (lab or lecture) from scheduel
-        Course mutCourse = mutSchedule.keySet().toArray(new Course[0])[random.nextInt(mutSchedule.size())];
+        Course mutCourse = mutSchedule.keySet().toArray(new Course[0])[random.nextInt(mutSchedule.size()-1)];
         Slot newSlot;
         // Make sure new slot for mutCourse is of right type and is different
         if(mutCourse instanceof Lecture){ // Lecture
-            newSlot = reader.getCourseSlots().toArray(new Slot[0])[random.nextInt(reader.getCourseSlots().size())];
+            newSlot = reader.getCourseSlots().toArray(new Slot[0])[random.nextInt(reader.getCourseSlots().size()-1)];
             while(newSlot.equals(mutSchedule.get(mutCourse))){
-                newSlot = reader.getCourseSlots().toArray(new Slot[0])[random.nextInt(reader.getCourseSlots().size())];
+                newSlot = reader.getCourseSlots().toArray(new Slot[0])[random.nextInt(reader.getCourseSlots().size()-1)];
             }
         } else { // Lab
-            newSlot = reader.getCourseSlots().toArray(new Slot[0])[random.nextInt(reader.getLabSlots().size())];
+            newSlot = reader.getCourseSlots().toArray(new Slot[0])[random.nextInt(reader.getLabSlots().size()-1)];
             while(newSlot.equals(mutSchedule.get(mutCourse))){
-                newSlot = reader.getCourseSlots().toArray(new Slot[0])[random.nextInt(reader.getLabSlots().size())];
+                newSlot = reader.getCourseSlots().toArray(new Slot[0])[random.nextInt(reader.getLabSlots().size()-1)];
             }
         }
         // Remove lecture from lectures
@@ -288,7 +288,7 @@ public class SetBased{
                         writer.flush();
                         writer.close();
                         try (PrintWriter writer2 = new PrintWriter(new FileWriter(fileName.replace(".","_solutionlog."),true))) {
-                            writer2.append(fact.toString());
+                            writer2.append(fact.toString()+"\n");
                             writer2.flush();
                         }
                     } catch (IOException ex) {
