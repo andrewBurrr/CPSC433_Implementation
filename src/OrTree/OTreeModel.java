@@ -442,7 +442,7 @@ public class OTreeModel {
         }
         Course course = guide.remove(0).getCourse();
         guide.sort(new AddOrderComparator2(ranking));
-        OrTreeControl2 control = new OrTreeControl2(guide.toArray(new Assignment[0]), usedCourses.size()+numExtraCourses);
+        OrTreeControl2 control = new OrTreeControl2(guide.toArray(new Assignment[0]), usedCourses.size());
         PriorityQueue<Prob> leafs = new PriorityQueue(guide.size()*guide.size(), control);
         
         if( course instanceof Lecture){
