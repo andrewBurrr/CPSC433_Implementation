@@ -33,14 +33,16 @@ public class OrTreeControl2 implements Comparator<Prob>{
         // 2nd priority unsolvable problems
         val1 += (o1.isUnsolvable()) ? max/2:0;
         val2 += (o2.isUnsolvable()) ? max/2:0;
-        // 3rd priority guide problems
-        Assignment g = guide[o1.getScheduel().size()-numPartAssign-1];
-        val1 += (o1.getScheduel().get(g.getCourse()).equals(g.getSlot())) ? max/4:0;
-        g = guide[o2.getScheduel().size()-numPartAssign-1];
-        val2 += (o2.getScheduel().get(g.getCourse()).equals(g.getSlot())) ? max/4:0;
-        // 4th priority deep problems
-        val1 += o1.getScheduel().size()/2;
-        val2 += o2.getScheduel().size()/2;
+        if(!o1.isUnsolvable() && !o2.isUnsolvable() && !o1.isSolved() && !o2.isSolved()){
+            // 3rd priority guide problems
+            Assignment g = guide[o1.getScheduel().size()-numPartAssign-1];
+            val1 += (g.getSlot().equals(o1.getScheduel().get(g.getCourse()))) ? max/4:0;
+            g = guide[o2.getScheduel().size()-numPartAssign-1];
+            val2 += (g.getSlot().equals(o2.getScheduel().get(g.getCourse()))) ? max/4:0;
+            // 4th priority deep problems
+            val1 += o1.getScheduel().size()/2;
+            val2 += o2.getScheduel().size()/2;
+        }
         // Add random offset
         Random rand = new Random();
         val1 += rand.nextInt(1);

@@ -38,6 +38,7 @@ public class OTreeModel {
     private int numExtraCourses;
     private String inputName;
     private ArrayList<Course> addOrder;
+    private HashMap<Course, Integer> ranking;
     
     
     public OTreeModel(Reader parser, String inputName) throws InvalidSchedulingException{
@@ -145,7 +146,7 @@ public class OTreeModel {
             }
         }
        
-        HashMap<Course, Integer> ranking = new HashMap(rankingLec);
+        ranking = new HashMap(rankingLec);
         ranking.putAll(rankingLab);
         
         addOrder = new ArrayList(parser.getCourses());
@@ -363,10 +364,6 @@ public class OTreeModel {
     }
     
     public Prob depthFirst(){
-        LinkedList<Course> avaCourses = new LinkedList(parser.getCourses());
-        avaCourses.addAll(parser.getLabs());
-        avaCourses.removeAll(usedCourses.keySet());
-        
         OrTreeControl1 control = new OrTreeControl1();
         PriorityQueue<Prob> leafs = new PriorityQueue(addOrder.size()*addOrder.size(), control);
         
@@ -443,27 +440,32 @@ public class OTreeModel {
                 i--;
             }
         }
-        
+        Course course = guide.remove(0).getCourse();
+        guide.sort(new AddOrderComparator2(ranking));
         OrTreeControl2 control = new OrTreeControl2(guide.toArray(new Assignment[0]), usedCourses.size());
         PriorityQueue<Prob> leafs = new PriorityQueue(guide.size()*guide.size(), control);
         
-        if(root != null){
-            leafs.add(root);
-        } else {
-            Course course = guide.remove(0).getCourse();
-            if( course instanceof Lecture){
-                for(Slot slot: parser.getCourseSlots()){
-                    HashMap<Course, Slot> schedule = new HashMap();
-                    schedule.put(course, slot);
-                    leafs.add(checkPartials(schedule));
-                }
-            } else {
-                for(Slot slot: parser.getLabSlots()){
-                    HashMap<Course, Slot> schedule = new HashMap();
-                    schedule.put(course, slot);
-                    leafs.add(checkPartials(schedule));
-                }
+        if( course instanceof Lecture){
+            for(Slot slot: parser.getCourseSlots()){
+                HashMap<Course, Slot> map = root.getScheduel();
+                HashMap<Course, Slot> schedule = new HashMap(map);
+                schedule.put(course, slot);
+                leafs.add(checkPartials(schedule));
             }
+        } else {
+            for(Slot slot: parser.getLabSlots()){
+                HashMap<Course, Slot> map = root.getScheduel();
+                HashMap<Course, Slot> schedule = new HashMap(map);
+                schedule.put(course, slot);
+                leafs.add(checkPartials(schedule));
+            }
+        }
+        
+        try (PrintWriter writer = new PrintWriter(new FileWriter(inputName.replace(".","_log."),true))) {
+            writer.println("Status: Or Tree - Established Root");
+            writer.append(root.toString()+"\n");
+        } catch (IOException ex) {
+            Logger.getLogger(OTreeModel.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         while(!leafs.isEmpty()){
@@ -471,10 +473,23 @@ public class OTreeModel {
             if(leaf.isSolved()){
                 return leaf;
             } else if(!leaf.isUnsolvable()){ // Leaf is in guide or not, altern
-                for(Prob newLeaf:altern(leaf, guide.get(leaf.getScheduel().size()-usedCourses.size()).getCourse())){
+                try (PrintWriter writer = new PrintWriter(new FileWriter(inputName.replace(".","_log."),true))) {
+                    writer.println("Status: Or Tree - Extending Leaf");
+                    writer.println("Leaf Depth: " + leaf.getScheduel().size());
+                } catch (IOException ex) {
+                    Logger.getLogger(OTreeModel.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                for(Prob newLeaf:altern(leaf, guide.get(leaf.getScheduel().size()-usedCourses.size()-1).getCourse())){
                     leafs.add(newLeaf);
                 }
-            } 
+            } else {
+                try (PrintWriter writer = new PrintWriter(new FileWriter(inputName.replace(".","_log."),true))) {
+                    writer.println("Status: Or Tree - Removing Leaf");
+                    writer.printf("Status: Or Tree - Set of leaves: %d\n",leafs.size());
+                } catch (IOException ex) {
+                    Logger.getLogger(OTreeModel.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return null; // shouldnt happen unless bad input
     }

@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 
 public class Main {
     public static void main(String[] args) {
-        boolean useConfig = true;
+        boolean useConfig = false;
         if(args.length == 1){
             useConfig = args[0].equals("y");
         }
