@@ -20,16 +20,16 @@ public class OrTreeControl1 implements Comparator<Prob>{
         int val1,val2;
         int max = 4*max(o1.getScheduel().size(),o2.getScheduel().size());
         // 1st priority solved problems
-        val1 = (o1.isSolved()) ? 0:max;
-        val2 = (o2.isSolved()) ? 0:max;
+        val1 = (o1.isSolved()) ? max:0;
+        val2 = (o2.isSolved()) ? max:0;
         // 2nd priority unsolvable problems
-        val1 += (o1.isUnsolvable()) ? 0:max/2;
-        val2 += (o2.isUnsolvable()) ? 0:max/2;
+        val1 += (o1.isUnsolvable()) ? max/2:0;
+        val2 += (o2.isUnsolvable()) ? max/2:0;
         // 3rd priority deep problems
         val1 += o1.getScheduel().size();
         val2 += o2.getScheduel().size();
         
-        return val2-val1;
+        return val1-val2;
     }
     
 }
