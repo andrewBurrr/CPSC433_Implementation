@@ -277,6 +277,7 @@ public class SetBased{
             Fact fact = (Fact) oTree.depthFirst();
             if(fact != null) {
                 fact.setEvaluation(Eval(fact));
+                System.out.println("Status: Set Based - Solution Found, checking if new");
                 if(!facts.contains(fact)) {
                     facts.add(fact);
                     System.out.println("Status: Set Based - Added Initial Solution");

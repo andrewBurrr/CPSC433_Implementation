@@ -362,7 +362,6 @@ public class OTreeModel {
             Prob leaf = leafs.poll();
             if(leaf.isSolved()){
                 System.out.println("Status: Or Tree - Solution Found");
-                System.out.println(leaf.toString());
                 try (PrintWriter writer = new PrintWriter(new FileWriter(inputName.replace(".","_log."),true))) {
                     writer.println("Status: Or Tree - Solution Found");
                     writer.append(leaf.toString()+"\n");
