@@ -34,11 +34,13 @@ public class SetBased{
     private final float pen_CourseMin;
     private final float pen_LabMin;
     private String fileName;
+    private double killPercent;
     
     public SetBased(Reader reader, OTreeModel oTree, float[] weights, String fileName){
         //Initialize the SetBased environment
         this.fileName = fileName;
         this.threshold = (float) 0.5;
+        this.killPercent = 0.30;
         this.difTol = 1;
         this.maxPopulation = 50;
         this.facts = new ArrayList();
@@ -146,8 +148,8 @@ public class SetBased{
 
     //TODO: Implement Tod
     private void Tod(){
-        int killPercent = 30;
-        int numberKilled = (killPercent * facts.size()) / 100;
+        
+        int numberKilled = (int) (killPercent * facts.size());
         facts.subList(facts.size()-numberKilled, facts.size()-1).clear();
 
     }
@@ -306,7 +308,7 @@ public class SetBased{
         }
         getVariance();
         Random rand = new Random();
-        while(variance>threshold || facts.size()<(maxPopulation*0.7)){
+        while(variance>threshold || facts.size()<(maxPopulation*(0.9-killPercent))){
             // If facts is empty we run depthFirst
             //If facts are too big, kill them off with Tod()
             Fact newFacts[] = new Fact[2];
