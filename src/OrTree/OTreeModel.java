@@ -380,7 +380,12 @@ public class OTreeModel {
                 } else { 
                     newCourse = posCourses.get(rand.nextInt(posCourses.size()-1));
                 }
-                
+                try (PrintWriter writer = new PrintWriter(new FileWriter(inputName.replace(".","_log."),true))) {
+                    writer.println("Status: Or Tree - Extending Leaf");
+                    writer.println("Leaf Depth: " + leaf.getScheduel().size());
+                } catch (IOException ex) {
+                    Logger.getLogger(OTreeModel.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 altern(leaf, newCourse).forEach((fact) -> {
                     leafs.add(fact);
                 });
