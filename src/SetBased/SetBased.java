@@ -306,7 +306,7 @@ public class SetBased{
         }
         getVariance();
         Random rand = new Random();
-        while(variance>threshold || facts.size()<(maxPopulation*0.5)){
+        while(variance>threshold || facts.size()<(maxPopulation*0.7)){
             // If facts is empty we run depthFirst
             //If facts are too big, kill them off with Tod()
             Fact newFacts[] = new Fact[2];
