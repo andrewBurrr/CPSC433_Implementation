@@ -83,9 +83,9 @@ public class SetBased{
                 newSlot = reader.getCourseSlots().toArray(new Slot[0])[random.nextInt(reader.getCourseSlots().size()-1)];
             }
         } else { // Lab
-            newSlot = reader.getCourseSlots().toArray(new Slot[0])[random.nextInt(reader.getLabSlots().size()-1)];
+            newSlot = reader.getLabSlots().toArray(new Slot[0])[random.nextInt(reader.getLabSlots().size()-1)];
             while(newSlot.equals(mutSchedule.get(mutCourse))){
-                newSlot = reader.getCourseSlots().toArray(new Slot[0])[random.nextInt(reader.getLabSlots().size()-1)];
+                newSlot = reader.getLabSlots().toArray(new Slot[0])[random.nextInt(reader.getLabSlots().size()-1)];
             }
         }
         // Remove lecture from lectures
