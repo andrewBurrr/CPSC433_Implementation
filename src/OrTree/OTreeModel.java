@@ -144,42 +144,13 @@ public class OTreeModel {
                 rankingLab.put((Lab) c, rankingLab.getOrDefault(c, 0)+1);
             }
         }
+       
+        HashMap<Course, Integer> ranking = new HashMap(rankingLec);
+        ranking.putAll(rankingLab);
         
-        ArrayList<Course> addOrderCourse = new ArrayList(parser.getCourses());
-        ArrayList<Lab> addOrderLabs = new ArrayList(parser.getLabs());
-        addOrderCourse.removeAll(usedCourses.keySet());
-        addOrderLabs.removeAll(usedCourses.keySet());
-        addOrderCourse.sort(new AddOrderComparator(rankingLec));
-        addOrderLabs.sort(new AddOrderComparator(rankingLab));
-        
-        addOrder = new ArrayList();
-        Course c2 = addOrderCourse.get(0);
-        for(int i=0; i<addOrderCourse.size()-1; i++){
-            Course c1 = addOrderCourse.get(i);
-            addOrder.add(c1);
-            c2 = addOrderCourse.get(i+1);
-            
-            if(!c1.getName().equals(c2.getName()) || !c1.getNumber().equals(c2.getNumber())){
-                Iterator<Lab> itor = addOrderLabs.iterator();
-                while(itor.hasNext()) {
-                    Lab lab = itor.next();
-                    if(lab.getName().equals(c1.getName()) && lab.getNumber().equals(c1.getNumber())){
-                        addOrder.add(lab);
-                    }
-                }
-            }
-        }
-        addOrder.add(c2);
-        Iterator<Lab> itor = addOrderLabs.iterator();
-        while(itor.hasNext()) {
-            Lab lab = itor.next();
-            if(lab.getName().equals(c2.getName()) && lab.getNumber().equals(c2.getNumber())){
-                addOrder.add(lab);
-            }
-        }
-        
-        System.out.println(addOrder.toString().replace(",", "\n"));
-        System.out.println(rankingLec.toString().replace(",", "\n"));
+        addOrder = new ArrayList(parser.getCourses());
+        addOrder.addAll(parser.getLabs());
+        addOrder.sort(new AddOrderComparator(ranking));
     }
     
     /**

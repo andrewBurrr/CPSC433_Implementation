@@ -29,9 +29,11 @@ public class OrTreeControl1 implements Comparator<Prob>{
         val1 += o1.getScheduel().size();
         val2 += o2.getScheduel().size();
         // Add random offset
-        Random rand = new Random();
-        val1 += rand.nextInt(2);
-        val2 += rand.nextInt(2);
+        if(val1==val2){
+            Random rand = new Random();
+            val1 += rand.nextInt(2);
+            val2 += rand.nextInt(2);
+        }
         
         return val2-val1;
     }
