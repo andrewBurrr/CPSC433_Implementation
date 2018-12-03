@@ -303,7 +303,7 @@ public class OTreeModel {
             }
             // Check to make sure all Lec 09 are after evening(variable [0,24])
             if(course.getSection().matches("9\\d")){
-                if(Integer.parseInt(slot.getTime().substring(0,2))<evening){
+                if(Integer.parseInt(slot.getTime().split(":")[0])<evening){
                     return new Prob(schedule, "No");
                 }
             }
