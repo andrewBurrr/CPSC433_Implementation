@@ -8,6 +8,7 @@ import Structures.Course;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import static java.lang.Math.abs;
 
 import java.util.*;
 import java.util.logging.Level;
@@ -37,7 +38,7 @@ public class SetBased{
     public SetBased(Reader reader, OTreeModel oTree, float[] weights, String fileName){
         //Initialize the SetBased environment
         this.fileName = fileName;
-        this.threshold = 1;
+        this.threshold = (float) 0.5;
         this.difTol = 1;
         this.maxPopulation = 50;
         this.facts = new ArrayList();
@@ -45,7 +46,7 @@ public class SetBased{
         this.oTree = oTree;
         this.courseLab = new LinkedHashSet(reader.getCourses());
         this.courseLab.addAll(reader.getLabs());
-        this.maxInitSols = 10;
+        this.maxInitSols = 15;
         this.variance = Integer.MAX_VALUE;
         this.firMoment = 0;
         this.secMoment = 0;
@@ -321,13 +322,13 @@ public class SetBased{
                 } catch (IOException ex) {
                     Logger.getLogger(SetBased.class.getName()).log(Level.SEVERE, null, ex);
                 }
-                if(variance-lastEval < difTol){
+                if(abs(variance-lastEval) < difTol){
                     break;
                 }
                 lastEval = variance;
             } else {
                 if(rand.nextBoolean()) {
-                    //System.out.println("Status: Mutating a pop");
+                    System.out.println("Status: Mutating a pop");
                     Fact newFact = Mutation();
                     if(newFact != null) {
                         newFact.setEvaluation(Eval(newFact));
@@ -336,7 +337,7 @@ public class SetBased{
                         newFacts[0] = newFact;
                     }
                 } else {
-                   // System.out.println("Status: Combining two pops");
+                    System.out.println("Status: Combining two pops");
                     int i =0;
                     for(Fact f: Combination()){
                         if(f != null){

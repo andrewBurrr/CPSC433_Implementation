@@ -2,6 +2,7 @@ package OrTree;
 
 import Exceptions.InvalidSchedulingException;
 import Parser.Reader;
+import SetBased.CourseSorterAlpaNum;
 import SetBased.SetBased;
 import Structures.Assignment;
 import Structures.Course;
@@ -36,6 +37,7 @@ public class OTreeModel {
     private final Slot emptySlot;
     private int numExtraCourses;
     private String inputName;
+    private ArrayList<Course> addOrder;
     
     
     public OTreeModel(Reader parser, String inputName) throws InvalidSchedulingException{
@@ -113,6 +115,68 @@ public class OTreeModel {
         } else{
             root = part;
         }
+        
+        HashMap<Course, Integer> rankingLec = new HashMap();
+        HashMap<Course, Integer> rankingLab = new HashMap();
+        
+        Iterator<NotCompatible> itor1 = parser.getNotCompatible().iterator();
+        while(itor1.hasNext()) {
+            NotCompatible noPair = itor1.next();
+            if(noPair.getClass(0) instanceof Lecture) {
+                rankingLec.put(noPair.getClass(0), rankingLec.getOrDefault(noPair.getClass(0), 0)+1);
+            } else {
+                rankingLab.put(noPair.getClass(0), rankingLab.getOrDefault(noPair.getClass(0), 0)+1);
+            }
+            
+            if(noPair.getClass(1) instanceof Lecture) {
+                rankingLec.put(noPair.getClass(1), rankingLec.getOrDefault(noPair.getClass(1), 0)+1);
+            } else {
+                rankingLab.put(noPair.getClass(1), rankingLab.getOrDefault(noPair.getClass(1), 0)+1);
+            }
+        }
+        
+        Iterator<Course> itor2 = parser.getUnwanted().keySet().iterator();
+        while(itor2.hasNext()){
+            Course c = itor2.next();
+            if(c instanceof Lecture){
+                rankingLec.put((Lecture) c, rankingLec.getOrDefault(c, 0)+1);
+            } else {
+                rankingLab.put((Lab) c, rankingLab.getOrDefault(c, 0)+1);
+            }
+        }
+        
+        ArrayList<Course> addOrderCourse = new ArrayList(parser.getCourses());
+        ArrayList<Lab> addOrderLabs = new ArrayList(parser.getLabs());
+        addOrderCourse.removeAll(usedCourses.keySet());
+        addOrderLabs.removeAll(usedCourses.keySet());
+        addOrderCourse.sort(new AddOrderComparator(rankingLec));
+        addOrderLabs.sort(new AddOrderComparator(rankingLab));
+        
+        addOrder = new ArrayList();
+        Course c2 = addOrderCourse.get(0);
+        for(int i=0; i<addOrderCourse.size()-1; i++){
+            Course c1 = addOrderCourse.get(i);
+            addOrder.add(c1);
+            c2 = addOrderCourse.get(i+1);
+            
+            if(!c1.getName().equals(c2.getName()) || !c1.getNumber().equals(c2.getNumber())){
+                Iterator<Lab> itor = addOrderLabs.iterator();
+                while(itor.hasNext()) {
+                    Lab lab = itor.next();
+                    if(lab.getName().equals(c1.getName()) && lab.getNumber().equals(c1.getNumber())){
+                        addOrder.add(lab);
+                    }
+                }
+            }
+        }
+        addOrder.add(c2);
+        Iterator<Lab> itor = addOrderLabs.iterator();
+        while(itor.hasNext()) {
+            Lab lab = itor.next();
+            if(lab.getName().equals(c2.getName()) && lab.getNumber().equals(c2.getNumber())){
+                addOrder.add(lab);
+            }
+        }
     }
     
     /**
@@ -165,7 +229,7 @@ public class OTreeModel {
             // Get set of labs if it exists else get empty set
             Set<Lab> labs = parser.getCourseLabs().getOrDefault(newLecture, new LinkedHashSet());
             for(Lab lab:labs){
-                if(schedule.getOrDefault(lab, emptySlot).equals(newSlot)){
+                if(newSlot.equals(schedule.getOrDefault(lab, emptySlot))){
                     return "No";
                 }
             }
@@ -328,14 +392,15 @@ public class OTreeModel {
         LinkedList<Course> avaCourses = new LinkedList(parser.getCourses());
         avaCourses.addAll(parser.getLabs());
         avaCourses.removeAll(usedCourses.keySet());
+        
         OrTreeControl1 control = new OrTreeControl1();
-        PriorityQueue<Prob> leafs = new PriorityQueue(avaCourses.size()*avaCourses.size(), control);
+        PriorityQueue<Prob> leafs = new PriorityQueue(addOrder.size()*addOrder.size(), control);
         
         if(root != null){
             leafs.add(root);
         } else{
             Random rand = new Random();
-            Course course = avaCourses.remove(rand.nextInt((avaCourses.size())-1));
+            Course course = addOrder.get(0);
             if( course instanceof Lecture){
                 for(Slot slot: parser.getCourseSlots()){
                     HashMap<Course, Slot> schedule = new HashMap();
@@ -371,14 +436,10 @@ public class OTreeModel {
                 return leaf; // Return solution
             } else if(!leaf.isUnsolvable()){ 
                 Random rand = new Random();
-                LinkedList<Course> posCourses = new LinkedList(avaCourses);
+                LinkedList<Course> posCourses = new LinkedList(addOrder);
                 posCourses.removeAll(leaf.getScheduel().keySet());
                 Course newCourse;
-                if(posCourses.size()==1){
-                    newCourse = posCourses.get(0);
-                } else { 
-                    newCourse = posCourses.get(rand.nextInt(posCourses.size()-1));
-                }
+                newCourse = posCourses.get(0);
                 try (PrintWriter writer = new PrintWriter(new FileWriter(inputName.replace(".","_log."),true))) {
                     writer.println("Status: Or Tree - Extending Leaf");
                     writer.println("Leaf Depth: " + leaf.getScheduel().size());
