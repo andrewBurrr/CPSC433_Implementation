@@ -371,7 +371,7 @@ public class OTreeModel {
         ArrayList<Prob> roots = new ArrayList();
         int lastDepth = 0;
         int sameDepthCount = 0;
-        int depthTol = max((parser.getCourses().size() + parser.getLabs().size())/20, 1);
+        int depthTol = 1;//max((parser.getCourses().size() + parser.getLabs().size())/20, 1);
         int numSameDepthTol = (parser.getCourseSlots().size() + parser.getLabSlots().size());
         if(root != null){
             leafs.add(root);
@@ -418,12 +418,17 @@ public class OTreeModel {
             } else if(!leaf.isUnsolvable()){ 
                 if(abs(leaf.getScheduel().size()-lastDepth)<depthTol){
                     sameDepthCount++;
+                } else {
+                    sameDepthCount = 0;
                 }
                 if(sameDepthCount>numSameDepthTol){
                     System.out.println("Resrating");
                     leafs.clear();
                     leafs.addAll(roots);
+                    sameDepthCount = 0;
+                    continue;
                 }
+                lastDepth = leaf.getScheduel().size();
                 Random rand = new Random();
                 LinkedList<Course> posCourses = new LinkedList(addOrder);
                 posCourses.removeAll(leaf.getScheduel().keySet());
@@ -502,12 +507,17 @@ public class OTreeModel {
             } else if(!leaf.isUnsolvable()){ // Leaf is in guide or not, altern
                 if(abs(leaf.getScheduel().size()-lastDepth)<depthTol){
                     sameDepthCount++;
+                } else {
+                    sameDepthCount = 0;
                 }
                 if(sameDepthCount>numSameDepthTol){
                     System.out.println("Restarting");
                     leafs.clear();
                     leafs.addAll(roots);
+                    sameDepthCount = 0;
+                    continue;
                 }
+                lastDepth = leaf.getScheduel().size();
                 try (PrintWriter writer = new PrintWriter(new FileWriter(inputName.replace(".","_log."),true))) {
                     writer.println("Status: Or Tree - Extending Leaf");
                     writer.println("Leaf Depth: " + leaf.getScheduel().size());
