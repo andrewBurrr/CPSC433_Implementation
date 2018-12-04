@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 
 public class Main {
     public static void main(String[] args) {
-        boolean useConfig = true;
+        boolean useConfig = false;
         if(args.length == 1){
             useConfig = args[0].equals("y");
         }
@@ -30,7 +30,9 @@ public class Main {
         float wSecD = 1;
         float p_CMin = 1;
         float p_LMin = 1;
+        float p_Pair = 1;
         List<String> listOfInput = new LinkedList<>();
+        boolean richout = true;
         
         // Config
         File config = new File("config.txt");
@@ -77,14 +79,14 @@ public class Main {
                 p_LMin = Float.parseFloat(stringSplit[6]);
                 float[] weights = (new float[]{wMin,wPref,wPair,wSecD,p_CMin,p_LMin});
                 
-                solveProb(inputFile, weights);
+                solveProb(inputFile, weights, richout);
             }
         }
         
         
     }
     
-    public static void solveProb(String inputFile, float[] weights){
+    public static void solveProb(String inputFile, float[] weights, boolean richout){
         String log = inputFile.replace(".", "_log.");
         String output = inputFile.replace(".", "_output.");
         System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
@@ -140,7 +142,7 @@ public class Main {
             try (PrintWriter outWriter = new PrintWriter(new FileWriter(log,true))) {
                 outWriter.println("Status: Initiating Set Based Model");
             }
-            SetBased setBased = new SetBased(reader, otree, weights, inputFile);
+            SetBased setBased = new SetBased(reader, otree, weights, inputFile, richout);
             System.out.println("Status: Begining Set Based Search");
             try (PrintWriter outWriter = new PrintWriter(new FileWriter(log,true))) {
                 outWriter.println("Status: Begining Set Based Search");
@@ -149,9 +151,9 @@ public class Main {
 
             // If f is null then there no solution was found
             if (f == null){
-                System.out.printf("\nName: %s\nStatus: UNSOLVED\nError: Infeasible Problem\n\n",reader.getName());
+                System.out.printf("\nName: %s\nStatus: UNSOLVED\nReason: Infeasible Problem\n\n",reader.getName());
                 try (PrintWriter writer = new PrintWriter(new FileWriter(output))) {
-                    writer.write("Status: UNSOLVED\nError: Infeasible Problem\n\n");
+                    writer.write("Status: UNSOLVED\nReason: Infeasible Problem\n\n");
                 }
             } else{ // Solution found, print it out and write it to file
                 System.out.printf("\nName: %s\nStatus: SOLVED\nSolution:\n%s\n",reader.getName(),f.toString());

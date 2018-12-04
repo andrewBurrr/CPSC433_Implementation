@@ -13,6 +13,8 @@ import Structures.Slot;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import static java.lang.Integer.max;
+import static java.lang.Math.abs;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -444,25 +446,34 @@ public class OTreeModel {
         guide.sort(new AddOrderComparator2(ranking));
         OrTreeControl2 control = new OrTreeControl2(guide.toArray(new Assignment[0]), usedCourses.size());
         PriorityQueue<Prob> leafs = new PriorityQueue(guide.size()*guide.size(), control);
+        ArrayList<Prob> roots = new ArrayList();
+        int lastDepth = 0;
+        int sameDepthCount = 0;
+        int depthTol = max((parser.getCourses().size() + parser.getLabs().size())/20, 1);
+        int numSameDepthTol = (parser.getCourseSlots().size() + parser.getLabSlots().size());
         
         if( course instanceof Lecture){
             for(Slot slot: parser.getCourseSlots()){
                 HashMap<Course, Slot> map = root.getScheduel();
                 HashMap<Course, Slot> schedule = new HashMap(map);
                 schedule.put(course, slot);
-                leafs.add(checkPartials(schedule));
+                Prob newRoot = checkPartials(schedule);
+                roots.add(newRoot);
+                leafs.add(newRoot);
             }
         } else {
             for(Slot slot: parser.getLabSlots()){
                 HashMap<Course, Slot> map = root.getScheduel();
                 HashMap<Course, Slot> schedule = new HashMap(map);
                 schedule.put(course, slot);
-                leafs.add(checkPartials(schedule));
+                Prob newRoot = checkPartials(schedule);
+                roots.add(newRoot);
+                leafs.add(newRoot);
             }
         }
         
         try (PrintWriter writer = new PrintWriter(new FileWriter(inputName.replace(".","_log."),true))) {
-            writer.println("Status: Or Tree - Established Root");
+            writer.println("Status: Or Tree - Established Roots");
             writer.append(root.toString()+"\n");
         } catch (IOException ex) {
             Logger.getLogger(OTreeModel.class.getName()).log(Level.SEVERE, null, ex);
@@ -473,6 +484,13 @@ public class OTreeModel {
             if(leaf.isSolved()){
                 return leaf;
             } else if(!leaf.isUnsolvable()){ // Leaf is in guide or not, altern
+                if(abs(leaf.getScheduel().size()-lastDepth)<depthTol){
+                    sameDepthCount++;
+                }
+                if(sameDepthCount>numSameDepthTol){
+                    leafs.clear();;
+                    leafs.addAll(roots);
+                }
                 try (PrintWriter writer = new PrintWriter(new FileWriter(inputName.replace(".","_log."),true))) {
                     writer.println("Status: Or Tree - Extending Leaf");
                     writer.println("Leaf Depth: " + leaf.getScheduel().size());

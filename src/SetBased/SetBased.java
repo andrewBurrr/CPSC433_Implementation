@@ -35,11 +35,12 @@ public class SetBased{
     private final float pen_LabMin;
     private String fileName;
     private double killPercent;
+    private boolean output;
     
-    public SetBased(Reader reader, OTreeModel oTree, float[] weights, String fileName){
+    public SetBased(Reader reader, OTreeModel oTree, float[] weights, String fileName, boolean output){
         //Initialize the SetBased environment
         this.fileName = fileName;
-        this.threshold = (float) 0.5;
+        this.threshold = (float) 5;
         this.killPercent = 0.30;
         this.difTol = 1;
         this.maxPopulation = 50;
@@ -56,6 +57,7 @@ public class SetBased{
         this.wPref = weights[1];
         this.wPair = weights[2];
         this.wSecDiff = weights[3];
+        this.output = output;
         if(weights.length==6){
             this.pen_CourseMin = weights[4];
             this.pen_LabMin = weights[5];
@@ -309,11 +311,14 @@ public class SetBased{
         getVariance();
         Random rand = new Random();
         while(variance>threshold || facts.size()<(maxPopulation*(0.9-killPercent))){
+            System.out.println(variance);
             // If facts is empty we run depthFirst
             //If facts are too big, kill them off with Tod()
             Fact newFacts[] = new Fact[2];
             if (facts.size() > maxPopulation) {
-                System.out.println("Status: Set Based - Killing off the weak");
+                if(output){
+                    System.out.println("Status: Set Based - Killing off the weak");
+                }
                 Tod();
                 getVariance();
                 try (PrintWriter writer = new PrintWriter(new FileWriter(fileName.replace(".","_log."),true))) {
@@ -331,7 +336,9 @@ public class SetBased{
                 lastEval = variance;
             } else {
                 if(rand.nextBoolean()) {
-                    System.out.println("Status: Mutating a pop");
+                    if(output) {
+                        System.out.println("Status: Mutating a pop");
+                    }
                     Fact newFact = Mutation();
                     if(newFact != null) {
                         newFact.setEvaluation(Eval(newFact));
@@ -340,7 +347,9 @@ public class SetBased{
                         newFacts[0] = newFact;
                     }
                 } else {
-                    System.out.println("Status: Combining two pops");
+                    if(output) {
+                        System.out.println("Status: Combining two pops");
+                    }
                     int i =0;
                     for(Fact f: Combination()){
                         if(f != null){
