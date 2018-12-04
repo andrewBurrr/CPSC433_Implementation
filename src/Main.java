@@ -180,7 +180,7 @@ public class Main {
             
         } catch (Exception e){ // If any other error occurs catch it and write to file
             try{
-                System.out.printf("Error in:%s\nOutput saved to %s_log.txt",inputFile, inputFile);
+                System.out.printf("Error in: %s\nOutput saved to %s_log.txt",inputFile, inputFile);
                 FileWriter fileWriter = new FileWriter(log,true);
                 try (PrintWriter printWriter = new PrintWriter(fileWriter)) {
                     printWriter.append("Error in: "+inputFile+"\n");
