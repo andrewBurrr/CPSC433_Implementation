@@ -123,8 +123,8 @@ public class Main {
             for(Slot c:reader.getLabSlots()){
                 sum+=1;
             }
-            System.out.println(sum);
-            System.exit(0);
+            //System.out.println(sum);
+            //System.exit(0);
             System.out.printf("Number of Course Slots: %d\n",reader.getCourseSlots().size());
             System.out.printf("Number of Lab Slots: %d\n",reader.getLabSlots().size());
             System.out.printf("Number of Courses: %d\n",reader.getCourses().size());
