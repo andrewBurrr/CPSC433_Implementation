@@ -368,7 +368,11 @@ public class OTreeModel {
     public Prob depthFirst(){
         OrTreeControl1 control = new OrTreeControl1();
         PriorityQueue<Prob> leafs = new PriorityQueue(addOrder.size()*addOrder.size(), control);
-        
+        ArrayList<Prob> roots = new ArrayList();
+        int lastDepth = 0;
+        int sameDepthCount = 0;
+        int depthTol = max((parser.getCourses().size() + parser.getLabs().size())/20, 1);
+        int numSameDepthTol = (parser.getCourseSlots().size() + parser.getLabSlots().size());
         if(root != null){
             leafs.add(root);
         } else{
@@ -378,13 +382,17 @@ public class OTreeModel {
                 for(Slot slot: parser.getCourseSlots()){
                     HashMap<Course, Slot> schedule = new HashMap();
                     schedule.put(course, slot);
-                    leafs.add(checkPartials(schedule));
+                    Prob newRoot = checkPartials(schedule);
+                    roots.add(newRoot);
+                    leafs.add(newRoot);
                 }
             } else {
                 for(Slot slot: parser.getLabSlots()){
                     HashMap<Course, Slot> schedule = new HashMap();
                     schedule.put(course, slot);
-                    leafs.add(checkPartials(schedule));
+                    Prob newRoot = checkPartials(schedule);
+                    roots.add(newRoot);
+                    leafs.add(newRoot);
                 }
             }
         }
@@ -408,6 +416,14 @@ public class OTreeModel {
                 }
                 return leaf; // Return solution
             } else if(!leaf.isUnsolvable()){ 
+                if(abs(leaf.getScheduel().size()-lastDepth)<depthTol){
+                    sameDepthCount++;
+                }
+                if(sameDepthCount>numSameDepthTol){
+                    System.out.println("Resrating");
+                    leafs.clear();
+                    leafs.addAll(roots);
+                }
                 Random rand = new Random();
                 LinkedList<Course> posCourses = new LinkedList(addOrder);
                 posCourses.removeAll(leaf.getScheduel().keySet());
@@ -488,7 +504,8 @@ public class OTreeModel {
                     sameDepthCount++;
                 }
                 if(sameDepthCount>numSameDepthTol){
-                    leafs.clear();;
+                    System.out.println("Restarting");
+                    leafs.clear();
                     leafs.addAll(roots);
                 }
                 try (PrintWriter writer = new PrintWriter(new FileWriter(inputName.replace(".","_log."),true))) {

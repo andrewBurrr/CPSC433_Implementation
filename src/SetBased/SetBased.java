@@ -150,10 +150,8 @@ public class SetBased{
 
     //TODO: Implement Tod
     private void Tod(){
-        
         int numberKilled = (int) (killPercent * facts.size());
         facts.subList(facts.size()-numberKilled, facts.size()-1).clear();
-
     }
 
     //TODO: Implement Eval to calculate the soft constraint, take in a Fact, return an int
@@ -312,6 +310,7 @@ public class SetBased{
         Random rand = new Random();
         while(variance>threshold || facts.size()<(maxPopulation*(0.9-killPercent))){
             System.out.println(variance);
+            System.out.println("Eval:"+facts.get(0).getEvaluation());
             // If facts is empty we run depthFirst
             //If facts are too big, kill them off with Tod()
             Fact newFacts[] = new Fact[2];
@@ -330,6 +329,7 @@ public class SetBased{
                 } catch (IOException ex) {
                     Logger.getLogger(SetBased.class.getName()).log(Level.SEVERE, null, ex);
                 }
+                Collections.sort(facts);
                 if(abs(variance-lastEval) < difTol){
                     break;
                 }
@@ -345,6 +345,7 @@ public class SetBased{
                         facts.add(newFact);
                         Collections.sort(facts);
                         newFacts[0] = newFact;
+                        Collections.sort(facts);
                     }
                 } else {
                     if(output) {
@@ -360,6 +361,7 @@ public class SetBased{
                             i++;
                         }
                     }
+                    Collections.sort(facts);
                 }
                 getVariance(newFacts);
             }

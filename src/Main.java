@@ -3,6 +3,9 @@ import OrTree.OTreeModel;
 import Parser.Reader;
 import SetBased.Fact;
 import SetBased.SetBased;
+import Structures.Course;
+import Structures.Preference;
+import Structures.Slot;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
@@ -15,10 +18,11 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.prefs.Preferences;
 
 public class Main {
     public static void main(String[] args) {
-        boolean useConfig = false;
+        boolean useConfig = true;
         if(args.length == 1){
             useConfig = args[0].equals("y");
         }
@@ -32,7 +36,7 @@ public class Main {
         float p_LMin = 1;
         float p_Pair = 1;
         List<String> listOfInput = new LinkedList<>();
-        boolean richout = true;
+        boolean richout = false;
         
         // Config
         File config = new File("config.txt");
@@ -109,6 +113,18 @@ public class Main {
         
         try {
             Reader reader = new Reader(inputFile, false);
+            int sum = 0;
+            for(Preference p:reader.getPreferences()){
+                sum+=p.getValue();
+            }
+            for(Slot c:reader.getCourseSlots()){
+                sum+=1;
+            }
+            for(Slot c:reader.getLabSlots()){
+                sum+=1;
+            }
+            System.out.println(sum);
+            System.exit(0);
             System.out.printf("Number of Course Slots: %d\n",reader.getCourseSlots().size());
             System.out.printf("Number of Lab Slots: %d\n",reader.getLabSlots().size());
             System.out.printf("Number of Courses: %d\n",reader.getCourses().size());
