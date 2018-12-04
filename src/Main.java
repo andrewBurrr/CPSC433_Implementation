@@ -113,18 +113,18 @@ public class Main {
         
         try {
             Reader reader = new Reader(inputFile, false);
-            int sum = 0;
-            for(Preference p:reader.getPreferences()){
-                sum+=p.getValue();
-            }
-            for(Slot c:reader.getCourseSlots()){
-                sum+=1;
-            }
-            for(Slot c:reader.getLabSlots()){
-                sum+=1;
-            }
-            System.out.println(sum);
-            System.exit(0);
+//            int sum = 0;
+//            for(Preference p:reader.getPreferences()){
+//                sum+=p.getValue();
+//            }
+//            for(Slot c:reader.getCourseSlots()){
+//                sum+=1;
+//            }
+//            for(Slot c:reader.getLabSlots()){
+//                sum+=1;
+//            }
+//            System.out.println(sum);
+//            System.exit(0);
             System.out.printf("Number of Course Slots: %d\n",reader.getCourseSlots().size());
             System.out.printf("Number of Lab Slots: %d\n",reader.getLabSlots().size());
             System.out.printf("Number of Courses: %d\n",reader.getCourses().size());
