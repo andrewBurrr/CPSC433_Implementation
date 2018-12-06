@@ -74,16 +74,19 @@ public class Main {
         for(String line: listOfInput){
             if(!line.equals("")){
                 String [] stringSplit = line.split(" ");
-                String inputFile = stringSplit[0];
-                wMin = Float.parseFloat(stringSplit[1]);
-                wPref = Float.parseFloat(stringSplit[2]);
-                wPair = Float.parseFloat(stringSplit[3]);
-                wSecD = Float.parseFloat(stringSplit[4]);
-                p_CMin = Float.parseFloat(stringSplit[5]);
-                p_LMin = Float.parseFloat(stringSplit[6]);
-                float[] weights = (new float[]{wMin,wPref,wPair,wSecD,p_CMin,p_LMin});
-                
-                solveProb(inputFile, weights, richout);
+                System.out.println(Arrays.toString(stringSplit));
+                if(!stringSplit[0].equals("//")){
+                    String inputFile = stringSplit[0];
+                    wMin = Float.parseFloat(stringSplit[1]);
+                    wPref = Float.parseFloat(stringSplit[2]);
+                    wPair = Float.parseFloat(stringSplit[3]);
+                    wSecD = Float.parseFloat(stringSplit[4]);
+                    p_CMin = Float.parseFloat(stringSplit[5]);
+                    p_LMin = Float.parseFloat(stringSplit[6]);
+                    float[] weights = (new float[]{wMin,wPref,wPair,wSecD,p_CMin,p_LMin});
+
+                    solveProb(inputFile, weights, richout);
+                }
             }
         }
         

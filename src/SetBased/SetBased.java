@@ -18,7 +18,7 @@ import java.util.logging.Logger;
 public class SetBased{
     private ArrayList<Fact> facts;
     private float threshold;
-    private float difTol;
+    private double difTol;
     private int maxPopulation;
     private Reader reader;
     private OTreeModel oTree;
@@ -42,7 +42,7 @@ public class SetBased{
         this.fileName = fileName;
         this.threshold = (float) 5;
         this.killPercent = 0.30;
-        this.difTol = 1;
+        this.difTol = 0.05;
         this.maxPopulation = 50;
         this.facts = new ArrayList();
         this.reader = reader;
@@ -311,6 +311,11 @@ public class SetBased{
         while(variance>threshold || facts.size()<(maxPopulation*(0.9-killPercent))){
             System.out.println(variance);
             System.out.println("Eval:"+facts.get(0).getEvaluation());
+            try (PrintWriter writer = new PrintWriter(new FileWriter(fileName.replace(".","_output."),true))) {
+                    writer.println("Status: Set Based - Begining evolution");
+                } catch (IOException ex) {
+            Logger.getLogger(SetBased.class.getName()).log(Level.SEVERE, null, ex);
+        }
             // If facts is empty we run depthFirst
             //If facts are too big, kill them off with Tod()
             Fact newFacts[] = new Fact[2];
@@ -320,17 +325,17 @@ public class SetBased{
                 }
                 Tod();
                 getVariance();
-                try (PrintWriter writer = new PrintWriter(new FileWriter(fileName.replace(".","_log."),true))) {
-                    writer.println("Status: Set Based - Killing off the weak");
-                    writer.append("Facts:\n"+facts.toString() + "\n  ");
-                    writer.append("Best Evaluation:" + facts.get(0).getEvaluation()+"\n");
-                    writer.flush();
-                    writer.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(SetBased.class.getName()).log(Level.SEVERE, null, ex);
-                }
+//                try (PrintWriter writer = new PrintWriter(new FileWriter(fileName.replace(".","_log."),true))) {
+//                    writer.println("Status: Set Based - Killing off the weak");
+//                    writer.append("Facts:\n"+facts.toString() + "\n  ");
+//                    writer.append("Best Evaluation:" + facts.get(0).getEvaluation()+"\n");
+//                    writer.flush();
+//                    writer.close();
+//                } catch (IOException ex) {
+//                    Logger.getLogger(SetBased.class.getName()).log(Level.SEVERE, null, ex);
+//                }
                 Collections.sort(facts);
-                if(abs(variance-lastEval) < difTol){
+                if(abs((variance-lastEval)/variance) < difTol){
                     break;
                 }
                 lastEval = variance;

@@ -372,7 +372,7 @@ public class OTreeModel {
         int lastDepth = 0;
         int sameDepthCount = 0;
         int depthTol = 1;//max((parser.getCourses().size() + parser.getLabs().size())/20, 1);
-        int numSameDepthTol = (parser.getCourseSlots().size() + parser.getLabSlots().size());
+        int numSameDepthTol = (parser.getCourses().size() + parser.getLabs().size());
         if(root != null){
             leafs.add(root);
         } else{
@@ -452,7 +452,7 @@ public class OTreeModel {
                 }
             }
         }
-        return null; // Should never happen unless bad input
+        return null; // Should never happen unless no solution
     }
     
     public Prob guided(ArrayList<Assignment> guide){
@@ -470,8 +470,8 @@ public class OTreeModel {
         ArrayList<Prob> roots = new ArrayList();
         int lastDepth = 0;
         int sameDepthCount = 0;
-        int depthTol = max((parser.getCourses().size() + parser.getLabs().size())/20, 1);
-        int numSameDepthTol = (parser.getCourseSlots().size() + parser.getLabSlots().size());
+        int depthTol = 1;
+        int numSameDepthTol = (parser.getCourses().size() + parser.getLabs().size());
         
         if( course instanceof Lecture){
             for(Slot slot: parser.getCourseSlots()){
@@ -536,7 +536,7 @@ public class OTreeModel {
                 }
             }
         }
-        return null; // shouldnt happen unless bad input
+        return null; // shouldnt happen unless no solution
     }
 }
 
