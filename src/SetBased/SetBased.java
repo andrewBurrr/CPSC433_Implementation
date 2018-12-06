@@ -309,7 +309,7 @@ public class SetBased{
         getVariance();
         Random rand = new Random();
         while(variance>threshold || facts.size()<(maxPopulation*(0.9-killPercent))){
-            System.out.println(variance);
+            System.out.println("Variance:"+ variance);
             System.out.println("Eval:"+facts.get(0).getEvaluation());
             try (PrintWriter writer = new PrintWriter(new FileWriter(fileName.replace(".","_output."),true))) {
                     writer.println("Status: Set Based - Begining evolution");
@@ -325,15 +325,6 @@ public class SetBased{
                 }
                 Tod();
                 getVariance();
-//                try (PrintWriter writer = new PrintWriter(new FileWriter(fileName.replace(".","_log."),true))) {
-//                    writer.println("Status: Set Based - Killing off the weak");
-//                    writer.append("Facts:\n"+facts.toString() + "\n  ");
-//                    writer.append("Best Evaluation:" + facts.get(0).getEvaluation()+"\n");
-//                    writer.flush();
-//                    writer.close();
-//                } catch (IOException ex) {
-//                    Logger.getLogger(SetBased.class.getName()).log(Level.SEVERE, null, ex);
-//                }
                 Collections.sort(facts);
                 if(abs((variance-lastEval)/variance) < difTol){
                     break;
@@ -351,6 +342,7 @@ public class SetBased{
                         Collections.sort(facts);
                         newFacts[0] = newFact;
                         Collections.sort(facts);
+                        System.out.println("New Eval:"+newFact.getEvaluation());
                     }
                 } else {
                     if(output) {
@@ -364,6 +356,7 @@ public class SetBased{
                             Collections.sort(facts);
                             newFacts[i] = f;
                             i++;
+                            System.out.println("New Eval:"+f.getEvaluation());
                         }
                     }
                     Collections.sort(facts);
