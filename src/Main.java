@@ -27,7 +27,7 @@ public class Main {
             useConfig = args[0].equals("y");
         }
         
-        // Weights to be changed according to configReader file or
+        // Weights to be changed according to config file
         float wMin = 1;
         float wPref = 1;
         float wPair = 1;
@@ -35,10 +35,11 @@ public class Main {
         float p_CMin = 1;
         float p_LMin = 1;
         float p_Pair = 1;
+        float p_Section = 1;
         List<String> listOfInput = new LinkedList<>();
         boolean richout = false;
         
-        // Config
+        // Read the configuration file and initialize the system
         File config = new File("config.txt");
         if(config.exists() && config.length()>0 && useConfig){ // If config is present and not empty 
             System.out.println("Status: Reading Config");
@@ -49,7 +50,7 @@ public class Main {
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else {
+        } else {    // If the config file does not exist look for files in the directory InputFiles/Tests
             try { 
                 File folder = new File("InputFiles/Tests");
                 File[] listOfFiles = folder.listFiles();
@@ -83,7 +84,9 @@ public class Main {
                     wSecD = Float.parseFloat(stringSplit[4]);
                     p_CMin = Float.parseFloat(stringSplit[5]);
                     p_LMin = Float.parseFloat(stringSplit[6]);
-                    float[] weights = (new float[]{wMin,wPref,wPair,wSecD,p_CMin,p_LMin});
+                    p_Pair = Float.parseFloat(stringSplit[7]);
+                    p_Section = Float.parseFloat(stringSplit[8]);
+                    float[] weights = (new float[]{wMin,wPref,wPair,wSecD,p_CMin,p_LMin,p_Pair,p_Section});
 
                     solveProb(inputFile, weights, richout);
                 }
