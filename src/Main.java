@@ -6,7 +6,6 @@ import SetBased.Fact;
 import SetBased.SetBased;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -104,7 +103,7 @@ public class Main {
             System.out.printf("Number of Lab Slots: %d\n", reader.getLabSlots().size());
             System.out.printf("Number of Courses: %d\n", reader.getCourses().size());
             System.out.printf("Number of Lab: %d\n", reader.getLabs().size());
-
+            
             File file = new File(inputFile);
             OTreeModel otree;
 
@@ -124,6 +123,11 @@ public class Main {
             // If f is null then there no solution was found
             if (f == null) {
                 System.out.printf("\nName: %s\nStatus: UNSOLVED\nReason: Infeasible Problem\n\n", reader.getName());
+                try{
+                    
+                } catch(Exception e){
+                    
+                }
             } else { // Solution found, print it out and write it to file
                 System.out.printf("\nName: %s\nStatus: SOLVED\nSolution:\n%s\n", reader.getName(), f.toString());
             }

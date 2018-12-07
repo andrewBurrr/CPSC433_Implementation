@@ -29,7 +29,6 @@ public class OTreeModel {
     private Prob root;
     private Set<NotCompatible> notCompatible;
     private HashMap<Course, Slot> usedCourses;
-    private final Course emptyCourse;
     private final Slot emptySlot;
     private int numExtraCourses;
     private String inputName;
@@ -46,7 +45,6 @@ public class OTreeModel {
     public OTreeModel(Reader parser, String inputName) throws InvalidSchedulingException {
         this.parser = parser;
         this.inputName = inputName;
-        this.emptyCourse = new Course("", "", "", "");
         this.emptySlot = new Slot("", "");
         this.numExtraCourses = 0;
         // Get partial assignments
@@ -181,7 +179,6 @@ public class OTreeModel {
 
         // Check Unwanted
         HashMap<Course, Set<Slot>> unwanted = parser.getUnwanted();
-        // System.out.println(unwanted.toString());
         if (unwanted.getOrDefault(newCourse, new LinkedHashSet()).contains(newSlot)) {
             return "No";
         }
@@ -284,11 +281,6 @@ public class OTreeModel {
             if (course instanceof Lecture) { // Check to see if lecture conflicts
                 Lecture newLecture = (Lecture) course;
                 Set<Lab> labs = parser.getCourseLabs().getOrDefault(newLecture, new LinkedHashSet());
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(OTreeModel.class.getName()).log(Level.SEVERE, null, ex);
-                }
                 for (Lab lab : labs) {
                     if (slot.equals(schedule.getOrDefault(lab, emptySlot))) {
                         return new Prob(schedule, "No");
