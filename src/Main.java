@@ -47,8 +47,8 @@ public class Main {
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } else {
-            try {
+        } else {    // If the config file does not exist look for files in the directory InputFiles/Tests
+            try { 
                 File folder = new File("InputFiles/Tests");
                 File[] listOfFiles = folder.listFiles();
                 for (File test : listOfFiles) {
