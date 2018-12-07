@@ -16,15 +16,16 @@ import java.util.HashMap;
  * @author thomasnewton
  */
 public class AddOrderComparator implements Comparator<Course> {
+
     HashMap<Course, Integer> ranking;
-    AddOrderComparator(HashMap<Course, Integer> ranking){
+
+    AddOrderComparator(HashMap<Course, Integer> ranking) {
         this.ranking = ranking;
     }
-    
-    
+
     @Override
     public int compare(Course o1, Course o2) {
         return ranking.getOrDefault(o2, 0) - ranking.getOrDefault(o1, 0);
     }
-    
+
 }
