@@ -6,6 +6,8 @@ import SetBased.Fact;
 import SetBased.SetBased;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
@@ -21,7 +23,7 @@ public class Main {
             useConfig = args[0].equals("y");
         }
         if(args.length == 2) {
-            richout = true;
+      //     richout = true;
         }
 
         // Weights to be changed according to configReader file or
@@ -87,7 +89,6 @@ public class Main {
     }
 
     public static void solveProb(String inputFile, float[] weights, boolean richout) {
-        String log = inputFile.replace(".", "_log.");
         String output = inputFile.replace(".", "_output.");
         System.out.println("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
         System.out.printf("Status: Reading File - %s\n", inputFile);
@@ -104,7 +105,6 @@ public class Main {
             System.out.printf("Number of Courses: %d\n", reader.getCourses().size());
             System.out.printf("Number of Lab: %d\n", reader.getLabs().size());
             
-            File file = new File(inputFile);
             OTreeModel otree;
 
             try { // Try intializing OTree
@@ -123,13 +123,14 @@ public class Main {
             // If f is null then there no solution was found
             if (f == null) {
                 System.out.printf("\nName: %s\nStatus: UNSOLVED\nReason: Infeasible Problem\n\n", reader.getName());
-                try{
-                    
-                } catch(Exception e){
-                    
+                try (PrintWriter writer = new PrintWriter(new FileWriter(output))) {
+                    writer.write("Status: UNSOLVED\nReason: Problem is Unsolvable\n\n");
                 }
             } else { // Solution found, print it out and write it to file
                 System.out.printf("\nName: %s\nStatus: SOLVED\nSolution:\n%s\n", reader.getName(), f.toString());
+                try (PrintWriter writer = new PrintWriter(new FileWriter(output))) {
+                    writer.write("Status: SOLVED\n"+f.toString());
+                }
             }
 
         } catch (Exception e) { // If any other error occurs catch it and write to file

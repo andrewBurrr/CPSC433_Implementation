@@ -312,8 +312,10 @@ public class SetBased {
         getVariance();
         Random rand = new Random();
         while (variance > threshold || facts.size() < (maxPopulation * (0.9 - killPercent))) {
-            System.out.println("Variance:" + variance);
-            System.out.println("Eval:" + facts.get(0).getEvaluation());
+            if(output){
+                System.out.println("Variance:" + variance);
+                System.out.println("Eval:" + facts.get(0).getEvaluation());
+            }
             // If facts is empty we run depthFirst
             //If facts are too big, kill them off with Tod()
             Fact newFacts[] = new Fact[2];
@@ -340,7 +342,9 @@ public class SetBased {
                         Collections.sort(facts);
                         newFacts[0] = newFact;
                         Collections.sort(facts);
-                        System.out.println("New Eval:" + newFact.getEvaluation());
+                        if(output){
+                            System.out.println("New Eval:" + newFact.getEvaluation());
+                        }
                     }
                 } else {
                     if (output) {
