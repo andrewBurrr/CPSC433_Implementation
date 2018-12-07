@@ -58,7 +58,7 @@ public class OTreeModel {
         if (courses.contains(new Lecture("CPSC 313 LEC 01"))) {
             Set<NotCompatible> toAdd = new LinkedHashSet();
             if (!parser.getLabSlots().contains(new Slot("TU", "18:00"))) {
-                throw new InvalidSchedulingException("Error: Slot TU, 18:00 does not exist for assignment of CPSC 813");
+                throw new InvalidSchedulingException("Status: Slot TU, 18:00 does not exist for assignment of CPSC 813");
             }
             for (Slot slot : parser.getLabSlots()) {
                 if (slot.equals("TU18:00")) {
@@ -85,7 +85,7 @@ public class OTreeModel {
         if (courses.contains(new Lecture("CPSC 413 LEC 01"))) {
             Set<NotCompatible> toAdd = new LinkedHashSet();
             if (!parser.getLabSlots().contains(new Slot("TU", "18:00"))) {
-                throw new InvalidSchedulingException("Error: Slot TU, 18:00 does not exist for assignment of CPSC 913");
+                throw new InvalidSchedulingException("Status: Slot TU, 18:00 does not exist for assignment of CPSC 913");
             }
             for (Slot slot : parser.getLabSlots()) {
                 if (slot.equals("TU18:00")) {
@@ -110,7 +110,7 @@ public class OTreeModel {
 
         Prob part = checkPartials(partAssign);
         if (part.isUnsolvable()) {
-            throw new InvalidSchedulingException("Error: Partial Assignments are not solvable.");
+            throw new InvalidSchedulingException("Status: Partial Assignments are not solvable.");
         } else {
             root = part;
         }
